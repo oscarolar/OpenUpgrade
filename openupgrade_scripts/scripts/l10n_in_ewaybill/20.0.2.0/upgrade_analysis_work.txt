@@ -1,0 +1,10 @@
+---Models in module 'l10n_in_ewaybill'---
+---Fields in module 'l10n_in_ewaybill'---
+l10n_in_ewaybill / l10n.in.ewaybill         / website_message_ids (one2many): DEL relation: mail.message
+
+# NOTHING TO DO: mail.thread no longer has website_message_ids
+
+---XML records in module 'l10n_in_ewaybill'---
+ir.access: l10n_in_ewaybill.l10n_in_ewaybill_comp_rule (noupdate switched)
+
+# NOTHING TO DO: ir.rule and ir.model.access become ir.access in base
