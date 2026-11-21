@@ -1,0 +1,9 @@
+---Models in module 'pos_online_payment'---
+---Fields in module 'pos_online_payment'---
+pos_online_payment / pos.payment.method       / is_online_payment (boolean)   : DEL
+# DONE: pre-migration: passed to value online of pos.payment.method#type
+
+---XML records in module 'pos_online_payment'---
+NEW ir.ui.view: pos_online_payment.pos_payment_status
+NEW ir.ui.view: pos_online_payment.pos_state_header
+# NOTHING TO DO: new
