@@ -1,0 +1,7 @@
+---Models in module 'event_sale'---
+---Fields in module 'event_sale'---
+---XML records in module 'event_sale'---
+NEW ir.access: event_sale.event_sale_registration_portal_rule
+NEW ir.access: event_sale.event_sale_registration_user_portal_rule
+ir.access: event_sale.event_sale_report_comp_rule (noupdate switched)
+# NOTHING TO DO: ir.model.access/ir.rule were merged into ir.access, handled by base

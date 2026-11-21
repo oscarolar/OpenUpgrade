@@ -1,0 +1,44 @@
+---Models in module 'event'---
+---Fields in module 'event'---
+event        / digest.digest            / kpi_nbr_of_registrations (boolean): NEW
+# DONE: post-migration: enabled on the default digest by loading noupdate_changes.xml
+
+event        / event.event              / website_message_ids (one2many): DEL relation: mail.message
+# NOTHING TO DO: non stored one2many, the model does not inherit it anymore
+
+event        / event.event.ticket       / entry_limit (integer)         : NEW hasdefault: default
+# NOTHING TO DO: new feature, the default (0) means no extra entries
+
+event        / event.registration       / event_begin_date (datetime)   : is now stored
+# DONE: pre-migration: create the column and fill it from the slot start or the event
+#   begin date by SQL
+
+event        / event.registration       / main_registration_id (many2one): NEW relation: event.registration
+# NOTHING TO DO: new feature
+
+event        / event.registration       / website_message_ids (one2many): DEL relation: mail.message
+# NOTHING TO DO: non stored one2many, the model does not inherit it anymore
+
+---XML records in module 'event'---
+ir.access: event.event_event_company_rule (noupdate switched)
+NEW ir.access: event.event_question_answer_registration_desk_rule
+NEW ir.access: event.event_question_user_rule
+ir.access: event.event_registration_company_rule (noupdate switched)
+NEW ir.access: event.event_registration_portal_rule
+NEW ir.access: event.event_registration_user_portal_rule
+ir.access: event.ir_rule_event_event_ticket_company (noupdate switched)
+DEL ir.model.access: event.access_event_event_ticket
+DEL ir.model.access: event.access_event_question_answer_user
+DEL ir.model.access: event.access_event_question_manager
+DEL ir.model.access: event.access_event_registration
+DEL ir.model.access: event.access_event_tag
+# NOTHING TO DO: ir.model.access/ir.rule were merged into ir.access, handled by base
+
+NEW ir.ui.view: event.digest_digest_view_form
+NEW ir.ui.view: event.portal_my_events
+# NOTHING TO DO
+
+NEW portal.entry: event.portal_events_client (noupdate)
+# NOTHING TO DO: new data
+
+# DONE: post-migration: load noupdate_changes.xml (badge template layout)

@@ -1,0 +1,15 @@
+---Models in module 'website_address_autocomplete'---
+---Fields in module 'website_address_autocomplete'---
+---XML records in module 'website_address_autocomplete'---
+NEW ir.ui.view: website_address_autocomplete.address_form_autocomplete_enabled
+# DONE: pre-migration: renamed from website_sale_address_with_autocomplete (same
+#   template, it now inherits portal.address_form_fields)
+
+NEW ir.ui.view: website_address_autocomplete.res_config_settings_view_form_inherit_autocomplete_googleplaces
+# NOTHING TO DO: same view, the xmlid follows the module rename done by base
+
+DEL ir.ui.view: website_sale_autocomplete.res_config_settings_view_form_inherit_autocomplete_googleplaces
+# NOTHING TO DO: same view, the xmlid follows the module rename done by base
+
+DEL ir.ui.view: website_sale_autocomplete.website_sale_address_with_autocomplete
+# DONE: pre-migration: renamed to address_form_autocomplete_enabled

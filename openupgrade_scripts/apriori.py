@@ -20,6 +20,7 @@ merged_modules = {
     "account_peppol_response": "account_peppol",
     "base_iban": "account",
     "base_vat": "base",
+    "delivery_mondialrelay": "stock_delivery",
     "delivery_stock_picking_batch": "stock_delivery",
     "hr_holidays_homeworking": "hr_holidays",
     "hr_homeworking": "hr",
@@ -54,6 +55,7 @@ merged_modules = {
     "website_sale_collect_wishlist": "website_sale_collect",
     "website_sale_comparison": "website_sale",
     "website_sale_comparison_wishlist": "website_sale",
+    "website_sale_mondialrelay": "website_sale",
     "website_sale_stock_wishlist": "website_sale_stock",
     "website_sale_wishlist": "website_sale",
     # odoo/enterprise

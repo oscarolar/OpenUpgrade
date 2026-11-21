@@ -1,0 +1,29 @@
+---Models in module 'marketing_card'---
+---Fields in module 'marketing_card'---
+marketing_card / card.campaign            / content_header (char)         : now translatable
+marketing_card / card.campaign            / content_section (char)        : now translatable
+marketing_card / card.campaign            / content_sub_header (char)     : now translatable
+marketing_card / card.campaign            / content_sub_section1 (char)   : now translatable
+marketing_card / card.campaign            / content_sub_section2 (char)   : now translatable
+marketing_card / card.campaign            / request_description (text)    : now translatable
+marketing_card / card.campaign            / request_title (char)          : now translatable
+marketing_card / card.campaign            / reward_message (html)         : now translatable
+# NOTHING TO DO: columns are converted to jsonb by the ORM
+
+marketing_card / card.campaign            / website_message_ids (one2many): DEL relation: mail.message
+# NOTHING TO DO
+
+marketing_card / card.card                / lang (selection)              : NEW required, selection_keys: function
+marketing_card / mailing.mailing          / card_lang (selection)         : NEW selection_keys: function, hasdefault: compute
+# DONE: pre-migration: columns added and filled with the language of the responsible of the campaign (fallback: en_US or the first active language), so existing cards satisfy the required field and stay matched with the mailings of their campaign
+
+---XML records in module 'marketing_card'---
+ir.access: marketing_card.marketing_card_campaign_manager_own_rule (noupdate switched)
+ir.access: marketing_card.marketing_card_campaign_user_owl_rule (noupdate switched)
+DEL ir.model.access: marketing_card.access_card_card_portal
+# NOTHING TO DO: ir.model.access and ir.rule are converted to ir.access by base
+
+NEW ir.model.constraint: marketing_card.constraint_card_card_campaign_record_lang_unique
+DEL ir.model.constraint: marketing_card.constraint_card_card_campaign_record_unique
+NEW ir.ui.view: marketing_card.card_campaign_linkedin_share_composer
+# NOTHING TO DO: the new unique constraint includes lang, which is the same for all existing cards of a campaign

@@ -1,0 +1,10 @@
+---Models in module 'event_crm'---
+---Fields in module 'event_crm'---
+---XML records in module 'event_crm'---
+DEL ir.actions.act_window: event_crm.crm_lead_action_from_event
+DEL ir.actions.act_window: event_crm.crm_lead_action_from_registration
+# NOTHING TO DO
+
+DEL ir.model.access: event_crm.access_event_crm_salesman
+DEL ir.model.access: event_crm.access_event_crm_user
+# NOTHING TO DO: ir.model.access/ir.rule were merged into ir.access, handled by base

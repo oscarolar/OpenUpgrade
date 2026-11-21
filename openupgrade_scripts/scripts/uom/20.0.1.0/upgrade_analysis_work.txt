@@ -1,0 +1,12 @@
+---Models in module 'uom'---
+---Fields in module 'uom'---
+---XML records in module 'uom'---
+NEW ir.actions.act_window: uom.uom_uom_action_list
+DEL ir.actions.act_window: uom.product_uom_form_action
+# DONE: pre-migration: product_uom_form_action renamed to uom_uom_action_list
+
+NEW ir.ui.view: uom.uom_uom_view_form
+NEW ir.ui.view: uom.uom_uom_view_list
+DEL ir.ui.view: uom.product_uom_form_view
+DEL ir.ui.view: uom.product_uom_tree_view
+# DONE: pre-migration: product_uom_form_view renamed to uom_uom_view_form, product_uom_tree_view renamed to uom_uom_view_list

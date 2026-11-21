@@ -1,0 +1,268 @@
+---Models in module 'sale'---
+---Fields in module 'sale'---
+sale         / account.analytic.line    / order_id (many2one)           : previously in module sale_timesheet
+# NOTHING TO DO: the column is kept, the field only changes its owner module
+
+sale         / account.analytic.line    / reinvoice_move_id (many2one)  : NEW relation: account.move
+# DONE: pre-migration: renamed from sale_timesheet's timesheet_invoice_id when that column exists
+
+sale         / account.move             / utm_reference (reference)     : NEW
+# NOTHING TO DO: new plain field from utm.mixin
+
+sale         / crm.team                 / invoiced_target (float)       : DEL
+sale         / product.category         / property_account_invoiced_not_delivered_id (many2one): NEW relation: account.account
+sale         / product.category         / property_account_invoices_to_issue_id (many2one): NEW relation: account.account
+# NOTHING TO DO
+
+sale         / product.product          / invoice_policy (selection)    : now required
+# DONE: pre-migration: NULL values set to 'order', the default of the v19 compute
+
+sale         / product.product          / previously_bought_by_customer (boolean): NEW stored: False
+# NOTHING TO DO
+
+sale         / product.product          / sale_delay (integer)          : previously in module stock
+# DONE: pre-migration: column renamed to its legacy name when it exists (stock installed)
+# DONE: post-migration: legacy values written in the company dependent jsonb format for every company
+
+sale         / product.template         / expense_policy (selection)    : DEL selection_keys: ['cost', 'no', 'sales_price']
+# DONE: pre-migration: renamed expense_policy to reinvoice_policy
+
+sale         / product.template         / invoice_policy (selection)    : now required
+# DONE: pre-migration: NULL values set to 'order', the default of the v19 compute
+
+sale         / product.template         / reinvoice_policy (selection)  : NEW selection_keys: ['cost', 'no', 'sales_price'], hasdefault: default
+# DONE: pre-migration: renamed expense_policy to reinvoice_policy
+
+sale         / product.template         / sale_delay (integer)          : previously in module stock
+# DONE: pre-migration: column renamed to its legacy name when it exists (stock installed)
+# DONE: post-migration: legacy values written in the company dependent jsonb format for every company
+
+sale         / res.company              / display_product_images_on_so (boolean): NEW
+# NOTHING TO DO
+
+sale         / res.company              / sale_automatic_invoice (boolean): NEW
+# DONE: post-migration: enabled on every company when the config parameter sale.automatic_invoice was set (the write also syncs sale.send_invoice_cron)
+
+sale         / res.company              / sale_invoice_policy (selection): NEW required, selection_keys: ['delivery', 'order'], hasdefault: default
+# DONE: post-migration: set from the ir.default of product.template#invoice_policy (former default_invoice_policy setting), company specific or global
+
+sale         / res.company              / show_sol_numbers (boolean)    : NEW
+sale         / res.partner              / incoterm_id (many2one)        : NEW relation: account.incoterms
+sale         / res.partner              / incoterm_location (char)      : NEW
+# NOTHING TO DO
+
+sale         / sale.order               / amount_unpaid (float)         : previously in module pos_sale
+# DONE: pre-migration: when pos_sale was not installed, column precreated and filled by SQL to avoid the ORM compute on every order
+
+sale         / sale.order               / analytic_account_id (many2one): NEW relation: account.analytic.account
+# NOTHING TO DO
+
+sale         / sale.order               / delivery_status (selection)   : previously in module sale_stock
+# DONE: pre-migration: when sale_stock was not installed, column precreated and filled by SQL following sale's compute
+
+sale         / sale.order               / document_tax_mode (selection) : NEW required, selection_keys: ['tax_excluded', 'tax_included'], hasdefault: compute
+# DONE: pre-migration: column precreated and filled from res.company#account_price_include
+
+sale         / sale.order               / incoterm (many2one)           : previously in module sale_stock
+sale         / sale.order               / incoterm_location (char)      : previously in module sale_stock
+# DONE: pre-migration: when sale_stock was not installed, columns precreated empty so existing orders do not get the company incoterm stamped by the new compute
+
+sale         / sale.order               / invoice_overages (boolean)    : NEW
+sale         / sale.order               / invoicing_closed (boolean)    : NEW
+sale         / sale.order               / is_unfulfilled (boolean)      : NEW stored: False
+# NOTHING TO DO
+
+sale         / sale.order               / note (html)                   : now a function
+# NOTHING TO DO: stored values are kept
+
+sale         / sale.order               / require_payment (boolean)     : DEL
+# DONE: post-migration: prepayment_percent set to 0 on orders that did not require payment, as v20 only looks at prepayment_percent
+
+sale         / sale.order               / show_update_fpos (boolean)    : DEL stored: False
+sale         / sale.order               / show_update_pricelist (boolean): DEL stored: False
+sale         / sale.order               / tax_totals (binary)           : type is now 'json' ('binary')
+# NOTHING TO DO
+
+sale         / sale.order               / utm_reference (reference)     : NEW
+# NOTHING TO DO: new plain field from utm.mixin
+
+sale         / sale.order               / website_message_ids (one2many): DEL relation: mail.message
+sale         / sale.order.line          / accrual_move_ids (many2many)  : NEW relation: account.move
+# NOTHING TO DO
+
+sale         / sale.order.line          / customer_lead (float)         : type is now 'integer' ('float')
+# DONE: pre-migration: column converted with float_to_integer
+
+sale         / sale.order.line          / deferred_revenue (boolean)    : NEW stored: False
+# NOTHING TO DO
+
+sale         / sale.order.line          / display_qty_widget (boolean)  : previously in module sale_stock
+# NOTHING TO DO: not stored
+
+sale         / sale.order.line          / invoice_to_be_issued (boolean): NEW stored: False
+# NOTHING TO DO
+
+sale         / sale.order.line          / is_storable (boolean)         : previously in module sale_stock
+sale         / sale.order.line          / qty_available_today (float)   : previously in module sale_stock
+# NOTHING TO DO: not stored
+
+sale         / sale.order.line          / qty_delivered_percent (float) : NEW hasdefault: compute, stored: False
+# NOTHING TO DO
+
+sale         / sale.order.line          / scheduled_date (datetime)     : previously in module sale_stock
+# NOTHING TO DO: not stored
+
+sale         / sale.order.line          / section_qty (float)           : NEW hasdefault: compute
+sale         / sale.order.line          / section_uom_id (many2one)     : NEW relation: uom.uom, hasdefault: compute
+# DONE: pre-migration: columns precreated and filled by SQL (1 unit on sections and subsections)
+
+sale         / sale.order.line          / virtual_available_at_date (float): previously in module sale_stock
+# NOTHING TO DO: not stored
+
+sale         / utm.campaign             / company_id (many2one)         : DEL relation: res.company
+sale         / utm.campaign             / currency_id (many2one)        : not related anymore
+sale         / utm.campaign             / currency_id (many2one)        : now a function
+sale         / utm.campaign             / invoiced_amount (integer)     : type is now 'float' ('integer')
+# NOTHING TO DO: not stored anymore
+
+sale_timesheet / account.analytic.line    / order_id (many2one)           : not related anymore
+# NOTHING TO DO: stored values are kept, init_storage skips the compute for new columns
+
+stock        / product.template         / sale_delay (integer)          : now company_dependent
+# DONE: pre-migration: column renamed to its legacy name when it exists (stock installed)
+# DONE: post-migration: legacy values written in the company dependent jsonb format for every company
+
+---XML records in module 'sale'---
+ir.access: sale.account_invoice_report_rule_see_all (noupdate switched)
+ir.access: sale.account_invoice_report_rule_see_personal (noupdate switched)
+ir.access: sale.account_invoice_rule_see_all (noupdate switched)
+ir.access: sale.account_invoice_rule_see_personal (noupdate switched)
+ir.access: sale.account_invoice_send_batch_rule_see_all (noupdate switched)
+ir.access: sale.account_invoice_send_batch_rule_see_personal (noupdate switched)
+ir.access: sale.account_invoice_send_single_rule_see_all (noupdate switched)
+ir.access: sale.account_invoice_send_single_rule_see_personal (noupdate switched)
+NEW ir.access: sale.base_user_account_move_line_rule
+ir.access: sale.mail_plan_rule_group_sale_manager (noupdate switched)
+ir.access: sale.mail_plan_template_rule_group_sale_manager (noupdate switched)
+ir.access: sale.payment_token_salesman_rule (noupdate switched)
+NEW ir.access: sale.res_partner_rule_edit_all
+NEW ir.access: sale.res_partner_rule_user
+ir.access: sale.sale_advance_payment_inv_rule (noupdate switched)
+ir.access: sale.sale_mass_cancel_orders_rule (noupdate switched)
+NEW ir.access: sale.sale_order_account_readonly_rule
+ir.access: sale.sale_order_comp_rule (noupdate switched)
+NEW ir.access: sale.sale_order_invoicing_rule
+NEW ir.access: sale.sale_order_line_account_readonly_rule
+ir.access: sale.sale_order_line_comp_rule (noupdate switched)
+NEW ir.access: sale.sale_order_line_invoicing_rule
+ir.access: sale.sale_order_line_personal_rule (noupdate switched)
+ir.access: sale.sale_order_line_rule_portal (noupdate switched)
+ir.access: sale.sale_order_line_see_all (noupdate switched)
+ir.access: sale.sale_order_personal_rule (noupdate switched)
+ir.access: sale.sale_order_report_comp_rule (noupdate switched)
+ir.access: sale.sale_order_report_personal_rule (noupdate switched)
+ir.access: sale.sale_order_report_see_all (noupdate switched)
+ir.access: sale.sale_order_rule_portal (noupdate switched)
+ir.access: sale.sale_order_see_all (noupdate switched)
+NEW ir.access: sale.sale_order_see_all_1
+# NOTHING TO DO: handled by base (ir.model.access and ir.rule are merged into ir.access)
+
+NEW ir.actions.act_window: sale.action_service_material
+DEL ir.actions.act_window: sale.action_accrued_revenue_entry
+# NOTHING TO DO
+
+DEL ir.actions.act_window: sale.action_accrued_revenue_entry_sale_order_line
+# DONE: pre-migration: the act_window is deleted so the server action that reuses its xmlid does not leave it orphaned
+
+DEL ir.actions.act_window: sale.action_orders_to_invoice
+DEL ir.actions.act_window: sale.action_orders_upselling
+DEL ir.actions.act_window: sale.mail_activity_plan_action_sale_order
+# NOTHING TO DO
+
+NEW ir.actions.server: sale.action_accrued_revenue_entry_sale_order_line
+# DONE: pre-migration: the act_window is deleted so the server action that reuses its xmlid does not leave it orphaned
+
+NEW ir.actions.server: sale.model_sale_order_action_close_invoicing
+NEW ir.actions.server: sale.model_sale_order_action_deliver_sold_quantity
+NEW ir.actions.server: sale.model_sale_order_action_quotation_confirm
+# NOTHING TO DO
+
+DEL ir.model.access: sale.access_account_move_line_salesman
+DEL ir.model.access: sale.access_account_move_salesman
+DEL ir.model.access: sale.access_account_move_send_batch_wizard_salesman
+DEL ir.model.access: sale.access_account_move_send_wizard_salesman
+DEL ir.model.access: sale.access_res_partner_sale_user
+DEL ir.model.access: sale.access_sale_order
+DEL ir.model.access: sale.access_sale_order_accountant
+DEL ir.model.access: sale.access_sale_order_invoicing_payments
+DEL ir.model.access: sale.access_sale_order_line
+DEL ir.model.access: sale.access_sale_order_line_accountant
+DEL ir.model.access: sale.access_sale_order_line_invoicing_payments
+DEL ir.model.access: sale.access_sale_order_line_portal
+DEL ir.model.access: sale.access_sale_order_line_readonly
+DEL ir.model.access: sale.access_sale_order_manager
+DEL ir.model.access: sale.access_sale_order_portal
+DEL ir.model.access: sale.access_sale_order_readonly
+DEL ir.model.access: sale.access_sale_report_salesman
+# NOTHING TO DO: handled by base (ir.model.access and ir.rule are merged into ir.access)
+
+ir.model.constraint: sale.constraint_sale_order_line_accountable_required_fields (changed definition: is now 'CHECK(display_type IS NOT NULL OR is_downpayment OR product_uom_id IS NOT NULL)' ('CHECK(display_type IS NOT NULL OR is_downpayment OR (product_id IS NOT NULL AND product_uom_id IS NOT NULL))'))
+# NOTHING TO DO: the new definition is less strict
+
+NEW ir.model.constraint: sale.constraint_sale_order_line_section_fields_null
+# NOTHING TO DO
+
+DEL ir.rule: sale.account_invoice_line_rule_see_all (noupdate)
+DEL ir.rule: sale.account_invoice_line_rule_see_personal (noupdate)
+DEL ir.rule: sale.payment_transaction_salesman_rule (noupdate)
+# NOTHING TO DO: handled by base (ir.model.access and ir.rule are merged into ir.access)
+
+NEW ir.ui.menu: sale.menu_sale_marketplaces
+NEW ir.ui.menu: sale.menu_service_material
+DEL ir.ui.menu: sale.menu_product_categories
+DEL ir.ui.menu: sale.menu_product_combos
+DEL ir.ui.menu: sale.menu_product_tags
+DEL ir.ui.menu: sale.menu_product_uom_form_action
+DEL ir.ui.menu: sale.menu_products
+DEL ir.ui.menu: sale.menu_sale_invoicing
+DEL ir.ui.menu: sale.menu_sale_order_invoice
+DEL ir.ui.menu: sale.menu_sale_order_upselling
+DEL ir.ui.menu: sale.menu_tag_config
+DEL ir.ui.menu: sale.payment_menu
+DEL ir.ui.menu: sale.payment_method_menu
+DEL ir.ui.menu: sale.payment_token_menu
+DEL ir.ui.menu: sale.payment_transaction_menu
+DEL ir.ui.menu: sale.prod_config_main
+DEL ir.ui.menu: sale.report_sales_team
+DEL ir.ui.menu: sale.sale_menu_config_activities
+DEL ir.ui.menu: sale.sale_menu_config_activity_plan
+DEL ir.ui.menu: sale.sale_menu_config_activity_type
+NEW ir.ui.view: sale.payment_form_hide_tokens_heading
+NEW ir.ui.view: sale.product_product_sale_tree_view
+NEW ir.ui.view: sale.product_template_form_view_sale
+NEW ir.ui.view: sale.product_template_sale_tree_view
+NEW ir.ui.view: sale.sale_order_kanban_with_dashboard
+NEW ir.ui.view: sale.sale_order_list_with_dashboard
+NEW ir.ui.view: sale.view_analytic_lines_service_list
+NEW ir.ui.view: sale.view_analytic_lines_service_search
+NEW ir.ui.view: sale.view_category_property_form
+# NOTHING TO DO
+
+NEW ir.ui.view: sale.view_order_form_mandatory_product
+# NOTHING TO DO: v20 makes the product optional on order lines unless the setting sale.mandatory_product is enabled; the v20 default is kept
+
+NEW ir.ui.view: sale.view_partner_tree_inherit
+DEL ir.ui.view: sale.crm_team_salesteams_view_form
+DEL ir.ui.view: sale.portal_my_home_sale
+DEL ir.ui.view: sale.product_pricelist_item_form
+NEW portal.entry: sale.portal_quotations_to_review (noupdate)
+NEW portal.entry: sale.portal_your_orders (noupdate)
+NEW res.groups: sale.group_services_and_material
+# NOTHING TO DO
+
+---noupdate_changes.xml in module 'sale'---
+mail.template: sale.email_template_edi_sale (body_html, subject, email_layout_xmlid)
+mail.template: sale.email_template_proforma (body_html, description, name, subject, email_layout_xmlid)
+mail.template: sale.mail_template_sale_confirmation (body_html, subject, email_layout_xmlid)
+mail.template: sale.mail_template_sale_payment_executed (email_layout_xmlid)
+# DONE: post-migration: loaded noupdate_changes.xml and deleted the translations of the changed fields so they are taken again from the new source terms

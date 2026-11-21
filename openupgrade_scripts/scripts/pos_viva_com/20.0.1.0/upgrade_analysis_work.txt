@@ -1,0 +1,6 @@
+---Models in module 'pos_viva_com'---
+---Fields in module 'pos_viva_com'---
+pos_viva_com / pos.payment.method       / viva_com_latest_response (json): DEL
+# NOTHING TO DO: transient state of the terminal
+
+---XML records in module 'pos_viva_com'---

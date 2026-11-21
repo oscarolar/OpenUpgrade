@@ -1,0 +1,13 @@
+---Models in module 'mass_mailing_sms'---
+---Fields in module 'mass_mailing_sms'---
+mass_mailing_sms / mailing.trace            / failure_type (False)          : selection_keys added: [sms_database_non_active] (most likely nothing to do)
+# NOTHING TO DO
+
+---XML records in module 'mass_mailing_sms'---
+NEW ir.ui.view: mass_mailing_sms.link_tracker_click_view_search_sms
+NEW ir.ui.view: mass_mailing_sms.mailing_trace_view_graph
+DEL ir.ui.view: mass_mailing_sms.mailing_list_view_form
+# NOTHING TO DO
+
+NEW utm.source: mass_mailing_sms.utm_source_mass_sms (noupdate)
+# NOTHING TO DO: new record, existing mailings keep their source

@@ -1,0 +1,26 @@
+---Models in module 'hr_recruitment_skills'---
+---Fields in module 'hr_recruitment_skills'---
+hr_recruitment_skills / hr.applicant             / degree_score (integer)        : NEW isfunction: function, stored
+hr_recruitment_skills / hr.applicant             / matching_score (integer)      : is now stored
+hr_recruitment_skills / hr.applicant             / skills_score (integer)        : NEW isfunction: function, stored
+# NOTHING TO DO: the three scores share a compute, the ORM fills them when the
+# columns are created
+
+hr_recruitment_skills / hr.applicant.skill       / certificate_file (binary)     : NEW attachment: True
+# NOTHING TO DO: new functionality, stored as attachment
+
+---XML records in module 'hr_recruitment_skills'---
+ir.access: hr_recruitment_skills.hr_applicant_skill_interviewer_rule (noupdate switched)
+ir.access: hr_recruitment_skills.hr_applicant_skill_officer_rule (noupdate switched)
+# NOTHING TO DO: ir.model.access and ir.rule are replaced by ir.access, module
+# records are recreated by the ORM and manual ones are converted in base
+
+DEL ir.actions.act_window: hr_recruitment_skills.action_find_matching_job
+DEL ir.actions.server: hr_recruitment_skills.action_applicant_search_applicant
+# NOTHING TO DO: removed by the ORM
+
+DEL ir.model.access: hr_recruitment_skills.access_hr_applicant_skill_interviewer
+# NOTHING TO DO: ir.model.access is replaced by ir.access, handled in base
+
+NEW ir.ui.view: hr_recruitment_skills.view_hr_job_kanban
+# NOTHING TO DO
