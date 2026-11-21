@@ -1,0 +1,46 @@
+---Models in module 'website_crm_partner_assign'---
+---Fields in module 'website_crm_partner_assign'---
+website_crm_partner_assign / res.partner.grade        / can_publish (boolean)         : module is now 'website_partnership' ('website_crm_partner_assign')
+website_crm_partner_assign / res.partner.grade        / is_published (boolean)        : module is now 'website_partnership' ('website_crm_partner_assign')
+website_crm_partner_assign / res.partner.grade        / website_absolute_url (char)   : module is now 'website_partnership' ('website_crm_partner_assign')
+website_crm_partner_assign / res.partner.grade        / website_published (boolean)   : module is now 'website_partnership' ('website_crm_partner_assign')
+website_crm_partner_assign / res.partner.grade        / website_url (char)            : module is now 'website_partnership' ('website_crm_partner_assign')
+# NOTHING TO DO: website.published.mixin is now inherited by res.partner.grade in the new module website_partnership, a dependency of this one that is installed during the migration. The is_published column is kept as is and the fields are reflected again by website_partnership, the other fields are not stored
+
+---XML records in module 'website_crm_partner_assign'---
+ir.access: website_crm_partner_assign.assigned_lead_portal_rule_1 (noupdate switched)
+ir.access: website_crm_partner_assign.ir_rule_crm_partner_report_assign_all (noupdate switched)
+ir.access: website_crm_partner_assign.ir_rule_crm_partner_report_assign_salesman (noupdate switched)
+NEW ir.actions.act_window: website_crm_partner_assign.action_partner_pages_list
+DEL ir.model.access: website_crm_partner_assign.access_crm_partner_report
+DEL ir.model.access: website_crm_partner_assign.access_res_partner_grade_portal
+DEL ir.model.access: website_crm_partner_assign.access_res_partner_grade_public
+DEL ir.model.access: website_crm_partner_assign.partner_access_crm_lead
+# NOTHING TO DO: ir.model.access and ir.rule are converted to ir.access by base
+
+NEW ir.model.constraint: website_crm_partner_assign.constraint_res_partner_country_id_grade_id_published_idx
+# NOTHING TO DO: new index, created by the ORM
+
+DEL ir.rule: website_crm_partner_assign.res_partner_grade_rule_portal_public [renamed to website_partnership module] (noupdate)
+# NOTHING TO DO: base moves the xmlids of ir.rule records away and website_partnership creates the ir.access record
+
+NEW ir.ui.menu: website_crm_partner_assign.menu_partners_pages
+NEW ir.ui.view: website_crm_partner_assign.categories_setting
+NEW ir.ui.view: website_crm_partner_assign.countries_setting
+NEW ir.ui.view: website_crm_partner_assign.index_content
+NEW ir.ui.view: website_crm_partner_assign.industries_setting
+NEW ir.ui.view: website_crm_partner_assign.linked_partner_page_setting
+NEW ir.ui.view: website_crm_partner_assign.partner_detail
+NEW ir.ui.view: website_crm_partner_assign.partner_pages_kanban_view
+NEW ir.ui.view: website_crm_partner_assign.partner_pages_tree_view
+NEW ir.ui.view: website_crm_partner_assign.search_setting
+DEL ir.ui.view: website_crm_partner_assign.grade_in_detail
+DEL ir.ui.view: website_crm_partner_assign.index_filter_by_industry
+DEL ir.ui.view: website_crm_partner_assign.layout
+DEL ir.ui.view: website_crm_partner_assign.o_wcrm_partner_address
+DEL ir.ui.view: website_crm_partner_assign.portal_my_home_lead
+# NOTHING TO DO: the templates of the partners page are now provided by website_partnership and extended here
+
+NEW portal.entry: website_crm_partner_assign.portal_entry_leads (noupdate)
+NEW portal.entry: website_crm_partner_assign.portal_entry_opportunities (noupdate)
+# NOTHING TO DO: new records, they replace the view portal_my_home_lead
