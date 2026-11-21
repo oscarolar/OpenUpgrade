@@ -69,7 +69,7 @@ def admin_channel_member_xmlid(env):
 def mail_message_message_type_tracking(env):
     """
     Set message_type=tracking for mail.message records with mail.tracking.value records
-    Install mail_tracking if the query hit any records
+    If the query hit any records, move the model to mail_tracking and install it
     """
     count = openupgrade.logged_query(
         env.cr,
@@ -86,8 +86,11 @@ def mail_message_message_type_tracking(env):
         """,
     )
     if count:
+        openupgrade.update_module_moved_models(
+            env.cr, "mail.tracking.value", "mail", "mail_tracking"
+        )
         env["ir.module.module"].search(
-            [("name", "=", "mail_tracking")]
+            [("name", "=", "mail_tracking"), ("state", "=", "uninstalled")]
         ).button_install()
 
 

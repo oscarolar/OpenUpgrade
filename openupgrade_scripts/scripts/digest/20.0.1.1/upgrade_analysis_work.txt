@@ -1,0 +1,14 @@
+---Models in module 'digest'---
+new model digest.test [transient]
+# NOTHING TO DO: new model
+
+---Fields in module 'digest'---
+digest       / res.users                / digest_ids (many2many)        : NEW relation: digest.digest
+# NOTHING TO DO: inverse of digest.digest#user_ids, uses the existing relation table digest_digest_res_users_rel
+
+---XML records in module 'digest'---
+NEW ir.access: digest.access_digest_test
+# NOTHING TO DO: standard ir.access records are created from the module data, custom ir.model.access and ir.rule records are converted in base
+
+NEW ir.ui.view: digest.digest_test_view_form
+# NOTHING TO DO: handled by the ORM

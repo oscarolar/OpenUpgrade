@@ -51,6 +51,7 @@ merged_modules = {
     "pos_self_order_stripe": "pos_stripe",
     "pos_self_order_viva_com": "pos_viva_com",
     "stock_picking_batch": "stock",
+    "transifex": "base",
     "website_sale_collect_wishlist": "website_sale_collect",
     "website_sale_comparison": "website_sale",
     "website_sale_comparison_wishlist": "website_sale",

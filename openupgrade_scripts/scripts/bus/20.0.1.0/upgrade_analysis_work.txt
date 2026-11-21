@@ -2,5 +2,4 @@
 ---Fields in module 'bus'---
 ---XML records in module 'bus'---
 DEL ir.model.access: bus.access_bus_bus
-
-# NOTHING TO DO
+# NOTHING TO DO: standard ir.access records are created from the module data, custom ir.model.access and ir.rule records are converted in base

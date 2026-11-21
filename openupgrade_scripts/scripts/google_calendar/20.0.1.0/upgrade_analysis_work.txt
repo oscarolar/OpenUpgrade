@@ -1,0 +1,38 @@
+---Models in module 'google_calendar'---
+obsolete model google.calendar.sync (renamed to google.event.sync) [abstract]
+new model google.event.sync (renamed from google.calendar.sync) [abstract]
+new model google.sync [abstract]
+# NOTHING TO DO: abstract model
+
+---Fields in module 'google_calendar'---
+google_calendar / calendar.calendar        / google_id (char)              : NEW
+# NOTHING TO DO: filled by the first calendar list synchronization (the primary calendar is matched by Google's primary flag)
+
+google_calendar / calendar.calendar        / is_import_pending (boolean)   : NEW
+google_calendar / calendar.calendar        / need_sync (boolean)           : NEW hasdefault: default
+# NOTHING TO DO: new feature
+
+google_calendar / calendar.event           / last_google_calendar_sync_path (char): NEW
+google_calendar / calendar.recurrence      / last_google_calendar_sync_path (char): NEW
+# NOTHING TO DO: filled when the record is synchronized the next time
+
+google_calendar / calendar.user            / access_role (False)           : NEW selection_keys: ['freeBusyReader', 'owner', 'reader', 'writer'], mode: modify
+# NOTHING TO DO: new selection values
+
+google_calendar / calendar.user            / google_sync_enabled (boolean) : NEW
+# DONE: post-migration: enabled on the primary calendar of users with an active Google synchronization
+
+google_calendar / calendar.user            / google_sync_token (char)      : NEW
+# DONE: post-migration: filled from res.users.settings#google_calendar_sync_token, which was the events sync token of the primary calendar in v19 and is the calendar list sync token in v20 (reset there)
+
+google_calendar / res.users.settings       / google_account_email (char)   : NEW
+# NOTHING TO DO: filled when the Google tokens are refreshed
+
+google_calendar / res.users.settings       / google_calendar_cal_id (char) : DEL
+# NOTHING TO DO: never written with a value in v19
+
+---XML records in module 'google_calendar'---
+NEW ir.ui.view: google_calendar.calendar_calendar_view_form_inherit_google_calendar
+NEW ir.ui.view: google_calendar.calendar_calendar_view_list_inherit_google_calendar
+NEW ir.ui.view: google_calendar.calendar_user_view_form_inherit_google_calendar
+# NOTHING TO DO: handled by the ORM

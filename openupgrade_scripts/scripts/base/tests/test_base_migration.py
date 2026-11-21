@@ -59,10 +59,52 @@ class TestBaseMigration(TransactionCase):
             self.env.ref("base.user_admin").group_ids,
         )
 
-    def test_bank_account_has_clearing_label(self):
+    def test_ir_access_customized_rules(self):
         """
-        Test that bank accounts have clearing_label_id assigned
+        Test that changes to ir.rule records provided by modules are carried over
+        """
+        IrAccess = self.env["ir.access"].with_context(active_test=False)
+        self.assertFalse(self.env.ref("base.res_partner_bank_rule").active)
+        custom_access = IrAccess.search(
+            [
+                ("model_id.model", "=", "res.partner.bank"),
+                ("domain", "=", "[('company_id', '=', company_id)]"),
+            ]
+        )
+        self.assertTrue(custom_access.active)
+        self.assertFalse(custom_access.group_id)
+        self.assertEqual(custom_access.operation, "crud")
+        self.assertFalse(custom_access.is_standard)
+        self.assertFalse(self.env.ref("base.res_currency_rate_rule").active)
+        self.assertTrue(self.env.ref("base.res_users_rule").active)
+        review_access = IrAccess.search(
+            [("name", "=", "Customized in v19 (base.res_users_rule)")]
+        )
+        self.assertFalse(review_access.active)
+        self.assertEqual(review_access.group_id, self.env.ref("base.group_system"))
+        self.assertEqual(review_access.model_id.model, "res.users")
+
+    def test_bank_account(self):
+        """
+        Test that bank accounts have clearing_label_id assigned and the data of their
+        bank
         """
         self.assertFalse(
             self.env["res.partner.bank"].search([("clearing_label_id", "=", False)])
         )
+        account = self.env["res.partner.bank"].search(
+            [("bank_name", "=", "OpenUpgrade v20 bank")]
+        )
+        self.assertEqual(account.account_number, "12345")
+        self.assertEqual(account.bank_bic, "OUPGMXMM")
+        self.assertEqual(account.city, "Monterrey")
+        self.assertEqual(account.country_id, self.env.ref("base.mx"))
+        self.assertEqual(
+            account.clearing_label_id, self.env.ref("base.clearing_label_mx")
+        )
+
+    def test_country_zip_applicability(self):
+        """
+        Test that countries where the zip was not required keep it optional
+        """
+        self.assertEqual(self.env.ref("base.fr").zip_applicability, "optional")

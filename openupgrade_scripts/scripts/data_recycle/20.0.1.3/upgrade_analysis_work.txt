@@ -1,0 +1,7 @@
+---Models in module 'data_recycle'---
+---Fields in module 'data_recycle'---
+data_recycle / data_recycle.record      / res_id (integer)              : relation is now 'res_model_name' ('False') [nothing to do]
+data_recycle / data_recycle.record      / res_id (integer)              : type is now 'many2one_reference' ('integer')
+# NOTHING TO DO: many2one_reference is stored in the same integer column
+
+---XML records in module 'data_recycle'---
