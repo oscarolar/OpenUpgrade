@@ -75,8 +75,29 @@ def maintenance_request_user_ids(env):
     )
 
 
+def maintenance_equipment_assign_to(env):
+    """
+    maintenance.equipment#equipment_assign_to moves from hr_maintenance to
+    maintenance. Without hr_maintenance the column does not exist, and with fleet
+    the auto installed fleet_maintenance would create it with 'vehicle' on every
+    equipment: create it with 'other', the value the existing equipment had
+    """
+    if (
+        openupgrade.is_module_installed(env.cr, "fleet")
+        and not openupgrade.is_module_installed(env.cr, "hr_maintenance")
+        and not openupgrade.column_exists(
+            env.cr, "maintenance_equipment", "equipment_assign_to"
+        )
+    ):
+        openupgrade.add_columns(
+            env,
+            [("maintenance.equipment", "equipment_assign_to", "selection", "other")],
+        )
+
+
 @openupgrade.migrate()
 def migrate(env, version):
     openupgrade.add_columns(env, _added_columns)
+    maintenance_equipment_assign_to(env)
     maintenance_request_state(env)
     maintenance_request_user_ids(env)

@@ -3,12 +3,18 @@
 hr_maintenance / maintenance.equipment    / equipment_assign_to (selection): selection_keys removed: [department, employee]
 maintenance  / maintenance.equipment    / equipment_assign_to (selection): previously in module hr_maintenance
 # NOTHING TO DO: the field keeps its column, the keys of hr_maintenance are added back by that module
+# DONE: pre-migration: with fleet and without hr_maintenance the column is created
+# with 'other' on the existing equipment, otherwise fleet_maintenance (auto installed)
+# would create it with its default 'vehicle'
 
 maintenance  / maintenance.equipment    / equipment_req_properties_definition (properties_definition): NEW
 # NOTHING TO DO: new functionality
 
 maintenance  / maintenance.request      / archive (boolean)             : DEL
-# DONE: pre-migration: archived requests get state 'cancelled'
+# DONE: pre-migration: archived requests get state 'cancelled', also the ones in a
+# done stage, so that they stay hidden. This changes the statistics of their
+# equipment: the archived corrective requests in a done stage counted in 19 for
+# MTTR, MTBF and latest_failure_date, and in 20 cancelled requests do not
 
 maintenance  / maintenance.request      / email_cc (char)               : DEL
 # NOTHING TO DO: mail.thread.cc is obsolete, the column is kept without replacement
@@ -19,7 +25,11 @@ maintenance  / maintenance.request      / equipment_req_properties (properties):
 maintenance  / maintenance.request      / instruction_google_slide (char): DEL
 maintenance  / maintenance.request      / instruction_pdf (binary)      : DEL attachment: True
 maintenance  / maintenance.request      / instruction_type (selection)  : DEL selection_keys: ['google_slide', 'pdf', 'text']
-# DONE: post-migration: only instruction_text is left, the Google Slide link is appended to it and the PDF becomes a regular attachment of the request
+# DONE: post-migration: only instruction_text is left, the Google Slide link is
+# appended to it (as a link only when it is an http(s) URL, escaped as text
+# otherwise) and the PDF becomes a regular attachment of the request. The
+# instruction_text of the requests with instruction type pdf or google_slide was
+# hidden in 19 and is shown again in 20
 
 maintenance  / maintenance.request      / kanban_state (selection)      : DEL required, selection_keys: ['blocked', 'done', 'normal']
 # DONE: pre-migration: 'blocked' becomes state 'changes_requested' and 'done' becomes 'approved'

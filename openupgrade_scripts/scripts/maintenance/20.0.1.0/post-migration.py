@@ -1,40 +1,38 @@
 # Copyright 2026 Vauxoo
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 
-from markupsafe import Markup
 from openupgradelib import openupgrade
 
 
 def maintenance_request_instruction_google_slide(env):
     """
     Append the link of maintenance.request#instruction_google_slide to
-    maintenance.request#instruction_text, the only kind of instruction left
+    maintenance.request#instruction_text, the only kind of instruction left. Only
+    http(s) URLs become a link, anything else is appended as text
     """
-    env.cr.execute(
-        """
-        SELECT
-            id, instruction_google_slide
-        FROM
+    escaped_url = """
+        replace(replace(replace(replace(
+            btrim(instruction_google_slide),
+            '&', '&amp;'), '<', '&lt;'), '>', '&gt;'), '"', '&quot;')
+    """
+    openupgrade.logged_query(
+        env.cr,
+        f"""
+        UPDATE
             maintenance_request
+        SET
+            instruction_text=COALESCE(instruction_text, '') || CASE
+                WHEN btrim(instruction_google_slide) ~* '^https?://'
+                    THEN '<p><a href="' || {escaped_url} || '">'
+                        || {escaped_url} || '</a></p>'
+                ELSE '<p>' || {escaped_url} || '</p>'
+            END
         WHERE
             instruction_type='google_slide'
         AND
-            COALESCE(instruction_google_slide, '')<>''
-        """
+            btrim(COALESCE(instruction_google_slide, ''))<>''
+        """,
     )
-    for request_id, url in env.cr.fetchall():
-        openupgrade.logged_query(
-            env.cr,
-            """
-            UPDATE
-                maintenance_request
-            SET
-                instruction_text=COALESCE(instruction_text, '') || %s
-            WHERE
-                id=%s
-            """,
-            (Markup('<p><a href="%s">%s</a></p>') % (url, url), request_id),
-        )
 
 
 def maintenance_request_instruction_pdf(env):
