@@ -8,7 +8,7 @@ def product_stock_notification(env):
     """
     Create product.stock.notification records from
     product.product#stock_notification_partner_ids of website_sale_stock, for the
-    website of the product or the default one
+    website of the product, of the partner or the default one
     """
     if not openupgrade.table_exists(env.cr, "stock_notification_product_partner_rel"):
         return
@@ -22,7 +22,9 @@ def product_stock_notification(env):
         SELECT
             rel.product_product_id,
             rel.res_partner_id,
-            COALESCE(product_template.website_id, default_website.id),
+            COALESCE(
+                product_template.website_id, res_partner.website_id, default_website.id
+            ),
             1, NOW() AT TIME ZONE 'UTC', 1, NOW() AT TIME ZONE 'UTC'
         FROM
             stock_notification_product_partner_rel rel
@@ -31,11 +33,15 @@ def product_stock_notification(env):
         JOIN
             product_template
             ON product_product.product_tmpl_id=product_template.id
+        JOIN
+            res_partner ON rel.res_partner_id=res_partner.id
         LEFT JOIN
             (SELECT id FROM website ORDER BY sequence, id LIMIT 1) default_website
             ON True
         WHERE
-            COALESCE(product_template.website_id, default_website.id) IS NOT NULL
+            COALESCE(
+                product_template.website_id, res_partner.website_id, default_website.id
+            ) IS NOT NULL
         ON CONFLICT DO NOTHING
         """,
     )
@@ -43,8 +49,9 @@ def product_stock_notification(env):
 
 def website_category_options(env):
     """
-    The display options of product.public.category moved to website: enable or
-    disable them when all the categories of the website agree
+    The display options of product.public.category moved to website: the title and
+    the alignment are enabled when all the categories of the website had them, the
+    description when any of them had it (it was shown by default)
     """
     openupgrade.logged_query(
         env.cr,

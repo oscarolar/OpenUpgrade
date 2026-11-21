@@ -138,7 +138,7 @@ def product_document_attached_on_sale(env):
         WHERE
             shown_on_product_page
         AND
-            attached_on_sale IN ('hidden', 'quotation', 'sale_order')
+            attached_on_sale IN ('hidden', 'inside', 'quotation', 'sale_order')
         """,
     )
 

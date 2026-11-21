@@ -11,7 +11,7 @@ new model withdrawal.request
 
 ---Fields in module 'website_sale'---
 sale_pdf_quote_builder / product.document         / attached_on_sale (False)      : selection_keys added: [shown_on_product_page], removed: [inside]
-# DONE: pre-migration: documents with shown_on_product_page get attached_on_sale='shown_on_product_page' (in 20 those are also sent from the quotation on); the removed 'inside' key belongs to sale_pdf_quote_builder and is left untouched
+# DONE: pre-migration: documents with shown_on_product_page get attached_on_sale='shown_on_product_page' (in 20 those are also sent from the quotation on), including the ones with the removed key 'inside' of sale_pdf_quote_builder so they stay on the product page
 
 website_sale / account.move             / website_id (many2one)         : not a function anymore
 # NOTHING TO DO: the column is kept, new invoices get it from the order
@@ -31,7 +31,7 @@ website_sale / product.attribute        / external_identifier (char)    : NEW
 
 website_sale / product.document         / attached_on_sale (False)      : previously in module sale_pdf_quote_builder
 website_sale / product.document         / shown_on_product_page (boolean): DEL
-# DONE: pre-migration: documents with shown_on_product_page get attached_on_sale='shown_on_product_page' (in 20 those are also sent from the quotation on); the removed 'inside' key belongs to sale_pdf_quote_builder and is left untouched
+# DONE: pre-migration: documents with shown_on_product_page get attached_on_sale='shown_on_product_page' (in 20 those are also sent from the quotation on), including the ones with the removed key 'inside' of sale_pdf_quote_builder so they stay on the product page
 
 website_sale / product.feed             / website_message_ids (one2many): DEL relation: mail.message
 # NOTHING TO DO
@@ -70,7 +70,7 @@ website_sale / product.product          / variant_image_ids (many2many) : NEW re
 # DONE: pre-migration: variant images are linked to the template and to the attribute values of their variant, has_attribute_value and product_product_image_rel are filled by SQL to avoid the computation
 
 website_sale / product.public.category  / align_category_content (boolean): DEL
-# DONE: post-migration: the options are per website now, set from the categories of each website when all of them agree
+# DONE: post-migration: the options are per website now, set from the categories of each website: title and alignment when all of them had it, description when any of them had it
 
 website_sale / product.public.category  / not_in_shop (boolean)         : NEW hasdefault: compute
 # NOTHING TO DO: new functionality, the compute only propagates the value of the parent
@@ -81,7 +81,7 @@ website_sale / product.public.category  / published_date (datetime)     : NEW
 
 website_sale / product.public.category  / show_category_description (boolean): DEL
 website_sale / product.public.category  / show_category_title (boolean) : DEL
-# DONE: post-migration: the options are per website now, set from the categories of each website when all of them agree
+# DONE: post-migration: the options are per website now, set from the categories of each website: title and alignment when all of them had it, description when any of them had it
 
 website_sale / product.ribbon           / assign (selection)            : selection_keys added: [out_of_stock] (most likely nothing to do)
 # NOTHING TO DO: the key moved here from website_sale_stock
@@ -143,7 +143,7 @@ website_sale / website                  / add_to_cart_action (selection): DEL se
 # NOTHING TO DO: the option to go to the cart after adding a product was removed
 
 website_sale / website                  / align_category_content (boolean): NEW hasdefault: default
-# DONE: post-migration: the options are per website now, set from the categories of each website when all of them agree
+# DONE: post-migration: the options are per website now, set from the categories of each website: title and alignment when all of them had it, description when any of them had it
 
 website_sale / website                  / contact_us_button_url (char)  : DEL
 website_sale / website                  / contact_us_link_url (char)    : NEW hasdefault: default, translate
@@ -187,7 +187,7 @@ website_sale / website                  / shop_default_sort (selection) : select
 
 website_sale / website                  / show_category_description (boolean): NEW hasdefault: default
 website_sale / website                  / show_category_title (boolean) : NEW hasdefault: default
-# DONE: post-migration: the options are per website now, set from the categories of each website when all of them agree
+# DONE: post-migration: the options are per website now, set from the categories of each website: title and alignment when all of them had it, description when any of them had it
 
 website_sale / website                  / show_line_subtotals_tax_selection (selection): now required
 # DONE: pre-migration: filled with 'tax_excluded' (the value the compute set in 19) where empty
