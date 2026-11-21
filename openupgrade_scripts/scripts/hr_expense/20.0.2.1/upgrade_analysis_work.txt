@@ -1,0 +1,77 @@
+---Models in module 'hr_expense'---
+obsolete model hr.expense.post.wizard [transient]
+# NOTHING TO DO: transient model
+
+new model hr.expense.product.job.position.limit
+# NOTHING TO DO: new functionality
+
+---Fields in module 'hr_expense'---
+hr_expense   / account.move             / existing_expense_ids (one2many): NEW relation: hr.expense
+hr_expense   / hr.expense               / existing_bill_id (many2one)   : NEW relation: account.move
+hr_expense   / hr.expense               / has_existing_bill (boolean)   : NEW
+# NOTHING TO DO: new functionality
+
+hr_expense   / hr.expense               / journal_id (many2one)         : not related anymore
+hr_expense   / hr.expense               / journal_id (many2one)         : now a function
+# NOTHING TO DO: non-stored before and after
+
+hr_expense   / hr.expense               / last_notification_date (datetime): NEW
+# NOTHING TO DO: empty means the manager has not been notified yet, the mail is
+# sent when expenses are submitted instead of by the removed cron
+
+hr_expense   / hr.expense               / website_message_ids (one2many): DEL relation: mail.message
+# NOTHING TO DO: non-stored
+
+hr_expense   / hr.expense.product.job.position.limit / job_ids (many2many)           : NEW relation: hr.job
+hr_expense   / hr.expense.product.job.position.limit / limit_amount (float)          : NEW required
+hr_expense   / hr.expense.product.job.position.limit / product_id (many2one)         : NEW relation: product.product, required
+hr_expense   / hr.expense.product.job.position.limit / sequence (integer)            : NEW hasdefault: default
+hr_expense   / product.product          / expense_job_position_limit_ids (one2many): NEW relation: hr.expense.product.job.position.limit
+# NOTHING TO DO: new functionality
+
+---XML records in module 'hr_expense'---
+NEW ir.access: hr_expense.access_hr_expense_product_job_position_limit_manager
+NEW ir.access: hr_expense.access_hr_expense_product_job_position_limit_user
+NEW ir.access: hr_expense.base_user_account_move_line_rule
+ir.access: hr_expense.hr_expense_comp_rule (noupdate switched)
+NEW ir.access: hr_expense.hr_expense_team_approver_account_analytic_line_rule
+ir.access: hr_expense.hr_expense_team_approver_account_move_line_rule (noupdate switched)
+ir.access: hr_expense.hr_expense_team_approver_account_move_rule (noupdate switched)
+ir.access: hr_expense.ir_rule_hr_expense_approver (noupdate switched)
+ir.access: hr_expense.ir_rule_hr_expense_employee (noupdate switched)
+ir.access: hr_expense.ir_rule_hr_expense_employee_not_draft (noupdate switched)
+ir.access: hr_expense.ir_rule_hr_expense_manager (noupdate switched)
+NEW ir.access: hr_expense.ir_rule_hr_expense_manager_1
+ir.access: hr_expense.ir_rule_hr_expense_split_accountant (noupdate switched)
+ir.access: hr_expense.ir_rule_hr_expense_split_approver (noupdate switched)
+ir.access: hr_expense.ir_rule_hr_expense_split_employee (noupdate switched)
+ir.access: hr_expense.ir_rule_hr_expense_split_manager (noupdate switched)
+ir.access: hr_expense.ir_rule_hr_expense_split_user (noupdate switched)
+# NOTHING TO DO: ir.model.access and ir.rule are replaced by ir.access, module
+# records are recreated by the ORM and manual ones are converted in base
+
+DEL ir.cron: hr_expense.ir_cron_send_submitted_expenses_mail
+# NOTHING TO DO: removed by the ORM
+
+DEL ir.model.access: hr_expense.access_account_analytic_line_user
+DEL ir.model.access: hr_expense.access_account_move_line_user
+DEL ir.model.access: hr_expense.access_account_move_user
+DEL ir.model.access: hr_expense.access_hr_expense_accountant
+DEL ir.model.access: hr_expense.access_hr_expense_employee
+DEL ir.model.access: hr_expense.access_hr_expense_manager
+DEL ir.model.access: hr_expense.access_hr_expense_post
+DEL ir.model.access: hr_expense.access_hr_expense_split_wizard_manager
+DEL ir.model.access: hr_expense.access_hr_expense_user
+# NOTHING TO DO: ir.model.access is replaced by ir.access, handled in base
+
+DEL ir.sequence: hr_expense.seq_hr_expense_invoice (noupdate)
+# DONE: post-migration: deleted, it was not used in v19 either
+
+DEL ir.ui.menu: hr_expense.menu_hr_expense_account_employee_expenses
+NEW ir.ui.view: hr_expense.account_journal_dashboard_kanban_view_inherit_expense
+NEW ir.ui.view: hr_expense.account_journal_view_form_inherit_hr_expense
+NEW ir.ui.view: hr_expense.hr_expense_split_form_view
+NEW ir.ui.view: hr_expense.product_template_form_view
+NEW ir.ui.view: hr_expense.view_account_invoice_filter_inherit_expense
+DEL ir.ui.view: hr_expense.hr_expense_post_wizard_view
+# NOTHING TO DO

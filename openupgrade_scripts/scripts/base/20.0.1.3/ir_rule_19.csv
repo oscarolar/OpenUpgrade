@@ -1,0 +1,1096 @@
+xmlid,model,active,perm_create,perm_read,perm_write,perm_unlink,groups,domain
+account.account_analytic_line_rule_billing_user,account.analytic.line,1,1,1,1,1,account.group_account_invoice,"[('project_id', '=', False)]"
+account.account_analytic_line_rule_readonly_user,account.analytic.line,1,0,1,0,0,account.group_account_readonly,"[('project_id', '=', False)]"
+account.account_bank_statement_comp_rule,account.bank.statement,1,1,1,1,1,"","[('company_id', 'in', company_ids + [False])]"
+account.account_bank_statement_line_comp_rule,account.bank.statement.line,1,1,1,1,1,"","[('company_id', 'in', company_ids)]"
+account.account_comp_rule,account.account,1,1,1,1,1,"","[('company_ids', 'parent_of', company_ids)]"
+account.account_fiscal_position_comp_rule,account.fiscal.position,1,1,1,1,1,"","[('company_id', 'parent_of', company_ids)]"
+account.account_group_comp_rule,account.group,1,1,1,1,1,"","[('company_id', 'parent_of', company_ids)]"
+account.account_invoice_line_rule_portal,account.move.line,1,1,1,1,1,base.group_portal,"[('parent_state', 'not in', ('cancel', 'draft')), ('move_id.move_type', 'in', ('out_invoice', 'out_refund', 'in_invoice', 'in_refund')), ('move_id.partner_id','child_of',[user.commercial_partner_id.id])]"
+account.account_invoice_rule_portal,account.move,1,1,1,1,1,base.group_portal,"[('state', 'not in', ('cancel', 'draft')), ('move_type', 'in', ('out_invoice', 'out_refund', 'in_invoice', 'in_refund')), ('partner_id','child_of',[user.commercial_partner_id.id])]"
+account.account_move_comp_rule,account.move,1,1,1,1,1,"","[('company_id', 'in', company_ids)]"
+account.account_move_line_comp_rule,account.move.line,1,1,1,1,1,"","[('company_id', 'in', company_ids)]"
+account.account_move_line_rule_group_invoice,account.move.line,1,1,1,1,1,account.group_account_invoice,"[(1, '=', 1)]"
+account.account_move_line_rule_group_readonly,account.move.line,1,0,1,0,0,account.group_account_readonly,"[(1, '=', 1)]"
+account.account_move_line_see_all,account.move.line,1,1,1,1,1,account.group_account_invoice,"[(1, '=', 1)]"
+account.account_move_rule_group_invoice,account.move,1,1,1,1,1,account.group_account_invoice,"[(1, '=', 1)]"
+account.account_move_rule_group_readonly,account.move,1,0,1,0,0,account.group_account_readonly,"[(1, '=', 1)]"
+account.account_move_see_all,account.move,1,1,1,1,1,account.group_account_invoice,"[(1, '=', 1)]"
+account.account_move_send_batch_rule_group_invoice,account.move.send.batch.wizard,1,1,1,1,1,account.group_account_invoice,"[(1, '=', 1)]"
+account.account_move_send_single_rule_group_invoice,account.move.send.wizard,1,1,1,1,1,account.group_account_invoice,"[(1, '=', 1)]"
+account.account_payment_comp_rule,account.payment,1,1,1,1,1,"","[('company_id', 'in', company_ids)]"
+account.account_payment_term_comp_rule,account.payment.term,1,1,1,1,1,"","['|', ('company_id', '=', False), ('company_id', 'parent_of', company_ids)]"
+account.account_reconcile_model_line_template_comp_rule,account.reconcile.model.line,1,1,1,1,1,"","[('company_id', 'parent_of', company_ids)]"
+account.account_reconcile_model_template_comp_rule,account.reconcile.model,1,1,1,1,1,"","[('company_id', 'parent_of', company_ids)]"
+account.invoice_analysis_comp_rule,account.invoice.report,1,1,1,1,1,"","[('company_id', 'in', company_ids)]"
+account.ir_rule_res_partner_bank_billing_officers,res.partner.bank,1,1,1,1,1,account.group_account_invoice,"[(1, '=', 1)]"
+account.journal_comp_rule,account.journal,1,1,1,1,1,"","[('company_id', 'parent_of', company_ids)]"
+account.journal_group_comp_rule,account.journal.group,1,1,1,1,1,"","['|', ('company_id', '=', False), ('company_id', 'parent_of', company_ids)]"
+account.report_external_value_comp_rule,account.report.external.value,1,1,1,1,1,"","[('company_id', 'in', company_ids)]"
+account.tax_comp_rule,account.tax,1,1,1,1,1,"","[('company_id', 'parent_of', company_ids)]"
+account.tax_group_comp_rule,account.tax.group,1,1,1,1,1,"","[('company_id', 'parent_of', company_ids)]"
+account.tax_rep_comp_rule,account.tax.repartition.line,1,1,1,1,1,"","['|',('company_id','=',False), ('company_id', 'parent_of', company_ids)]"
+account_edi_proxy_client.account_edi_proxy_client_user_comp_rule,account_edi_proxy_client.user,1,1,1,1,1,"","[('company_id', 'parent_of', company_ids)]"
+account_payment.payment_token_billing_rule,payment.token,1,1,1,1,1,account.group_account_invoice,"[(1, '=', 1)]"
+account_peppol_response.account_peppol_response_comp_rule,account.peppol.response,1,1,1,1,1,"","[('company_id', 'in', company_ids)]"
+analytic.analytic_applicability_comp_rule,account.analytic.applicability,1,1,1,1,1,"","['|',('company_id','=',False),('company_id', 'parent_of', company_ids)]"
+analytic.analytic_comp_rule,account.analytic.account,1,1,1,1,1,"","['|',('company_id','=',False),('company_id', 'parent_of', company_ids)]"
+analytic.analytic_distribution_model_comp_rule,account.analytic.distribution.model,1,1,1,1,1,"","['|',('company_id','=',False),('company_id', 'parent_of', company_ids)]"
+analytic.analytic_line_comp_rule,account.analytic.line,1,1,1,1,1,"","[('company_id', 'in', company_ids)]"
+auth_passkey.rule_auth_passkey_key_admin,auth.passkey.key,1,0,1,0,1,base.group_erp_manager,"[(1, '=', 1)]"
+auth_passkey.rule_auth_passkey_key_create_portal,auth.passkey.key.create,1,1,1,1,1,"base.group_portal,base.group_user","[('create_uid', '=', user.id)]"
+auth_passkey.rule_auth_passkey_key_user,auth.passkey.key,1,1,1,1,1,"base.group_portal,base.group_user","[('create_uid', '=', user.id)]"
+auth_totp.api_key_admin,auth_totp.device,1,1,1,1,1,base.group_system,"[(1, '=', 1)]"
+auth_totp.api_key_public,auth_totp.device,1,1,1,1,1,base.group_public,"[(0, '=', 1)]"
+auth_totp.api_key_user,auth_totp.device,1,1,1,1,1,"base.group_portal,base.group_user","[('user_id', '=', user.id)]"
+auth_totp.rule_auth_totp_wizard,auth_totp.wizard,1,1,1,1,1,"","[('user_id', '=', user.id)]"
+base.api_key_admin,res.users.apikeys,1,1,1,1,1,base.group_system,"[(1, '=', 1)]"
+base.api_key_public,res.users.apikeys,1,1,1,1,1,base.group_public,"[(0, '=', 1)]"
+base.api_key_user,res.users.apikeys,1,1,1,1,1,"base.group_portal,base.group_user","[('user_id', '=', user.id)]"
+base.change_password_own_rule,change.password.own,1,1,1,1,1,"","[('create_uid', '=', user.id)]"
+base.change_password_rule,change.password.user,1,1,1,1,1,"","[('create_uid', '=', user.id)]"
+base.embedded_action_admin_delete_rule,ir.embedded.actions,1,0,0,1,1,base.group_system,"[(1, '=', 1)]"
+base.embedded_action_user_delete_rule,ir.embedded.actions,1,0,0,1,1,base.group_user,"[('user_id', 'in', [user.id, False])]"
+base.ir_default_system_rule,ir.default,1,1,0,1,1,base.group_system,"[(1,'=',1)]"
+base.ir_default_user_rule,ir.default,1,1,0,1,1,base.group_user,"[('user_id','=',user.id)]"
+base.ir_filters_admin_all_rights_rule,ir.filters,1,1,1,1,1,base.group_erp_manager,"[(1, '=', 1)]"
+base.ir_filters_employee_rule,ir.filters,1,1,1,1,1,base.group_user,"[('user_ids','in',[False,user.id])]"
+base.ir_filters_portal_public_rule,ir.filters,1,1,1,1,1,"base.group_portal,base.group_public","[('user_ids', 'in', user.ids)]"
+base.ir_ui_view_custom_personal,ir.ui.view.custom,1,1,1,1,1,"","[('user_id','=',user.id)]"
+base.properties_base_definition_rule_admin,properties.base.definition,1,1,1,1,1,base.group_system,"[(1, '=', 1)]"
+base.res_company_rule_employee,res.company,1,1,1,1,1,base.group_user,"[('id','in', company_ids)]"
+base.res_company_rule_erp_manager,res.company,1,1,1,1,1,base.group_erp_manager,"[(1,'=',1)]"
+base.res_company_rule_portal,res.company,1,1,1,1,1,base.group_portal,"[('id','in', company_ids)]"
+base.res_company_rule_public,res.company,1,1,1,1,1,base.group_public,"[('id','in', company_ids)]"
+base.res_currency_rate_rule,res.currency.rate,1,1,1,1,1,"","['|', ('company_id', 'parent_of', company_ids), ('company_id', '=', False)]"
+base.res_partner_bank_rule,res.partner.bank,1,1,1,1,1,"","['|', ('company_id', 'parent_of', company_ids), ('company_id', '=', False)]"
+base.res_partner_portal_public_rule,res.partner,1,0,1,0,0,"base.group_portal,base.group_public","[('id', 'child_of', user.commercial_partner_id.id)]"
+base.res_partner_rule,res.partner,1,1,1,1,1,"","['|', '|', ('partner_share', '=', False), ('company_id', 'parent_of', company_ids), ('company_id', '=', False)]"
+base.res_users_identity_check,res.users.identitycheck,1,1,1,1,1,"","[('create_uid', '=', user.id)]"
+base.res_users_log_rule,res.users.log,1,1,0,1,1,"","[('create_uid','=', user.id)]"
+base.res_users_rule,res.users,1,1,1,1,1,"","['|', ('share', '=', False), ('company_ids', 'in', company_ids)]"
+base.res_users_rule_portal,res.users,1,1,1,1,1,base.group_portal,"[('commercial_partner_id', '=', user.commercial_partner_id.id)]"
+base.res_users_settings_rule_admin,res.users.settings,1,1,1,1,1,base.group_system,"[(1, '=', 1)]"
+base.res_users_settings_rule_user,res.users.settings,1,1,1,1,1,base.group_user,"[('user_id', '=', user.id)]"
+base.user_device,res.device,1,1,1,1,1,base.group_user,"[('user_id', '=', user.id)]"
+base.user_device_admin,res.device,1,1,1,1,1,base.group_system,"[(1, '=', 1)]"
+base.user_device_logs,res.device.log,1,1,1,1,1,base.group_user,"[('user_id', '=', user.id)]"
+base.user_device_logs_admin,res.device.log,1,1,1,1,1,base.group_system,"[(1, '=', 1)]"
+base_import.base_import_import_own_rule,base_import.import,1,1,1,1,1,"","[('create_uid', '=', user.id)]"
+calendar.calendar_attendee_rule_my,calendar.attendee,1,1,1,1,1,base.group_portal,"[(1, '=', 1)]"
+calendar.calendar_event_rule_employee,calendar.event,1,1,1,1,1,base.group_user,"[(1, '=', 1)]"
+calendar.calendar_event_rule_my,calendar.event,1,1,1,1,1,base.group_portal,"[('partner_ids', 'in', user.partner_id.id)]"
+calendar.calendar_event_rule_private,calendar.event,1,1,0,1,1,"","['|', ('privacy', '!=', 'private'), '&', ('privacy', '=', 'private'), '|', ('user_id', '=', user.id), ('partner_ids', 'in', user.partner_id.id)]"
+certificate.certificate_rule_company,certificate.certificate,1,1,1,1,1,"","['|', ('company_id', '=', False), ('company_id', 'parent_of', company_ids)]"
+certificate.key_rule_company,certificate.key,1,1,1,1,1,"","['|', ('company_id', '=', False), ('company_id', 'parent_of', company_ids)]"
+crm.crm_activity_report_rule_all_activities,crm.activity.report,1,1,1,1,1,sales_team.group_sale_salesman_all_leads,"[(1,'=',1)]"
+crm.crm_activity_report_rule_multi_company,crm.activity.report,1,1,1,1,1,"","[('company_id', 'in', company_ids + [False])]"
+crm.crm_activity_report_rule_personal_activities,crm.activity.report,1,1,1,1,1,sales_team.group_sale_salesman,"['|',('user_id','=',user.id),('user_id','=',False)]"
+crm.crm_lead_company_rule,crm.lead,1,1,1,1,1,"","[('company_id', 'in', company_ids + [False])]"
+crm.crm_rule_all_lead,crm.lead,1,1,1,1,1,sales_team.group_sale_salesman_all_leads,"[(1,'=',1)]"
+crm.crm_rule_personal_lead,crm.lead,1,1,1,1,1,sales_team.group_sale_salesman,"['|',('user_id','=',user.id),('user_id','=',False)]"
+crm.mail_plan_rule_group_sale_manager_lead,mail.activity.plan,1,1,0,1,1,sales_team.group_sale_manager,"[('res_model', '=', 'crm.lead')]"
+crm.mail_plan_templates_rule_group_sale_manager_lead,mail.activity.plan.template,1,1,0,1,1,sales_team.group_sale_manager,"[('plan_id.res_model', '=', 'crm.lead')]"
+crm_livechat.ir_rule_discuss_channel_crm_lead,discuss.channel,1,0,1,0,0,sales_team.group_sale_salesman,"[(""has_crm_lead"", ""="", True)]"
+crm_livechat.ir_rule_discuss_channel_member_crm_lead,discuss.channel.member,1,1,1,0,0,sales_team.group_sale_salesman,"[(""channel_id.has_crm_lead"", ""="", True)]"
+crm_sms.ir_rule_sms_template_sale_manager,sms.template,1,1,0,1,1,sales_team.group_sale_manager,"[('model_id.model', 'in', ('crm.lead', 'res.partner'))]"
+delivery.delivery_carrier_comp_rule,delivery.carrier,1,1,1,1,1,"","[('company_id', 'in', company_ids + [False])]"
+event.event_event_company_rule,event.event,1,1,1,1,1,"","[('company_id', 'in', company_ids + [False])]"
+event.event_registration_company_rule,event.registration,1,1,1,1,1,"","[('company_id', 'in', company_ids + [False])]"
+event.ir_rule_event_event_ticket_company,event.event.ticket,1,1,1,1,1,"","[('event_id.company_id', 'in', company_ids + [False])]"
+event_crm.ir_rule_event_crm,event.lead.rule,1,1,1,1,1,base.group_multi_company,"[('company_id', 'in', company_ids + [False])]"
+event_sale.event_sale_report_comp_rule,event.sale.report,1,1,1,1,1,"","[('company_id', 'in', company_ids + [False])]"
+event_sms.ir_rule_sms_template_event_manager,sms.template,1,1,0,1,1,event.group_event_manager,"[('model_id.model', 'in', ('event.event', 'event.registration'))]"
+fleet.fleet_rule_contract_visibility_manager,fleet.vehicle.log.contract,1,1,1,1,1,fleet.fleet_group_manager,""
+fleet.fleet_rule_odometer_visibility_manager,fleet.vehicle.odometer,1,1,1,1,1,fleet.fleet_group_manager,""
+fleet.fleet_rule_service_visibility_manager,fleet.vehicle.log.services,1,1,1,1,1,fleet.fleet_group_manager,""
+fleet.fleet_rule_vehicle_visibility_manager,fleet.vehicle,1,1,1,1,1,fleet.fleet_group_manager,""
+fleet.ir_rule_fleet_log_services,fleet.vehicle.log.services,1,1,1,1,1,"","[('company_id', 'in', company_ids + [False])]"
+fleet.ir_rule_fleet_odometer,fleet.vehicle.odometer,1,1,1,1,1,"","[('vehicle_id.company_id', 'in', company_ids + [False])]"
+fleet.ir_rule_fleet_report,fleet.vehicle.cost.report,1,1,1,1,1,"","[('company_id', 'in', company_ids + [False])]"
+fleet.ir_rule_fleet_vehicle,fleet.vehicle,1,1,1,1,1,"","[('company_id', 'in', company_ids + [False])]"
+fleet.ir_rule_fleet_vehicle_log_contract,fleet.vehicle.log.contract,1,1,1,1,1,"","[('company_id', 'in', company_ids + [False])]"
+gamification.goal_gamification_manager_visibility,gamification.goal,1,0,1,1,0,base.group_erp_manager,"[(1, '=', 1)]"
+gamification.goal_global_multicompany,gamification.goal,1,1,1,1,1,"","[('user_id.company_id', 'in', company_ids)]"
+gamification.goal_user_visibility,gamification.goal,1,0,1,1,0,"base.group_portal,base.group_user","[
+                '|',
+                    ('user_id','=',user.id),
+                    '&',
+                        ('challenge_id.user_ids','in',user.id),
+                        ('challenge_id.visibility_mode','=','ranking')]"
+hr.hr_dept_comp_rule,hr.department,1,1,1,1,1,"","[('company_id', 'in', company_ids + [False])]"
+hr.hr_employee_comp_rule,hr.employee,1,1,1,1,1,"","['|', '|', '|',
+            ('company_id', 'in', company_ids + [False]),
+            ('parent_id.user_id', '=', user.id),
+            ('id', '=', user.employee_id.parent_id.id),
+            ('user_id', '=', user.id)
+        ]"
+hr.hr_employee_public_comp_rule,hr.employee.public,1,1,1,1,1,"","['|', '|', '|',
+            ('company_id', 'in', company_ids + [False]),
+            ('parent_id.user_id', '=', user.id),
+            ('id', '=', user.employee_id.parent_id.id),
+            ('user_id', '=', user.id)
+        ]"
+hr.hr_job_comp_rule,hr.job,1,1,1,1,1,"","[('company_id', 'in', company_ids + [False])]"
+hr.ir_rule_hr_contract_manager,hr.version,1,1,1,1,1,hr.group_hr_manager,"[(1, '=', 1)]"
+hr.ir_rule_hr_contract_multi_company,hr.version,1,1,1,1,1,"","[('company_id', 'in', company_ids)]"
+hr.ir_rule_hr_contract_type_multi_company,hr.contract.type,1,1,1,1,1,"","['|', ('country_id', '=', False), ('country_id', 'in', user.env.companies.country_id.ids)]"
+hr.ir_rule_hr_departure_reason_multi_company,hr.departure.reason,1,1,1,1,1,"","[('country_code', 'in', user.env.companies.mapped('country_code') + [False])]"
+hr.ir_rule_hr_payroll_structure_type_multi_company,hr.payroll.structure.type,1,1,1,1,1,"","['|', ('country_id', '=', False), ('country_id', 'in', user.env.companies.mapped('country_id').ids)]"
+hr.ir_rule_res_partner_bank_employees,res.partner.bank,1,1,1,1,1,hr.group_hr_user,"[(1, '=', 1)]"
+hr.ir_rule_res_partner_bank_internal_users,res.partner.bank,1,1,1,1,1,base.group_user,"[('partner_id.employee_ids', '=', False)]"
+hr.mail_plan_rule_group_hr_manager,mail.activity.plan,1,1,0,1,1,hr.group_hr_manager,"[('res_model', '=', 'hr.employee')]"
+hr.mail_plan_templates_rule_group_hr_manager,mail.activity.plan.template,1,1,0,1,1,hr.group_hr_manager,"[('plan_id.res_model', '=', 'hr.employee')]"
+hr_attendance.hr_attendance_overtime_line_rule_admin,hr.attendance.overtime.line,1,1,1,1,1,hr_attendance.group_hr_attendance_user,"[(1,'=',1)]"
+hr_attendance.hr_attendance_overtime_line_rule_employee_company,hr.attendance.overtime.line,1,1,1,1,1,"","[('employee_id.company_id', 'in', company_ids)]"
+hr_attendance.hr_attendance_overtime_line_rule_officer,hr.attendance.overtime.line,1,1,1,1,1,hr_attendance.group_hr_attendance_officer,"[('employee_id.attendance_manager_id', '=', user.id)]"
+hr_attendance.hr_attendance_overtime_line_rule_own_reader,hr.attendance.overtime.line,1,0,1,0,0,hr_attendance.group_hr_attendance_own_reader,"[('employee_id.user_id', '=', user.id)]"
+hr_attendance.hr_attendance_overtime_ruleset_rule,hr.attendance.overtime.ruleset,1,0,1,0,0,"","[('company_id', 'in', company_ids + [False])]"
+hr_attendance.hr_attendance_overtime_ruleset_rule_group_hr_attendance_manager,hr.attendance.overtime.ruleset,1,1,1,1,1,"","[('company_id', 'in', company_ids + [False])]"
+hr_attendance.hr_attendance_rule_attendance_admin,hr.attendance,1,1,1,1,1,hr_attendance.group_hr_attendance_user,"[(1,'=',1)]"
+hr_attendance.hr_attendance_rule_attendance_manager_restrict,hr.attendance,1,1,1,1,1,hr_attendance.group_hr_attendance_officer,"
+                [
+                '|',
+                '&',
+                 ('employee_id.attendance_manager_id', '=', user.id),
+                 ('employee_id.user_id', '=', user.id),
+                '&',
+                ('employee_id.user_id', '!=', user.id),
+                ('employee_id.attendance_manager_id', '=', user.id)
+                ]
+            "
+hr_attendance.hr_attendance_rule_attendance_simple_user,hr.attendance,1,0,1,0,0,hr_attendance.group_hr_attendance_own_reader,"[('employee_id.user_id', '=', user.id)]"
+hr_attendance.hr_attendance_rule_employee_company,hr.attendance,1,1,1,1,1,"","['|',('employee_id.company_id','=',False),('employee_id.company_id', 'in', company_ids)]"
+hr_expense.hr_expense_comp_rule,hr.expense,1,1,1,1,1,"","[('company_id', 'in', company_ids)]"
+hr_expense.hr_expense_team_approver_account_move_line_rule,account.move.line,1,1,1,1,1,hr_expense.group_hr_expense_team_approver,"[('expense_id', '!=', False)]"
+hr_expense.hr_expense_team_approver_account_move_rule,account.move,1,1,1,1,1,hr_expense.group_hr_expense_team_approver,"[('expense_ids', '!=', False)]"
+hr_expense.ir_rule_hr_expense_approver,hr.expense,1,1,1,1,1,hr_expense.group_hr_expense_team_approver,"['|', '|', '|', '|',
+                ('employee_id.user_id', '=', user.id),
+                ('employee_id.department_id.manager_id.user_id', '=', user.id),
+                ('employee_id', 'child_of', user.employee_ids.ids),
+                ('employee_id.expense_manager_id', '=', user.id),
+                ('manager_id', '=', user.id)]"
+hr_expense.ir_rule_hr_expense_employee,hr.expense,1,1,1,1,1,base.group_user,"[
+                '|', '&', ('employee_id.expense_manager_id', '=', user.id), ('state', 'in', ['draft', 'submitted', 'approved', 'refused']),
+                     '&', ('employee_id.user_id', '=', user.id), ('state', '=', 'draft')
+            ]"
+hr_expense.ir_rule_hr_expense_employee_not_draft,hr.expense,1,0,1,0,0,base.group_user,"[
+                '|', '&', ('employee_id.user_id', '=', user.id), ('state', '!=', 'draft'),
+                     '&', ('employee_id.expense_manager_id', '=', user.id), ('state', 'in', ['submitted', 'approved', 'refused'])
+            ]"
+hr_expense.ir_rule_hr_expense_manager,hr.expense,1,1,1,1,1,"account.group_account_user,hr_expense.group_hr_expense_user","[(1, '=', 1)]"
+hr_expense.ir_rule_hr_expense_split_accountant,hr.expense.split.wizard,1,1,1,1,1,account.group_account_invoice,"[('expense_id.state', 'in', ('draft', 'submitted', 'approved'))]"
+hr_expense.ir_rule_hr_expense_split_approver,hr.expense.split.wizard,1,1,1,1,1,hr_expense.group_hr_expense_team_approver,"[
+                ('expense_id.state', 'in', ['draft', 'submitted']),
+                ('expense_id.manager_id', 'in', [user.id, False])
+            ]"
+hr_expense.ir_rule_hr_expense_split_employee,hr.expense.split.wizard,1,1,1,1,1,base.group_user,"[
+                ('expense_id.state', '=', 'draft'),
+                '|', ('expense_id.employee_id.user_id', '=', user.id), ('expense_id.manager_id', '=', user.id),
+            ]"
+hr_expense.ir_rule_hr_expense_split_manager,hr.expense.split.wizard,1,1,1,1,1,hr_expense.group_hr_expense_manager,"[('expense_id.state', 'in', ['draft', 'submitted'])]"
+hr_expense.ir_rule_hr_expense_split_user,hr.expense.split.wizard,1,1,1,1,1,hr_expense.group_hr_expense_user,"[
+                ('expense_id.state', 'in', ['draft', 'submitted']),
+                '|', ('expense_id.employee_id.user_id', '!=', user.id), ('expense_id.manager_id', 'in', [user.id, False])
+            ]"
+hr_fleet.hr_fleet_rule_vehicle_visibility_hr_officier,fleet.vehicle,1,0,1,0,0,hr.group_hr_user,"['|', ('driver_employee_id', '!=', False), ('future_driver_employee_id', '!=', False)]"
+hr_gamification.goal_gamification_hr_user_visibility,gamification.goal,1,0,1,1,0,hr.group_hr_user,""
+hr_gamification.hr_gamification_badge_base_user_not_owned_access,gamification.badge.user,1,1,1,0,0,base.group_user,"[('create_uid', '!=', user.id)]"
+hr_gamification.hr_gamification_badge_base_user_owned_access,gamification.badge.user,1,1,1,1,1,base.group_user,"[('create_uid', '=', user.id)]"
+hr_gamification.hr_gamification_badge_group_hr_user_access,gamification.badge.user,1,1,1,1,1,hr.group_hr_user,"[(1, '=', 1)]"
+hr_holidays.hr_holidays_status_rule_multi_company,hr.leave.type,1,1,1,1,1,"","[
+            '|', 
+                ('company_id', 'in', company_ids),
+                '&',
+                    ('company_id', '=', False),
+                    ('country_id', 'in', user.env.companies.country_id.ids + [False])
+        ]
+        "
+hr_holidays.hr_leav_allocation_rule_employee_unlink,hr.leave.allocation,1,0,0,0,1,base.group_user,"[('employee_id.user_id', '=', user.id), ('state', '=', 'draft')]"
+hr_holidays.hr_leave_accrual_plan_rule_multi_company,hr.leave.accrual.plan,1,1,1,1,1,"","[('company_id', 'in', company_ids + [False])]"
+hr_holidays.hr_leave_allocation_rule_employee,hr.leave.allocation,1,0,1,0,0,base.group_user,"[
+            '|',
+                ('employee_id.leave_manager_id', '=', user.id),
+                ('employee_id.user_id', '=', user.id),
+        ]"
+hr_holidays.hr_leave_allocation_rule_employee_update,hr.leave.allocation,1,1,0,1,0,base.group_user,"[
+            '|',
+                '&',
+                    ('employee_id.user_id', '=', user.id),
+                    ('state', '=', 'confirm'),
+                '&',
+                    ('validation_type', 'in', ['manager', 'both', 'no_validation']),
+                    ('employee_id.leave_manager_id', '=', user.id),
+        ]"
+hr_holidays.hr_leave_allocation_rule_manager,hr.leave.allocation,1,1,1,1,1,hr_holidays.group_hr_holidays_manager,"[(1, '=', 1)]"
+hr_holidays.hr_leave_allocation_rule_multicompany,hr.leave.allocation,1,1,1,1,1,"","[
+            '|',
+                ('employee_id', '=', False),
+                ('employee_id.company_id', 'in', company_ids),
+            ('holiday_status_id.company_id', 'in', company_ids + [False])
+        ]"
+hr_holidays.hr_leave_allocation_rule_officer_read,hr.leave.allocation,1,0,1,0,0,hr_holidays.group_hr_holidays_user,"[(1, '=', 1)]"
+hr_holidays.hr_leave_allocation_rule_officer_update,hr.leave.allocation,1,1,1,1,1,hr_holidays.group_hr_holidays_user,"[
+            '|',
+                '&',
+                    ('employee_id.user_id', '=', user.id),
+                    ('state', '!=', 'validate'),
+                '|',
+                    ('employee_id.user_id', '!=', user.id),
+                    ('employee_id.user_id', '=', False)
+        ]"
+hr_holidays.hr_leave_allocation_rule_responsible_update,hr.leave.allocation,1,1,0,1,0,hr_holidays.group_hr_holidays_responsible,"[
+            '|',
+                '&',
+                    ('employee_id.user_id', '=', user.id),
+                    ('state', '!=', 'validate'),
+                ('employee_id.leave_manager_id', '=', user.id),
+        ]"
+hr_holidays.hr_leave_mandatory_day_rule_multi_company,hr.leave.mandatory.day,1,1,1,1,1,"","[('company_id', 'in', company_ids + [False])]"
+hr_holidays.hr_leave_report_calendar_rule_multi_company,hr.leave.report.calendar,1,1,1,1,1,"","[('company_id', 'in', company_ids + [False])]"
+hr_holidays.hr_leave_report_rule_group_holiday_user,hr.leave.report,1,0,1,0,0,hr_holidays.group_hr_holidays_user,"[(1, '=', 1)]"
+hr_holidays.hr_leave_report_rule_group_user,hr.leave.report,1,0,1,0,0,base.group_user,"[('has_department_manager_access', '=', True)]"
+hr_holidays.hr_leave_report_rule_multi_company,hr.leave.report,1,1,1,1,1,"","[('company_id', 'in', company_ids + [False])]"
+hr_holidays.hr_leave_rule_employee,hr.leave,1,0,1,0,0,base.group_user,"[('employee_id.user_id', '=', user.id)]"
+hr_holidays.hr_leave_rule_employee_unlink,hr.leave,1,0,0,0,1,base.group_user,"[('employee_id.user_id', '=', user.id), ('state', 'in', ['confirm', 'validate1'])]"
+hr_holidays.hr_leave_rule_employee_update,hr.leave,1,1,0,1,0,base.group_user,"[
+            '|',
+                '&',
+                    ('employee_id.user_id', '=', user.id),
+                    ('state', 'not in', ['validate', 'validate1']),
+                '&',
+                    ('validation_type', 'in', ['manager', 'both', 'no_validation']),
+                    ('employee_id.leave_manager_id', '=', user.id),
+        ]"
+hr_holidays.hr_leave_rule_manager,hr.leave,1,1,1,1,1,hr_holidays.group_hr_holidays_manager,"[(1, '=', 1)]"
+hr_holidays.hr_leave_rule_multicompany,hr.leave,1,1,1,1,1,"","[('company_id', 'in', company_ids)]"
+hr_holidays.hr_leave_rule_officer_update,hr.leave,1,1,0,1,0,hr_holidays.group_hr_holidays_user,"[
+            '|',
+                '&',
+                    ('employee_id.user_id', '=', user.id),
+                    ('state', '!=', 'validate'),
+                '|',
+                    ('employee_id.user_id', '!=', user.id),
+                    ('employee_id.user_id', '=', False)
+        ]"
+hr_holidays.hr_leave_rule_responsible_read,hr.leave,1,0,1,0,0,hr_holidays.group_hr_holidays_responsible,"[
+                ('employee_id.leave_manager_id', '=', user.id),
+        ]"
+hr_holidays.hr_leave_rule_responsible_update,hr.leave,1,1,0,1,0,hr_holidays.group_hr_holidays_responsible,"[
+            '|',
+                '&',
+                    ('employee_id.user_id', '=', user.id),
+                    ('state', '!=', 'validate'),
+                ('employee_id.leave_manager_id', '=', user.id),
+        ]"
+hr_holidays.hr_leave_rule_user_read,hr.leave,1,1,1,1,1,hr_holidays.group_hr_holidays_user,"[(1, '=', 1)]"
+hr_holidays.resource_leaves_base_user,resource.calendar.leaves,1,0,1,0,0,base.group_user,"[(1,'=',1)]"
+hr_holidays.resource_leaves_holidays_user,resource.calendar.leaves,1,1,1,1,1,hr_holidays.group_hr_holidays_user,"[(1,'=',1)]"
+hr_homeworking.homeworking_admin_rule,hr.employee.location,1,1,1,1,1,hr.group_hr_user,"[(1, '=', 1)]"
+hr_homeworking.homeworking_own_rule,hr.employee.location,1,1,1,1,1,base.group_user,"[
+                ('employee_id', '=', user.employee_id.id)
+            ]"
+hr_homeworking_calendar.homeworking_location_wizard_admin_rule,homework.location.wizard,1,1,1,1,1,hr.group_hr_user,"[(1, '=', 1)]"
+hr_homeworking_calendar.homeworking_location_wizard_own_rule,homework.location.wizard,1,1,1,1,1,base.group_user,"[
+                ('employee_id', '=', user.employee_id.id)
+            ]"
+hr_presence.ir_rule_sms_template_hr_manager,sms.template,1,1,0,1,1,hr.group_hr_manager,"[('model_id.model', '=', 'hr.employee')]"
+hr_recruitment.hr_applicant_comp_rule,hr.applicant,1,1,1,1,1,"","[('company_id', 'in', company_ids + [False])]"
+hr_recruitment.hr_applicant_interviewer_rule,hr.applicant,1,0,1,1,0,hr_recruitment.group_hr_recruitment_interviewer,"[
+            '|',
+                ('job_id.interviewer_ids', 'in', user.id),
+                ('interviewer_ids', 'in', user.id),
+        ]"
+hr_recruitment.hr_applicant_user_rule,hr.applicant,1,1,1,1,1,hr_recruitment.group_hr_recruitment_user,"[(1, '=', 1)]"
+hr_recruitment.hr_job_user_rule,hr.job,1,1,1,1,1,hr_recruitment.group_hr_recruitment_user,"[(1, '=', 1)]"
+hr_recruitment.hr_talent_pool_user_rule,hr.talent.pool,1,1,1,1,1,hr_recruitment.group_hr_recruitment_user,"[(1, '=', 1)]"
+hr_recruitment.mail_message_user_rule,mail.message,1,1,1,1,1,hr_recruitment.group_hr_recruitment_user,"[(1, '=', 1)]"
+hr_recruitment.mail_plan_rule_group_hr_recruitment_manager_applicant,mail.activity.plan,1,1,0,1,1,hr_recruitment.group_hr_recruitment_manager,"[('res_model', '=', 'hr.applicant')]"
+hr_recruitment.mail_plan_templates_rule_group_hr_recruitment_manager_applicant,mail.activity.plan.template,1,1,0,1,1,hr_recruitment.group_hr_recruitment_manager,"[('plan_id.res_model', '=', 'hr.applicant')]"
+hr_recruitment_skills.hr_applicant_skill_interviewer_rule,hr.applicant.skill,1,1,1,1,1,hr_recruitment.group_hr_recruitment_interviewer,"[
+            '|',
+                ('applicant_id.job_id.interviewer_ids', 'in', user.id),
+                ('applicant_id.interviewer_ids', 'in', user.id),
+        ]"
+hr_recruitment_skills.hr_applicant_skill_officer_rule,hr.applicant.skill,1,1,1,1,1,hr_recruitment.group_hr_recruitment_user,"[(1, '=', 1)]"
+hr_recruitment_survey.survey_invite_recruitment_interviewer,survey.invite,1,1,1,1,0,hr_recruitment.group_hr_recruitment_interviewer,"[('survey_id.survey_type', '=', 'recruitment'),
+                '|', ('survey_id.hr_job_ids.interviewer_ids', 'in', user.id),
+                     ('survey_id.hr_job_ids.application_ids.interviewer_ids', 'in', user.id)
+                ]"
+hr_recruitment_survey.survey_invite_recruitment_manager,survey.invite,1,1,1,1,0,hr_recruitment.group_hr_recruitment_manager,"[('survey_id.survey_type', '=', 'recruitment')]"
+hr_recruitment_survey.survey_invite_recruitment_user,survey.invite,1,1,1,1,0,hr_recruitment.group_hr_recruitment_user,"[
+                '&', ('survey_id.survey_type', '=', 'recruitment'),
+                '|',  ('survey_id.restrict_user_ids', 'in', user.id),
+                        ('survey_id.restrict_user_ids', '=', False)]"
+hr_recruitment_survey.survey_question_answer_rule_recruitment_manager,survey.question.answer,1,1,1,1,1,hr_recruitment.group_hr_recruitment_manager,"['|', ('question_id.survey_id.survey_type', '=', 'recruitment'),
+                ('matrix_question_id.survey_id.survey_type', '=', 'recruitment')]"
+hr_recruitment_survey.survey_question_recruitment_interviewer,survey.question,1,0,1,0,0,hr_recruitment.group_hr_recruitment_interviewer,"[('survey_id.survey_type', '=', 'recruitment'),
+                '|', ('survey_id.hr_job_ids.interviewer_ids', 'in', user.id),
+                     ('survey_id.hr_job_ids.application_ids.interviewer_ids', 'in', user.id)
+                ]"
+hr_recruitment_survey.survey_question_rule_recruitment_manager,survey.question,1,1,1,1,1,hr_recruitment.group_hr_recruitment_manager,"[('survey_id.survey_type', '=', 'recruitment')]"
+hr_recruitment_survey.survey_survey_recruitment_interviewer,survey.survey,1,0,1,0,0,hr_recruitment.group_hr_recruitment_interviewer,"[('survey_type', '=', 'recruitment'),
+                '|', ('hr_job_ids.interviewer_ids', 'in', user.id),
+                     ('hr_job_ids.application_ids.interviewer_ids', 'in', user.id)
+                ]"
+hr_recruitment_survey.survey_survey_rule_recruitment_manager,survey.survey,1,1,1,1,1,hr_recruitment.group_hr_recruitment_manager,"[('survey_type', '=', 'recruitment')]"
+hr_recruitment_survey.survey_user_input_line_rule_recruitment_interviewer,survey.user_input.line,1,0,1,0,0,hr_recruitment.group_hr_recruitment_interviewer,"[
+                '|',
+                    ('user_input_id.applicant_id.interviewer_ids', 'in', user.id),
+                    ('user_input_id.applicant_id.job_id.interviewer_ids', 'in', user.id),
+                ]"
+hr_recruitment_survey.survey_user_input_line_rule_recruitment_manager,survey.user_input.line,1,1,1,1,1,hr_recruitment.group_hr_recruitment_manager,"[('survey_id.survey_type', '=', 'recruitment')]"
+hr_recruitment_survey.survey_user_input_line_rule_recruitment_user,survey.user_input.line,1,0,1,0,0,hr_recruitment.group_hr_recruitment_user,"[
+                '&', ('survey_id.survey_type', '=', 'recruitment'),
+                '|',  ('survey_id.restrict_user_ids', 'in', user.id),
+                        ('survey_id.restrict_user_ids', '=', False)]"
+hr_recruitment_survey.survey_user_input_rule_recruitment_interviewer,survey.user_input,1,0,1,0,0,hr_recruitment.group_hr_recruitment_interviewer,"[
+                '|',
+                    ('applicant_id.interviewer_ids', 'in', user.id),
+                    ('applicant_id.job_id.interviewer_ids', 'in', user.id),
+                ]"
+hr_recruitment_survey.survey_user_input_rule_recruitment_manager,survey.user_input,1,1,1,1,1,hr_recruitment.group_hr_recruitment_manager,"[('survey_id.survey_type', '=', 'recruitment')]"
+hr_recruitment_survey.survey_user_input_rule_recruitment_user,survey.user_input,1,0,1,0,0,hr_recruitment.group_hr_recruitment_user,"[
+                '&', ('survey_id.survey_type', '=', 'recruitment'),
+                '|',  ('survey_id.restrict_user_ids', 'in', user.id),
+                        ('survey_id.restrict_user_ids', '=', False)]"
+hr_skills.hr_employee_skill_history_report_hr_user,hr.employee.skill.history.report,1,1,1,1,1,hr.group_hr_user,"[(1, '=', 1)]"
+hr_skills.hr_employee_skill_history_report_manager,hr.employee.skill.history.report,1,1,1,1,1,base.group_user,"[('employee_id', 'child_of', user.employee_ids.ids)]"
+hr_skills.hr_employee_skill_report_hr_user,hr.employee.skill.report,1,1,1,1,1,hr.group_hr_user,"[(1, '=', 1)]"
+hr_skills.hr_employee_skill_report_manager,hr.employee.skill.report,1,1,1,1,1,base.group_user,"[('has_department_manager_access', '=', True)]"
+hr_skills.hr_employee_skill_report_multicompany,hr.employee.skill.report,1,1,1,1,1,"","[('company_id', 'in', company_ids + [False])]"
+hr_skills.hr_resume_rule_employee,hr.resume.line,1,0,1,0,0,base.group_user,"[(1, '=', 1)]"
+hr_skills.hr_resume_rule_employee_hr_user,hr.resume.line,1,1,1,1,1,hr.group_hr_user,"[(1, '=', 1)]"
+hr_skills.hr_skill_rule_employee,hr.employee.skill,1,0,1,0,0,base.group_user,"[(1, '=', 1)]"
+hr_skills.hr_skill_rule_employee_update,hr.employee.skill,1,1,0,1,1,base.group_user,"[('employee_id.user_id','=',user.id)]"
+hr_skills.hr_skill_rule_hr_user,hr.employee.skill,1,1,1,1,1,hr.group_hr_user,"[(1, '=', 1)]"
+hr_skills.hr_skills_rule_employee_update,hr.resume.line,1,1,0,1,1,base.group_user,"[('employee_id.user_id','=',user.id)]"
+hr_timesheet.timesheet_analysis_report_approver,timesheets.analysis.report,1,1,1,1,1,hr_timesheet.group_hr_timesheet_approver,"[
+                '|',
+                    ('project_id.privacy_visibility', 'in', ['employees', 'portal']),
+                    ('project_id.message_partner_ids', 'in', [user.partner_id.id])
+            ]"
+hr_timesheet.timesheet_analysis_report_department_manager,timesheets.analysis.report,1,1,1,1,1,base.group_user,"[
+                ('has_department_manager_access', '=', True),
+            ]"
+hr_timesheet.timesheet_analysis_report_manager,timesheets.analysis.report,1,1,1,1,1,"hr_timesheet.group_timesheet_manager,project.group_project_manager","[(1, '=', 1)]"
+hr_timesheet.timesheet_analysis_report_user,timesheets.analysis.report,1,1,1,1,1,hr_timesheet.group_hr_timesheet_user,"[
+                ('user_id', '=', user.id),
+                '|',
+                    ('project_id.privacy_visibility', 'in', ['employees', 'portal']),
+                    ('message_partner_ids', 'in', [user.partner_id.id])
+            ]"
+hr_timesheet.timesheet_line_rule_approver,account.analytic.line,1,1,1,1,1,hr_timesheet.group_hr_timesheet_approver,"[
+                ('project_id', '!=', False),
+                '|', '|',
+                    ('project_id.privacy_visibility', 'in', ['employees', 'portal']),
+                    ('message_partner_ids', 'in', [user.partner_id.id]),
+                    ('partner_id', '=', user.partner_id.id),
+            ]"
+hr_timesheet.timesheet_line_rule_manager,account.analytic.line,1,1,1,1,1,"hr_timesheet.group_timesheet_manager,project.group_project_manager","[('project_id', '!=', False)]"
+hr_timesheet.timesheet_line_rule_portal_user,account.analytic.line,0,1,1,1,1,base.group_portal,"[
+                ('project_id', '!=', False),
+                ('message_partner_ids', 'child_of', [user.partner_id.commercial_partner_id.id]),
+                ('project_id.privacy_visibility', 'in', ['invited_users', 'portal']),
+                ('project_id.collaborator_ids.partner_id', 'in', [user.partner_id.id]),
+            ]"
+hr_timesheet.timesheet_line_rule_user,account.analytic.line,1,1,1,1,1,hr_timesheet.group_hr_timesheet_user,"[
+                ('user_id', '=', user.id),
+                ('project_id', '!=', False),
+                '|', '|',
+                    ('project_id.privacy_visibility', 'in', ['employees', 'portal']),
+                    ('partner_id', '=', user.partner_id.id),
+                    ('message_partner_ids', 'in', [user.partner_id.id])
+            ]"
+hr_timesheet.timesheets_analysis_report_comp_rule,timesheets.analysis.report,1,1,1,1,1,"","[('company_id', 'in', company_ids)]"
+hr_timesheet_attendance.hr_timesheet_attendance_report_restricted_company_rule,hr.timesheet.attendance.report,1,1,1,1,1,""," [('company_id', 'in', company_ids + [False])]"
+hr_timesheet_attendance.hr_timesheet_attendance_report_rule_approver,hr.timesheet.attendance.report,1,1,1,1,1,hr_timesheet.group_hr_timesheet_approver,"[(1, '=', 1)]"
+hr_timesheet_attendance.hr_timesheet_attendance_report_rule_manager,hr.timesheet.attendance.report,1,1,1,1,1,hr_timesheet.group_timesheet_manager,"[(1, '=', 1)]"
+hr_timesheet_attendance.hr_timesheet_attendance_report_rule_user,hr.timesheet.attendance.report,1,1,1,1,1,hr_timesheet.group_hr_timesheet_user,"[('employee_id', '=', user.employee_id.id)]"
+hr_work_entry.hr_user_work_entry_employee,hr.user.work.entry.employee,1,1,0,1,1,base.group_user,"[('user_id', '=', user.id)]"
+hr_work_entry.ir_rule_hr_work_entry_multi_company,hr.work.entry,1,1,1,1,1,"","[('company_id', 'in', company_ids)]"
+hr_work_entry.ir_rule_hr_work_entry_type_multi_company,hr.work.entry.type,1,1,1,1,1,"","[('country_id', 'in', user.env.companies.mapped('country_id').ids + [False])]"
+iap.user_iap_account,iap.account,1,1,1,1,1,base.group_user,"['|', ('company_ids', '=', False), ('company_ids', 'in', company_ids)]"
+im_livechat.ir_rule_discuss_call_history_im_livechat_group_user,discuss.call.history,1,0,1,0,0,im_livechat.im_livechat_group_user,"[('channel_id.channel_type', '=', 'livechat')]"
+im_livechat.ir_rule_discuss_channel_im_livechat_group_user,discuss.channel,1,0,1,0,0,im_livechat.im_livechat_group_user,"[('channel_type', '=', 'livechat')]"
+im_livechat.ir_rule_discuss_channel_member_im_livechat_group_user,discuss.channel.member,1,1,1,0,0,im_livechat.im_livechat_group_user,"[('channel_id.channel_type', '=', 'livechat')]"
+l10n_ar_withholding.l10n_ar_partner_tax_comp_rule,l10n_ar.partner.tax,1,1,1,1,1,"","[('company_id', 'parent_of', company_ids)]"
+l10n_eg_edi_eta.eta_thumb_drive_modify_own,l10n_eg_edi.thumb.drive,1,1,1,1,1,"","[('user_id', '=', user.id)]"
+l10n_es_edi_tbai.tbai_document_comp_rule,l10n_es_edi_tbai.document,1,1,1,1,1,"","[('company_id', 'in', company_ids)]"
+l10n_fr_pos_cert.account_sale_closing_multi_company,account.sale.closing,1,1,1,1,1,"","[('company_id', 'in', company_ids)]"
+l10n_id_efaktur_coretax.efaktur_document_multi_company,l10n_id_efaktur_coretax.document,1,1,1,1,1,"","[('company_id', 'in', company_ids)]"
+l10n_in_ewaybill.l10n_in_ewaybill_comp_rule,l10n.in.ewaybill,1,1,1,1,1,"","[('company_id', 'in', company_ids)]"
+l10n_in_hr_holidays.hr_leave_optional_holiday_rule_multi_company,l10n.in.hr.leave.optional.holiday,1,1,1,1,1,"","[('company_id', 'in', company_ids + [False])]"
+l10n_latam_check.l10n_latam_check_comp_rule,l10n_latam.check,1,1,1,1,1,"","[('company_id', 'in', company_ids)]"
+l10n_my_edi.myinvois_document_comp_rule,myinvois.document,1,1,1,1,1,"","[('company_id', 'in', company_ids)]"
+l10n_pl_edi_batch.l10n_pl_edi_batch_download_rule_multi_company,l10n_pl_edi_batch.download,1,1,1,1,1,"","[('company_id', 'in', company_ids)]"
+l10n_pl_edi_batch.l10n_pl_edi_batch_part_rule_multi_company,l10n_pl_edi_batch.part,1,1,1,1,1,"","[('company_id', 'in', company_ids)]"
+loyalty.loyalty_history_company_rule,loyalty.history,1,1,1,1,1,"","['|', ('company_id', 'in', company_ids + [False]), ('company_id', 'parent_of', company_ids)]"
+loyalty.sale_loyalty_card_company_rule,loyalty.card,1,1,1,1,1,"","['|', ('company_id', 'in', company_ids + [False]), ('company_id', 'parent_of', company_ids)]"
+loyalty.sale_loyalty_program_company_rule,loyalty.program,1,1,1,1,1,"","['|', ('company_id', 'in', company_ids + [False]), ('company_id', 'parent_of', company_ids)]"
+loyalty.sale_loyalty_reward_company_rule,loyalty.reward,1,1,1,1,1,"","['|', ('company_id', 'in', company_ids + [False]), ('company_id', 'parent_of', company_ids)]"
+loyalty.sale_loyalty_rule_company_rule,loyalty.rule,1,1,1,1,1,"","['|', ('company_id', 'in', company_ids + [False]), ('company_id', 'parent_of', company_ids)]"
+lunch.ir_rule_lunch_location_multi_company,lunch.location,1,1,1,1,1,"","[('company_id', 'in', company_ids + [False])]"
+lunch.ir_rule_lunch_order_multi_company,lunch.order,1,1,1,1,1,"","[('company_id', 'in', company_ids + [False])]"
+lunch.ir_rule_lunch_product_category_multi_company,lunch.product.category,1,1,1,1,1,"","[('company_id', 'in', company_ids + [False])]"
+lunch.ir_rule_lunch_product_multi_company,lunch.product,1,1,1,1,1,"","[('company_id', 'in', company_ids + [False])]"
+lunch.ir_rule_lunch_supplier_multi_company,lunch.supplier,1,1,1,1,1,"","[('company_id', 'in', company_ids + [False])]"
+lunch.lunch_mind_other_food_money,lunch.cashmove,1,1,1,1,1,lunch.group_lunch_manager,"[(1, '=', 1)]"
+lunch.lunch_mind_your_own_food_money,lunch.cashmove,1,1,1,1,1,lunch.group_lunch_user,"[('user_id', '=', user.id)]"
+lunch.lunch_order_rule_delete,lunch.order,1,0,0,0,1,lunch.group_lunch_user,"[('state', 'in', ('new', 'cancelled'))]"
+lunch.lunch_order_rule_write,lunch.order,1,0,0,1,0,base.group_user,"[('state', '!=', 'confirmed'), ('user_id', '=', user.id)]"
+lunch.lunch_order_rule_write_manager,lunch.order,1,0,0,1,0,lunch.group_lunch_manager,"[(1, '=', 1)]"
+mail.discuss_gif_favorite_admin_rule,discuss.gif.favorite,1,1,1,1,1,base.group_erp_manager,"[(1, '=', 1)]"
+mail.discuss_gif_favorite_user_rule,discuss.gif.favorite,1,1,1,1,1,base.group_user,"[('create_uid', '=', user.id)]"
+mail.ir_rule_discuss_call_history_read_all,discuss.call.history,1,0,1,0,0,"base.group_portal,base.group_public,base.group_user","
+                [
+                    ""|"",
+                        ""&"",
+                            (""channel_id.channel_type"", ""!="", ""channel""),
+                            ""|"",
+                                (""channel_id.is_member"", ""="", True),
+                                (""channel_id.parent_channel_id.is_member"", ""="", True),
+                        ""&"",
+                            (""channel_id.channel_type"", ""="", ""channel""),
+                            ""|"",
+                                (""channel_id.group_public_id"", ""="", False),
+                                (""channel_id.group_public_id"", ""in"", user.all_group_ids.ids),
+                ]
+            "
+mail.ir_rule_discuss_channel_all,discuss.channel,1,1,1,1,1,"base.group_portal,base.group_public,base.group_user","
+                [
+                    ""|"",
+                        ""&"",
+                            (""channel_type"", ""!="", ""channel""),
+                            ""|"",
+                                (""is_member"", ""="", True),
+                                (""parent_channel_id.is_member"", ""="", True),
+                        ""&"",
+                            (""channel_type"", ""="", ""channel""),
+                            ""|"",
+                                (""group_public_id"", ""="", False),
+                                (""group_public_id"", ""in"", user.all_group_ids.ids),
+                ]
+            "
+mail.ir_rule_discuss_channel_group_system,discuss.channel,1,1,1,1,1,base.group_system,"[(1, '=', 1)]"
+mail.ir_rule_discuss_channel_member_create_is_group_matching_all,discuss.channel.member,1,1,0,0,0,"base.group_portal,base.group_public,base.group_user","
+                [
+                    ('is_self', '=', True),
+                    ('channel_id.channel_type', '=', 'channel'),
+                    '|',
+                        ('channel_id.group_public_id', '=', False),
+                        ('channel_id.group_public_id', 'in', user.all_group_ids.ids)
+                ]
+            "
+mail.ir_rule_discuss_channel_member_create_is_group_matching_group_user,discuss.channel.member,1,1,0,0,0,base.group_user,"
+                [
+                    ('is_self', '=', False),
+                    ('channel_id.channel_type', '=', 'channel'),
+                    '|',
+                        ('channel_id.group_public_id', '=', False),
+                        ('channel_id.group_public_id', 'in', user.all_group_ids.ids)
+                ]
+            "
+mail.ir_rule_discuss_channel_member_create_is_member_group_user,discuss.channel.member,1,1,0,0,0,base.group_user,"
+                [
+                    ('is_self', '=', False),
+                    ('channel_id.channel_type', 'not in', ('channel', 'chat')),
+                    ('channel_id.is_member', '=', True)
+                ]
+            "
+mail.ir_rule_discuss_channel_member_group_system,discuss.channel.member,1,1,1,1,1,base.group_system,"[(1, '=', 1)]"
+mail.ir_rule_discuss_channel_member_is_self_all,discuss.channel.member,1,0,0,1,1,"base.group_portal,base.group_public,base.group_user","
+                [
+                    ('is_self', '=', True),
+                    ""|"",
+                        (""channel_id.channel_type"", ""!="", ""channel""),
+                        ""|"",
+                            (""channel_id.group_public_id"", ""="", False),
+                            (""channel_id.group_public_id"", ""in"", user.all_group_ids.ids),
+                ]
+            "
+mail.ir_rule_discuss_channel_member_read_all,discuss.channel.member,1,0,1,0,0,"base.group_portal,base.group_public,base.group_user","
+                [
+                    ""|"",
+                        ""&"",
+                            (""channel_id.channel_type"", ""!="", ""channel""),
+                            ""|"",
+                                (""channel_id.is_member"", ""="", True),
+                                (""channel_id.parent_channel_id.is_member"", ""="", True),
+                        ""&"",
+                            (""channel_id.channel_type"", ""="", ""channel""),
+                            ""|"",
+                                (""channel_id.group_public_id"", ""="", False),
+                                (""channel_id.group_public_id"", ""in"", user.all_group_ids.ids),
+                ]
+            "
+mail.ir_rule_mail_canned_response_admin,mail.canned.response,1,0,1,1,1,mail.group_mail_canned_response_admin,"[('is_shared', '=', True)]"
+mail.ir_rule_mail_canned_response_user_read,mail.canned.response,1,0,1,0,0,base.group_user,"['|', ('create_uid', '=', user.id), ('group_ids', 'in', user.all_group_ids.ids)]"
+mail.ir_rule_mail_canned_response_user_update,mail.canned.response,1,0,0,1,1,base.group_user,"[('create_uid', '=', user.id)]"
+mail.ir_rule_mail_notifications_group_portal,mail.notification,1,1,1,1,1,base.group_portal,"['|', ('res_partner_id', '=', user.partner_id.id), ('author_id', '=', user.partner_id.id)]"
+mail.ir_rule_mail_notifications_group_user,mail.notification,1,0,0,1,0,"base.group_portal,base.group_user","[('res_partner_id', '=', user.partner_id.id)]"
+mail.ir_rule_mail_scheduled_message_user,mail.scheduled.message,1,1,0,1,0,"","[('create_uid', '=', user.id)]"
+mail.mail_activity_plan_rule_admin,mail.activity.plan,1,1,1,1,1,base.group_system,"[(1, '=', 1)]"
+mail.mail_activity_plan_template_rule_admin,mail.activity.plan.template,1,1,1,1,1,base.group_system,"[(1, '=', 1)]"
+mail.mail_activity_rule_user,mail.activity,1,0,0,1,1,base.group_user,"['|', ('user_id', '=', user.id), ('create_uid', '=', user.id)]"
+mail.mail_compose_message_rule,mail.compose.message,1,0,1,1,0,"","[('create_uid', '=', user.id)]"
+mail.mail_message_subtype_rule_public,mail.message.subtype,1,1,1,1,1,"base.group_portal,base.group_public","[('internal', '=', False)]"
+mail.mail_template_editor_rule,mail.template,1,1,0,1,1,"base.group_system,mail.group_mail_template_editor","[(1, '=', 1)]"
+mail.mail_template_employee_rule,mail.template,1,1,0,1,1,base.group_user,"['|', ('create_uid', '=', user.id), ('user_id', '=', user.id)]"
+mail.res_users_settings_volumes_rule_admin,res.users.settings.volumes,1,1,1,1,1,base.group_system,"[(1, '=', 1)]"
+mail.res_users_settings_volumes_rule_user,res.users.settings.volumes,1,1,1,1,1,base.group_user,"[('user_setting_id.user_id', '=', user.id)]"
+mail_group.mail_group_member_rule_administrator,mail.group.member,1,1,1,1,1,mail_group.group_mail_group_manager,"[(1, '=', 1)]"
+mail_group.mail_group_member_rule_user,mail.group.member,1,1,1,1,1,base.group_user,"[('mail_group_id.moderator_ids', 'in', user.id)]"
+mail_group.mail_group_message_rule_administrator,mail.group.message,1,1,1,1,1,mail_group.group_mail_group_manager,"[(1, '=', 1)]"
+mail_group.mail_group_message_rule_public,mail.group.message,1,1,1,1,1,"base.group_portal,base.group_public","[
+            '&',
+                ('moderation_status', '=', 'accepted'),
+                '|',
+                '|',
+                '|',
+                    ('mail_group_id.moderator_ids', 'in', user.id),
+                    ('mail_group_id.access_mode', '=', 'public'),
+                    '&',
+                        ('mail_group_id.access_mode', '=', 'groups'),
+                        ('mail_group_id.access_group_id', 'in', user.all_group_ids.ids),
+                    '&',
+                        ('mail_group_id.access_mode', '=', 'members'),
+                        ('mail_group_id.member_partner_ids', 'in', [user.partner_id.id]),
+            ]
+        "
+mail_group.mail_group_message_rule_user,mail.group.message,1,1,1,1,1,base.group_user,"[
+                '&',
+                    '|',
+                        ('moderation_status', '=', 'accepted'),
+                        ('mail_group_id.moderator_ids', 'in', user.id),
+                    '|',
+                    '|',
+                    '|',
+                        ('mail_group_id.moderator_ids', 'in', user.id),
+                        ('mail_group_id.access_mode', '=', 'public'),
+                        '&',
+                            ('mail_group_id.access_mode', '=', 'groups'),
+                            ('mail_group_id.access_group_id', 'in', user.all_group_ids.ids),
+                        '&',
+                            ('mail_group_id.access_mode', '=', 'members'),
+                            ('mail_group_id.member_partner_ids', 'in', [user.partner_id.id]),
+            ]
+        "
+mail_group.mail_group_moderation_rule_administrator,mail.group.moderation,1,1,1,1,1,mail_group.group_mail_group_manager,"[(1, '=', 1)]"
+mail_group.mail_group_moderation_rule_user,mail.group.moderation,1,1,1,1,1,base.group_user,"[('mail_group_id.moderator_ids', 'in', user.id)]"
+mail_group.mail_group_rule_administrator,mail.group,1,1,1,1,1,mail_group.group_mail_group_manager,"[(1, '=', 1)]"
+mail_group.mail_group_rule_read_all,mail.group,1,0,1,0,0,"base.group_portal,base.group_public,base.group_user","[
+            '|',
+            '|',
+            '|',
+                ('moderator_ids', 'in', user.id),
+                ('access_mode', '=', 'public'),
+                '&',
+                    ('access_mode', '=', 'groups'),
+                    ('access_group_id', 'in', user.all_group_ids.ids),
+                '&',
+                    ('access_mode', '=', 'members'),
+                    ('member_partner_ids', 'in', [user.partner_id.id]),
+            ]
+        "
+mail_group.mail_group_rule_write_all,mail.group,1,0,0,1,1,base.group_user,"[('moderator_ids', 'in', user.id)]"
+maintenance.equipment_request_rule_admin_user,maintenance.request,1,1,1,1,1,maintenance.group_equipment_manager,"[(1, '=', 1)]"
+maintenance.equipment_request_rule_user,maintenance.request,1,1,1,1,1,base.group_user,"['|', '|', ('owner_user_id', '=', user.id), ('message_partner_ids', 'in', [user.partner_id.id]), ('user_id', '=', user.id)]"
+maintenance.equipment_rule_admin_user,maintenance.equipment,1,1,1,1,1,maintenance.group_equipment_manager,"[(1, '=', 1)]"
+maintenance.equipment_rule_user,maintenance.equipment,1,1,1,1,1,base.group_user,"[('message_partner_ids', 'in', [user.partner_id.id])]"
+maintenance.maintenance_equipment_category_comp_rule,maintenance.equipment.category,1,1,1,1,1,"","[('company_id', 'in', company_ids + [False])]"
+maintenance.maintenance_equipment_comp_rule,maintenance.equipment,1,1,1,1,1,"","[('company_id', 'in', company_ids + [False])]"
+maintenance.maintenance_request_comp_rule,maintenance.request,1,1,1,1,1,"","[('company_id', 'in', company_ids + [False])]"
+maintenance.maintenance_team_comp_rule,maintenance.team,1,1,1,1,1,"","[('company_id', 'in', company_ids + [False])]"
+marketing_card.marketing_card_campaign_manager_own_rule,card.campaign,1,1,1,1,1,marketing_card.marketing_card_group_manager,"[(1, '=', 1)]"
+marketing_card.marketing_card_campaign_user_owl_rule,card.campaign,1,0,0,1,1,marketing_card.marketing_card_group_user,"[('user_id', '=', user.id)]"
+mass_mailing.properties_base_definition_rule_mailing_user,properties.base.definition,1,1,1,1,1,mass_mailing.group_mass_mailing_user,"[('properties_field_id', '=', user.env.ref('mass_mailing.field_mailing_contact__properties').id)]"
+mrp.mrp_bom_byproduct_rule,mrp.bom.byproduct,1,1,1,1,1,"","[('company_id', 'in', company_ids + [False])]"
+mrp.mrp_bom_line_rule,mrp.bom.line,1,1,1,1,1,"","[('company_id', 'in', company_ids + [False])]"
+mrp.mrp_bom_rule,mrp.bom,1,1,1,1,1,"","[('company_id', 'in', company_ids + [False])]"
+mrp.mrp_production_rule,mrp.production,1,1,1,1,1,"","[('company_id', 'in', company_ids)]"
+mrp.mrp_routing_workcenter_rule,mrp.routing.workcenter,1,1,1,1,1,"","[('company_id', 'in', company_ids + [False])]"
+mrp.mrp_unbuild_rule,mrp.unbuild,1,1,1,1,1,"","[('company_id', 'in', company_ids)]"
+mrp.mrp_workcenter_productivity,mrp.workcenter.productivity,1,1,1,1,1,"","[('company_id', 'in', company_ids)]"
+mrp.mrp_workcenter_rule,mrp.workcenter,1,1,1,1,1,"","[('company_id', 'in', company_ids + [False])]"
+mrp.mrp_workorder_rule,mrp.workorder,1,1,1,1,1,"","[('company_id', 'in', company_ids)]"
+mrp_subcontracting.bom_line_subcontractor_rule,mrp.bom.line,1,1,1,1,1,base.group_portal,"[('id', 'in', user.partner_id.commercial_partner_id.bom_ids.bom_line_ids.ids)]"
+mrp_subcontracting.bom_subcontractor_rule,mrp.bom,1,1,1,1,1,base.group_portal,"[('id', 'in', user.partner_id.commercial_partner_id.bom_ids.ids)]"
+mrp_subcontracting.consumption_warning_line_subcontractor_rule,mrp.consumption.warning.line,1,1,1,1,1,base.group_portal,"[('mrp_production_id', 'in', user.partner_id.commercial_partner_id.production_ids.ids)]"
+mrp_subcontracting.consumption_warning_subcontractor_rule,mrp.consumption.warning,1,1,1,1,1,base.group_portal,"[('mrp_production_ids', 'in', user.partner_id.commercial_partner_id.production_ids.ids)]"
+mrp_subcontracting.picking_subcontractor_rule,stock.picking,1,1,1,1,1,base.group_portal,"[('partner_id.commercial_partner_id', '=', user.partner_id.commercial_partner_id.id)]"
+mrp_subcontracting.picking_type_subcontractor_rule,stock.picking.type,1,1,1,1,1,base.group_portal,"['|', ('id', 'in', user.partner_id.commercial_partner_id.picking_ids.picking_type_id.ids), ('id', 'in', user.partner_id.commercial_partner_id.production_ids.picking_type_id.ids)]"
+mrp_subcontracting.product_template_subcontracting_rule,product.template,1,1,1,1,1,base.group_portal,"[
+        '|',
+            '|',
+                ('id', 'in', user.partner_id.commercial_partner_id.bom_ids.product_id.product_tmpl_id.ids),
+                ('id', 'in', user.partner_id.commercial_partner_id.bom_ids.product_tmpl_id.ids),
+            ('id', 'in', user.partner_id.commercial_partner_id.bom_ids.bom_line_ids.product_id.product_tmpl_id.ids),
+            ]"
+mrp_subcontracting.production_subcontractor_rule,mrp.production,1,1,1,1,1,base.group_portal,"[('subcontractor_id', '=', user.partner_id.commercial_partner_id.id)]"
+mrp_subcontracting.stock_location_subcontractor_rule,stock.location,1,1,1,1,1,base.group_portal,"[
+            '|',
+                '|',
+                    '|',
+                        '|', 
+                            ('child_ids', 'in', user.partner_id.commercial_partner_id.picking_ids.location_id.ids), 
+                            ('child_ids', 'in', user.partner_id.commercial_partner_id.picking_ids.location_dest_id.ids),
+                        '|', 
+                            ('id', 'in', user.partner_id.commercial_partner_id.picking_ids.location_id.ids), 
+                            ('id', 'in', user.partner_id.commercial_partner_id.picking_ids.location_dest_id.ids),
+                    '|',
+                        ('id', 'in', user.partner_id.commercial_partner_id.picking_ids.picking_type_id.warehouse_id.view_location_id.ids),
+                        ('id', 'in', user.partner_id.commercial_partner_id.production_ids.production_location_id.ids),
+                ('id', 'in', user.partner_id.commercial_partner_id.production_ids.move_finished_ids.move_dest_ids.location_id.ids),
+        ]"
+mrp_subcontracting.stock_lot_subcontracting_rule,stock.lot,1,1,1,1,1,base.group_portal,"[
+        '|',
+            '|',
+                ('product_id', 'in', user.partner_id.commercial_partner_id.bom_ids.product_id.ids),
+                ('product_id', 'in', user.partner_id.commercial_partner_id.bom_ids.product_tmpl_id.product_variant_ids.ids),
+            ('product_id', 'in', user.partner_id.commercial_partner_id.bom_ids.bom_line_ids.product_id.ids),
+            ]"
+mrp_subcontracting.stock_move_line_subcontractor_rule,stock.move.line,1,1,1,1,1,base.group_portal,"[
+        '|', 
+            '|',
+                ('move_id.production_id.subcontractor_id', '=', user.partner_id.commercial_partner_id.id),
+                ('move_id.move_orig_ids.production_id.subcontractor_id', 'in', user.partner_id.commercial_partner_id.ids),
+            ('move_id.raw_material_production_id.subcontractor_id', 'in', user.partner_id.commercial_partner_id.ids),
+        ]"
+mrp_subcontracting.stock_move_subcontractor_rule,stock.move,1,1,1,1,1,base.group_portal,"[
+        '|', 
+            '|',
+                ('production_id.subcontractor_id', '=', user.partner_id.commercial_partner_id.id),
+                ('move_orig_ids.production_id.subcontractor_id', 'in', user.partner_id.commercial_partner_id.ids),
+            ('raw_material_production_id.subcontractor_id', 'in', user.partner_id.commercial_partner_id.ids)
+        ]"
+mrp_subcontracting.stock_warehouse_subcontractor_rule,stock.warehouse,1,1,1,1,1,base.group_portal,"[('id', 'in', user.partner_id.commercial_partner_id.picking_ids.picking_type_id.warehouse_id.ids)]"
+mrp_subcontracting_account.analytic_accout_line_subcontractor_rule,account.analytic.line,1,1,1,1,1,base.group_portal,"[('account_id.bom_ids', 'in', user.partner_id.commercial_partner_id.bom_ids.ids)]"
+mrp_subcontracting_account.analytic_accout_subcontractor_rule,account.analytic.account,1,1,1,1,1,base.group_portal,"[('bom_ids', 'in', user.partner_id.commercial_partner_id.bom_ids.ids)]"
+payment.payment_capture_wizard_rule,payment.capture.wizard,1,1,1,1,1,"","[('create_uid', '=', user.id)]"
+payment.payment_provider_company_rule,payment.provider,1,1,1,1,1,"","[('company_id', 'parent_of', company_ids)]"
+payment.payment_token_company_rule,payment.token,1,1,1,1,1,"","[('company_id', 'parent_of', company_ids)]"
+payment.payment_token_user_rule,payment.token,1,1,1,1,1,"base.group_portal,base.group_public,base.group_user","[('partner_id', '=', user.partner_id.id)]"
+payment.transaction_company_rule,payment.transaction,1,1,1,1,1,"","[('company_id', 'in', company_ids)]"
+point_of_sale.rule_invoice_line_pos_user,account.move.line,1,1,1,1,1,point_of_sale.group_pos_user,"[('move_id.pos_order_ids', '!=', False)]"
+point_of_sale.rule_invoice_pos_user,account.move,1,1,1,1,1,point_of_sale.group_pos_user,"[('pos_order_ids', '!=', False)]"
+point_of_sale.rule_pos_bank_statement_account_user,account.bank.statement,1,1,1,1,1,account.group_account_invoice,"[(1, '=', 1)]"
+point_of_sale.rule_pos_bank_statement_line_account_user,account.bank.statement.line,1,1,1,1,1,account.group_account_invoice,"[(1, '=', 1)]"
+point_of_sale.rule_pos_bank_statement_line_user,account.bank.statement.line,1,1,1,1,1,point_of_sale.group_pos_user,"[('pos_session_id', '!=', False)]"
+point_of_sale.rule_pos_config_multi_company,pos.config,1,1,1,1,1,"","[('company_id', 'in', company_ids)]"
+point_of_sale.rule_pos_multi_company,pos.order,1,1,1,1,1,"","[('company_id', 'in', company_ids)]"
+point_of_sale.rule_pos_order_line_multi_company,pos.order.line,1,1,1,1,1,"","[('company_id', 'in', company_ids)]"
+point_of_sale.rule_pos_order_report_multi_company,report.pos.order,1,1,1,1,1,"","[('company_id', 'in', company_ids)]"
+point_of_sale.rule_pos_payment_method_multi_company,pos.payment.method,1,1,1,1,1,"","[('company_id', 'in', company_ids)]"
+point_of_sale.rule_pos_payment_multi_company,pos.payment,1,1,1,1,1,"","[('company_id', 'in', company_ids)]"
+point_of_sale.rule_pos_session_multi_company,pos.session,1,1,1,1,1,"","[('config_id.company_id', 'in', company_ids)]"
+pos_sale.pos_sale_rule_pos_channel_pos_manager,crm.team,1,1,1,1,1,point_of_sale.group_pos_manager,"[(1,'=',1)]"
+product.product_combo_comp_rule,product.combo,1,1,1,1,1,"","
+            ['|', ('company_id', '=', False), ('company_id', 'parent_of', company_ids)]
+        "
+product.product_comp_rule,product.template,1,1,1,1,1,""," ['|', ('company_id', 'parent_of', company_ids), ('company_id', '=', False)]"
+product.product_document_comp_rule,product.document,1,1,1,1,1,""," ['|', ('company_id', 'parent_of', company_ids), ('company_id', '=', False)]"
+product.product_pricelist_comp_rule,product.pricelist,0,1,1,1,1,""," ['|', ('company_id', 'parent_of', company_ids), ('company_id', '=', False)]"
+product.product_pricelist_item_comp_rule,product.pricelist.item,0,1,1,1,1,""," ['|', ('company_id', 'parent_of', company_ids), ('company_id', '=', False)]"
+product.product_supplierinfo_comp_rule,product.supplierinfo,1,1,1,1,1,"","['|', ('company_id', '=', False), ('company_id', 'parent_of', company_ids)]"
+project.burndown_chart_project_manager_rule,project.task.burndown.chart.report,1,1,1,1,1,project.group_project_manager,"[(1, '=', 1)]"
+project.burndown_chart_project_user_rule,project.task.burndown.chart.report,1,1,1,1,1,project.group_project_user,"[
+        '|',
+            ('project_id.privacy_visibility', 'in', ['employees', 'portal']),
+            '|',
+                ('project_id.message_partner_ids', 'in', [user.partner_id.id]),
+                ('user_ids', 'in', user.id),
+        ]"
+project.ir_rule_private_task,project.task,1,1,1,1,1,project.group_project_user,"[
+            ('project_id.privacy_visibility', 'in', ['employees', 'portal']),
+            '|', '|', ('project_id', '!=', False),
+                      ('parent_id', '!=', False),
+                 ('user_ids', 'in', user.id),
+        ]"
+project.ir_rule_project_personal_stage_my,project.task.stage.personal,1,1,1,1,1,"","[('user_id', '=', user.id)]"
+project.mail_plan_rule_group_project_manager_task,mail.activity.plan,1,1,0,1,1,project.group_project_manager,"[('res_model', 'in', ('project.project', 'project.task'))]"
+project.mail_plan_templates_rule_group_project_manager_task,mail.activity.plan.template,1,1,0,1,1,project.group_project_manager,"[('plan_id.res_model', 'in', ('project.project', 'project.task'))]"
+project.milestone_comp_rule,project.milestone,1,1,1,1,1,"","['|', ('project_id.company_id', 'in', company_ids), ('project_id.company_id', '=', False)]"
+project.milestone_visibility_project_admin,project.milestone,1,1,1,1,1,project.group_project_manager,"[(1, '=', 1)]"
+project.milestone_visibility_rule,project.milestone,1,1,1,1,1,base.group_user,"[
+        '|',
+            ('project_id.privacy_visibility', 'in', ['employees', 'portal']),
+            '|',
+                ('project_id.message_partner_ids', 'in', [user.partner_id.id]),
+                ('project_id.user_id', '=', user.id),
+        ]"
+project.project_collaborator_rule_portal,project.collaborator,1,1,1,1,1,base.group_portal,"[
+            ('project_id.privacy_visibility', 'in', ['invited_users', 'portal']),
+            ('partner_id', '=', user.partner_id.id),
+        ]"
+project.project_comp_rule,project.project,1,1,1,1,1,"","[('company_id', 'in', company_ids + [False])]"
+project.project_manager_all_project_tasks_rule,project.task,1,1,1,1,1,project.group_project_manager,"[
+            '|', ('project_id', '!=', False),
+                 ('user_ids', 'in', user.id),
+        ]"
+project.project_milestone_rule_portal_project_sharing,project.milestone,1,1,1,1,1,base.group_portal,"[
+            ('project_id.privacy_visibility', 'in', ['invited_users', 'portal']),
+            ('project_id.collaborator_ids.partner_id', 'in', [user.partner_id.id]),
+        ]"
+project.project_project_manager_rule,project.project,1,1,1,1,1,project.group_project_manager,"[(1, '=', 1)]"
+project.project_project_rule_portal,project.project,1,1,1,1,1,base.group_portal,"[
+            '&',
+                ('privacy_visibility', 'in', ['invited_users', 'portal']),
+                ('message_partner_ids', 'child_of', [user.partner_id.commercial_partner_id.id]),
+        ]"
+project.project_project_stage_rule,project.project.stage,1,1,1,1,1,"","[('company_id', 'in', company_ids + [False])]"
+project.project_public_members_rule,project.project,1,1,1,1,1,base.group_user,"['|',
+                                        ('privacy_visibility', 'in', ['employees', 'portal']),
+                                        ('message_partner_ids', 'in', [user.partner_id.id])
+                                    ]"
+project.project_task_rule_portal,project.task,1,0,1,0,0,base.group_portal,"[
+            ('project_id.privacy_visibility', 'in', ['invited_users', 'portal']),
+            ('active', '=', True),
+            '|',
+                ('message_partner_ids', 'child_of', [user.partner_id.commercial_partner_id.id]),
+                ('project_id.collaborator_ids', 'any', [
+                    ('partner_id', '=', user.partner_id.id),
+                    ('limited_access', '=', False),
+                ]),
+        ]"
+project.project_task_rule_portal_project_sharing,project.task,0,1,0,1,0,base.group_portal,"[
+            ('project_id.privacy_visibility', 'in', ['invited_users', 'portal']),
+            ('active', '=', True),
+            '|',
+                '&',
+                    ('message_partner_ids', 'child_of', [user.partner_id.commercial_partner_id.id]),
+                    ('project_id.collaborator_ids.partner_id', 'in', [user.partner_id.id]),
+                ('project_id.collaborator_ids', 'any', [
+                    ('partner_id', '=', user.partner_id.id),
+                    ('limited_access', '=', False),
+                ]),
+        ]"
+project.project_task_rule_portal_project_sharing_create_access,project.task,0,1,0,0,0,base.group_portal,"[
+            ('project_id.privacy_visibility', 'in', ['invited_users', 'portal']),
+            ('active', '=', True),
+            ('project_id.collaborator_ids.partner_id', '=', user.partner_id.id),
+        ]"
+project.report_project_task_manager_rule,report.project.task.user,1,1,1,1,1,project.group_project_manager,"[(1, '=', 1)]"
+project.report_project_task_user_report_comp_rule,report.project.task.user,1,1,1,1,1,"","[('company_id', 'in', company_ids + [False])]"
+project.report_project_task_user_rule,report.project.task.user,1,1,1,1,1,project.group_project_user,"[
+        '|',
+            ('project_id.privacy_visibility', 'in', ['employees', 'portal']),
+            '|',
+                ('project_id.message_partner_ids', 'in', [user.partner_id.id]),
+                '|',
+                    ('task_id.message_partner_ids', 'in', [user.partner_id.id]),
+                    ('user_ids', 'in', user.id),
+        ]"
+project.task_comp_rule,project.task,1,1,1,1,1,"","[('company_id', 'in', company_ids + [False])]"
+project.task_type_manager_rule,project.task.type,1,1,1,1,1,project.group_project_manager,"[(1, '=', 1)]"
+project.task_type_own_write_rule,project.task.type,1,1,0,1,1,project.group_project_user,"[('user_id', '=', user.id)]"
+project.task_type_visibility_rule,project.task.type,1,1,1,1,1,"","[('user_id', 'in', (False, user.id))]"
+project.task_visibility_rule,project.task,1,0,1,0,0,base.group_user,"[
+            '|',
+                '&',
+                    ('project_id', '!=', False),
+                    '|',
+                        ('project_id.privacy_visibility', 'in', ['employees', 'portal']),
+                        ('project_id.message_partner_ids', 'in', [user.partner_id.id]),
+                '|',
+                    ('message_partner_ids', 'in', [user.partner_id.id]),
+                    # to subscribe check access to the record, follower is not enough at creation
+                    ('user_ids', 'in', user.id)
+        ]"
+project.task_visibility_rule_project_user,project.task,1,1,0,1,1,project.group_project_user,"[
+            '|',
+                '&',
+                    ('project_id', '!=', False),
+                    '|',
+                        ('project_id.privacy_visibility', 'in', ['employees', 'portal']),
+                        ('project_id.message_partner_ids', 'in', [user.partner_id.id]),
+                '|',
+                    ('message_partner_ids', 'in', [user.partner_id.id]),
+                    # to subscribe check access to the record, follower is not enough at creation
+                    ('user_ids', 'in', user.id)
+        ]"
+project.update_comp_rule,project.update,1,1,1,1,1,"","['|', ('project_id.company_id', 'in', company_ids), ('project_id.company_id', '=', False)]"
+project.update_visibility_project_admin,project.update,1,1,1,1,1,project.group_project_manager,"[(1, '=', 1)]"
+project.update_visibility_rule,project.update,1,1,1,1,1,base.group_user,"[
+        '|',
+            ('project_id.privacy_visibility', 'in', ['employees', 'portal']),
+            '|',
+                ('project_id.message_partner_ids', 'in', [user.partner_id.id]),
+                '|',
+                    ('user_id', '=', user.id),
+                    ('project_id.user_id', '=', user.id)
+        ]"
+project_sms.ir_rule_sms_template_project_manager,sms.template,1,1,0,1,1,project.group_project_manager,"[('model', 'in', ('project.task', 'project.project'))]"
+project_todo.task_edition_rule_internal,project.task,1,1,1,1,1,base.group_user,"[('project_id', '=', False), ('user_ids', 'in', user.id), ('parent_id', '=', False)]"
+purchase.portal_purchase_order_line_rule,purchase.order.line,1,1,1,1,1,base.group_portal,"[('order_id.partner_id','child_of',[user.commercial_partner_id.id])]"
+purchase.portal_purchase_order_user_rule,purchase.order,1,0,1,1,1,base.group_portal,"[('partner_id', 'child_of', [user.commercial_partner_id.id])]"
+purchase.purchase_bill_union_comp_rule,purchase.bill.union,1,1,1,1,1,"","[('company_id', 'in', company_ids + [False])]"
+purchase.purchase_order_comp_rule,purchase.order,1,1,1,1,1,"","[('company_id', 'in', company_ids)]"
+purchase.purchase_order_line_comp_rule,purchase.order.line,1,1,1,1,1,"","[('company_id', 'in', company_ids)]"
+purchase.purchase_order_report_comp_rule,purchase.report,1,1,1,1,1,"","[('company_id', 'in', company_ids)]"
+purchase.purchase_user_account_move_line_rule,account.move.line,1,1,1,1,1,purchase.group_purchase_user,"[('move_id.move_type', 'in', ('in_invoice', 'in_refund', 'in_receipt'))]"
+purchase.purchase_user_account_move_rule,account.move,1,1,1,1,1,purchase.group_purchase_user,"[('move_type', 'in', ('in_invoice', 'in_refund', 'in_receipt'))]"
+purchase_requisition.purchase_requisition_comp_rule,purchase.requisition,1,1,1,1,1,"","[('company_id', 'in', company_ids)]"
+purchase_requisition.purchase_requisition_line_comp_rule,purchase.requisition.line,1,1,1,1,1,"","[('company_id', 'in', company_ids)]"
+repair.repair_order_rule,repair.order,1,1,1,1,1,"","[('company_id', 'in', company_ids)]"
+resource.resource_calendar_leaves_rule_group_admin_modify,resource.calendar.leaves,1,1,0,1,1,base.group_erp_manager,"[('resource_id', '=', False)]"
+resource.resource_calendar_leaves_rule_group_user_create,resource.calendar.leaves,1,0,1,0,0,base.group_user,"['|', ('resource_id', '=', False), ('resource_id.user_id', 'in', [False, user.id])]"
+resource.resource_calendar_leaves_rule_group_user_modify,resource.calendar.leaves,1,1,0,1,1,base.group_user,"[('resource_id', '!=', False), ('resource_id.user_id', 'in', [False, user.id])]"
+resource.resource_calendar_leaves_rule_multi_company,resource.calendar.leaves,1,1,1,1,1,"","[('company_id', 'in', company_ids + [False])]"
+resource.resource_resource_multi_company,resource.resource,1,1,1,1,1,"","[('company_id', 'in', company_ids + [False])]"
+sale.account_invoice_line_rule_see_all,account.move.line,1,1,1,1,1,sales_team.group_sale_salesman_all_leads,"[('move_id.move_type', 'in', ('out_invoice', 'out_refund'))]"
+sale.account_invoice_line_rule_see_personal,account.move.line,1,1,1,1,1,sales_team.group_sale_salesman,"[('move_id.move_type', 'in', ('out_invoice', 'out_refund')), '|', ('move_id.invoice_user_id', '=', user.id), ('move_id.invoice_user_id', '=', False)]"
+sale.account_invoice_report_rule_see_all,account.invoice.report,1,1,1,1,1,sales_team.group_sale_salesman_all_leads,"[(1, '=', 1)]"
+sale.account_invoice_report_rule_see_personal,account.invoice.report,1,1,1,1,1,sales_team.group_sale_salesman,"['|', ('invoice_user_id', '=', user.id), ('invoice_user_id', '=', False)]"
+sale.account_invoice_rule_see_all,account.move,1,1,1,1,1,sales_team.group_sale_salesman_all_leads,"[('move_type', 'in', ('out_invoice', 'out_refund'))]"
+sale.account_invoice_rule_see_personal,account.move,1,1,1,1,1,sales_team.group_sale_salesman,"[('move_type', 'in', ('out_invoice', 'out_refund')), '|', ('invoice_user_id', '=', user.id), ('invoice_user_id', '=', False)]"
+sale.account_invoice_send_batch_rule_see_all,account.move.send.batch.wizard,1,1,1,1,1,sales_team.group_sale_salesman_all_leads,"[('move_ids.move_type', 'in', ('out_invoice', 'out_refund'))]"
+sale.account_invoice_send_batch_rule_see_personal,account.move.send.batch.wizard,1,1,1,1,1,sales_team.group_sale_salesman,"[('move_ids.move_type', 'in', ('out_invoice', 'out_refund')), '|', ('move_ids.invoice_user_id', '=', user.id), ('move_ids.invoice_user_id', '=', False)]"
+sale.account_invoice_send_single_rule_see_all,account.move.send.wizard,1,1,1,1,1,sales_team.group_sale_salesman_all_leads,"[('move_id.move_type', 'in', ('out_invoice', 'out_refund'))]"
+sale.account_invoice_send_single_rule_see_personal,account.move.send.wizard,1,1,1,1,1,sales_team.group_sale_salesman,"[('move_id.move_type', 'in', ('out_invoice', 'out_refund')), '|', ('move_id.invoice_user_id', '=', user.id), ('move_id.invoice_user_id', '=', False)]"
+sale.mail_plan_rule_group_sale_manager,mail.activity.plan,1,1,0,1,1,sales_team.group_sale_manager,"[('res_model', '=', 'sale.order')]"
+sale.mail_plan_template_rule_group_sale_manager,mail.activity.plan.template,1,1,0,1,1,sales_team.group_sale_manager,"[('plan_id.res_model', '=', 'sale.order')]"
+sale.payment_token_salesman_rule,payment.token,1,1,1,1,1,sales_team.group_sale_salesman,"[(1, '=', 1)]"
+sale.payment_transaction_salesman_rule,payment.transaction,1,1,1,1,1,sales_team.group_sale_salesman,"[(1, '=', 1)]"
+sale.sale_advance_payment_inv_rule,sale.advance.payment.inv,1,1,1,1,1,"","[('create_uid', '=', user.id)]"
+sale.sale_mass_cancel_orders_rule,sale.mass.cancel.orders,1,1,1,1,1,"","[('create_uid', '=', user.id)]"
+sale.sale_order_comp_rule,sale.order,1,1,1,1,1,"","[('company_id', 'in', company_ids)]"
+sale.sale_order_line_comp_rule,sale.order.line,1,1,1,1,1,"","[('company_id', 'in', company_ids)]"
+sale.sale_order_line_personal_rule,sale.order.line,1,1,1,1,1,sales_team.group_sale_salesman,"['|',('salesman_id','=',user.id),('salesman_id','=',False)]"
+sale.sale_order_line_rule_portal,sale.order.line,1,1,1,1,1,base.group_portal,"[('order_id.partner_id','child_of',[user.commercial_partner_id.id])]"
+sale.sale_order_line_see_all,sale.order.line,1,1,1,1,1,sales_team.group_sale_salesman_all_leads,"[(1,'=',1)]"
+sale.sale_order_personal_rule,sale.order,1,1,1,1,1,sales_team.group_sale_salesman,"['|',('user_id','=',user.id),('user_id','=',False)]"
+sale.sale_order_report_comp_rule,sale.report,1,1,1,1,1,"","[('company_id', 'in', company_ids)]"
+sale.sale_order_report_personal_rule,sale.report,1,1,1,1,1,sales_team.group_sale_salesman,"['|',('user_id','=',user.id),('user_id','=',False)]"
+sale.sale_order_report_see_all,sale.report,1,1,1,1,1,sales_team.group_sale_salesman_all_leads,"[(1,'=',1)]"
+sale.sale_order_rule_portal,sale.order,1,0,1,1,1,base.group_portal,"[('partner_id','child_of',[user.commercial_partner_id.id])]"
+sale.sale_order_see_all,sale.order,1,1,1,1,1,sales_team.group_sale_salesman_all_leads,"[(1,'=',1)]"
+sale_management.sale_order_template_rule_company,sale.order.template,1,1,1,1,1,"","[('company_id', 'in', company_ids + [False])]"
+sale_pdf_quote_builder.quotation_document_comp_rule,quotation.document,1,1,1,1,1,"","
+            ['|', ('company_id', '=', False), ('company_id', 'parent_of', company_ids)]
+        "
+sale_project.sale_order_line_rule_project_manager,sale.order.line,1,0,1,0,0,project.group_project_manager,"[('state', '=', 'sale'), ('is_service', '=', True), '|', ('project_id','!=', False), ('task_id','!=', False)]"
+sale_sms.ir_rule_sms_template_so_sale_manager,sms.template,1,1,0,1,1,sales_team.group_sale_manager,"[('model_id.model', 'in', ('sale.order', 'res.partner'))]"
+sale_stock.sale_order_line_rule_stock_user,sale.order.line,1,0,1,0,0,stock.group_stock_user,"[(1, '=', 1)]"
+sale_stock.stock_picking_rule_portal,stock.picking,1,1,1,1,1,base.group_portal,"['|', ('partner_id', '=', user.partner_id.id), ('sale_id.partner_id', '=', user.partner_id.id)]"
+sales_team.crm_rule_all_salesteam,crm.team,1,1,1,1,1,sales_team.group_sale_salesman_all_leads,"[(1,'=',1)]"
+sales_team.sale_team_comp_rule,crm.team,1,1,1,1,1,"","[('company_id', 'in', company_ids + [False])]"
+sms.ir_rule_sms_template_system,sms.template,1,1,1,1,1,base.group_system,"[(1, '=', 1)]"
+spreadsheet_dashboard.ir_rule_spreadsheet_dashboard,spreadsheet.dashboard,1,1,1,1,1,base.group_user,"[('group_ids', 'in', user.all_group_ids.ids)]"
+spreadsheet_dashboard.spreadsheet_dashboard_rule_company,spreadsheet.dashboard,1,1,1,1,1,"","[('company_ids', 'in', company_ids + [False])]"
+spreadsheet_dashboard.spreadsheet_dashboard_rule_manager,spreadsheet.dashboard,1,1,1,1,1,spreadsheet_dashboard.group_dashboard_manager,"[(1, '=', 1)]"
+spreadsheet_dashboard.spreadsheet_dashboard_share_create_uid_rule,spreadsheet.dashboard.share,1,1,1,1,1,base.group_user,"[('create_uid', '=', user.id)]"
+stock.product_pulled_flow_comp_rule,stock.rule,1,1,1,1,1,"","[('company_id', 'in', company_ids + [False])]"
+stock.report_stock_quantity_flow_comp_rule,report.stock.quantity,1,1,1,1,1,"","[('company_id', 'in', company_ids)]"
+stock.stock_location_comp_rule,stock.location,1,1,1,1,1,"","[('company_id', 'in', company_ids + [False])]"
+stock.stock_location_route_comp_rule,stock.route,1,1,1,1,1,"","[('company_id', 'in', company_ids + [False])]"
+stock.stock_move_line_rule,stock.move.line,1,1,1,1,1,"","[('company_id', 'in', company_ids + [False])]"
+stock.stock_move_rule,stock.move,1,1,1,1,1,"","[('company_id', 'in', company_ids)]"
+stock.stock_package_comp_rule,stock.package,1,1,1,1,1,"","[('company_id', 'in', company_ids + [False])]"
+stock.stock_picking_rule,stock.picking,1,1,1,1,1,"","[('company_id', 'in', company_ids)]"
+stock.stock_picking_type_rule,stock.picking.type,1,1,1,1,1,"","[('company_id','in', company_ids)]"
+stock.stock_production_lot_rule,stock.lot,1,1,1,1,1,"","[('company_id', 'in', company_ids + [False])]"
+stock.stock_putaway_rule_rule,stock.putaway.rule,1,1,1,1,1,"","[('company_id','in', company_ids)]"
+stock.stock_quant_rule,stock.quant,1,1,1,1,1,"","[('company_id', 'in', company_ids + [False])]"
+stock.stock_scrap_company_rule,stock.scrap,1,1,1,1,1,"","[('company_id', 'in', company_ids)]"
+stock.stock_storage_category_rule,stock.storage.category,1,1,1,1,1,"","[('company_id', 'in', company_ids + [False])]"
+stock.stock_warehouse_comp_rule,stock.warehouse,1,1,1,1,1,"","[('company_id', 'in', company_ids)]"
+stock.stock_warehouse_orderpoint_rule,stock.warehouse.orderpoint,1,1,1,1,1,"","[('company_id', 'in', company_ids)]"
+stock_account.product_value_rule,product.value,1,1,1,1,1,"","[('company_id','in', company_ids)]"
+stock_account.stock_avco_report_rule,stock.avco.report,1,1,1,1,1,"","[('company_id','in', company_ids)]"
+stock_landed_costs.stock_landed_cost_rule,stock.landed.cost,1,1,1,1,1,"","[('company_id', 'in', company_ids)]"
+stock_picking_batch.stock_picking_batch_multicompany_rule,stock.picking.batch,1,1,1,1,1,"","[('company_id', 'in', company_ids)]"
+stock_sms.ir_rule_sms_template_stock_manager,sms.template,1,1,0,1,1,stock.group_stock_manager,"[('model_id.model', '=', 'stock.picking')]"
+survey.survey_invite_survey_manager,survey.invite,1,1,1,1,0,survey.group_survey_manager,"[(1, '=', 1)]"
+survey.survey_invite_survey_user,survey.invite,1,1,1,1,0,survey.group_survey_user,"['|',  ('survey_id.restrict_user_ids', 'in', user.id),
+                ('survey_id.restrict_user_ids', '=', False)]"
+survey.survey_question_answer_rule_survey_manager,survey.question.answer,1,1,1,1,1,survey.group_survey_manager,"[(1, '=', 1)]"
+survey.survey_question_answer_rule_survey_user,survey.question.answer,1,1,1,1,1,survey.group_survey_user,"[
+                '|',
+                    '|', ('question_id.survey_id.restrict_user_ids', 'in', user.id), ('matrix_question_id.survey_id.restrict_user_ids', 'in', user.id),
+                    '|', ('question_id.survey_id.restrict_user_ids', '=', False), ('matrix_question_id.survey_id.restrict_user_ids', '=', False)]
+            "
+survey.survey_question_rule_survey_manager,survey.question,1,1,1,1,1,survey.group_survey_manager,"[(1, '=', 1)]"
+survey.survey_question_rule_survey_user,survey.question,1,1,1,1,1,survey.group_survey_user,"[
+                '|', ('survey_id.restrict_user_ids', 'in', user.id), ('survey_id.restrict_user_ids', '=', False)]"
+survey.survey_survey_rule_survey_manager,survey.survey,1,1,1,1,1,survey.group_survey_manager,"[(1, '=', 1)]"
+survey.survey_survey_rule_survey_user,survey.survey,1,1,1,1,1,survey.group_survey_user,"[
+                '|', ('restrict_user_ids', 'in', user.id), ('restrict_user_ids', '=', False)]"
+survey.survey_user_input_line_rule_survey_manager,survey.user_input.line,1,1,1,1,1,survey.group_survey_manager,"[('survey_id.survey_type', 'in', ('assessment', 'custom', 'live_session', 'survey'))]"
+survey.survey_user_input_line_rule_survey_user,survey.user_input.line,1,1,1,1,1,survey.group_survey_user,"[
+                '&', ('survey_id.survey_type', 'in', ('assessment', 'custom', 'live_session', 'survey')),
+                '|', ('survey_id.restrict_user_ids', 'in', user.id),
+                     ('survey_id.restrict_user_ids', '=', False)]"
+survey.survey_user_input_rule_survey_manager,survey.user_input,1,1,1,1,1,survey.group_survey_manager,"[('survey_id.survey_type', 'in', ('assessment', 'custom', 'live_session', 'survey'))]"
+survey.survey_user_input_rule_survey_user,survey.user_input,1,1,1,1,1,survey.group_survey_user,"[
+                '&', ('survey_id.survey_type', 'in', ('assessment', 'custom', 'live_session', 'survey')),
+                '|', ('survey_id.restrict_user_ids', 'in', user.id),
+                     ('survey_id.restrict_user_ids', '=', False)]"
+web.res_users_settings_embedded_action_rule_admin,res.users.settings.embedded.action,1,1,1,1,1,base.group_system,"[(1, '=', 1)]"
+web.res_users_settings_embedded_action_rule_user,res.users.settings.embedded.action,1,1,1,1,1,base.group_user,"[('user_setting_id.user_id', '=', user.id)]"
+website.view_rule_visibility_connected,ir.ui.view,1,0,1,0,0,base.group_portal,"['|', ('type', '!=', 'qweb'), ('visibility', 'in', ('public', 'connected', False))]"
+website.view_rule_visibility_public,ir.ui.view,1,0,1,0,0,base.group_public,"['|', ('type', '!=', 'qweb'), ('visibility', 'in', ('public', False))]"
+website.website_designer_edit_qweb,ir.ui.view,1,1,1,1,1,website.group_website_designer,"[('type', '=', 'qweb')]"
+website.website_designer_view,ir.ui.view,1,0,1,0,0,website.group_website_designer,"[('type', '!=', 'qweb')]"
+website.website_group_system_edit_all_views,ir.ui.view,1,1,1,1,1,base.group_system,"[(1, '=', 1)]"
+website.website_menu,website.menu,1,1,1,1,1,"","['|', ('group_ids', '=', False), ('group_ids', 'in', user.all_group_ids.ids)]"
+website.website_page_controller_rule_public,website.controller.page,1,1,1,1,1,website.website_page_controller_expose,"[('website_published', '=', True)]"
+website.website_page_rule_public,website.page,1,1,1,1,1,"base.group_portal,base.group_public","[('website_published', '=', True)]"
+website_blog.website_blog_post_public,blog.post,1,1,1,1,1,"base.group_portal,base.group_public","[('website_published', '=', True)]"
+website_blog.website_blog_public,blog.blog,1,1,1,1,1,"base.group_portal,base.group_public","[('active', '=', True)]"
+website_crm_iap_reveal.ir_rule_crm_reveal_rule_all,crm.reveal.rule,1,1,1,1,1,sales_team.group_sale_salesman_all_leads,"[(1, '=', 1)]"
+website_crm_iap_reveal.ir_rule_crm_reveal_rule_salesman,crm.reveal.rule,1,1,1,1,1,sales_team.group_sale_salesman,"['|', ('user_id', '=', user.id), ('user_id', '=', False)]"
+website_crm_iap_reveal.ir_rule_crm_reveal_view_all,crm.reveal.view,1,1,1,1,1,sales_team.group_sale_salesman_all_leads,"[(1, '=', 1)]"
+website_crm_iap_reveal.ir_rule_crm_reveal_view_salesman,crm.reveal.view,1,1,1,1,1,sales_team.group_sale_salesman,"['|', ('reveal_rule_id.user_id', '=', user.id), ('reveal_rule_id.user_id', '=', False)]"
+website_crm_partner_assign.assigned_lead_portal_rule_1,crm.lead,1,0,1,0,0,base.group_portal,"[('partner_assigned_id','child_of',user.commercial_partner_id.id)]"
+website_crm_partner_assign.ir_rule_crm_partner_report_assign_all,crm.partner.report.assign,1,1,1,1,1,sales_team.group_sale_salesman_all_leads,"[(1, '=', 1)]"
+website_crm_partner_assign.ir_rule_crm_partner_report_assign_salesman,crm.partner.report.assign,1,1,1,1,1,sales_team.group_sale_salesman,"['|', ('user_id', '=', user.id), ('user_id', '=', False)]"
+website_crm_partner_assign.res_partner_grade_rule_portal_public,res.partner.grade,1,1,1,1,1,"base.group_portal,base.group_public","[('website_published','=', True)]"
+website_customer.website_customer_res_partner_tag_public,res.partner.tag,1,1,1,1,1,"base.group_portal,base.group_public","[('website_published', '=', True)]"
+website_event.event_event_public,event.event,1,0,1,0,0,"base.group_portal,base.group_public","[('website_published', '=', True)]"
+website_event.ir_rule_event_event_ticket_public,event.event.ticket,1,0,1,0,0,"base.group_portal,base.group_public","[('event_id.website_published', '=', True)]"
+website_event.ir_rule_event_question_answer_event_user,event.question.answer,1,0,1,0,0,event.group_event_registration_desk,"[(1, '=', 1)]"
+website_event.ir_rule_event_question_answer_published,event.question.answer,1,0,1,0,0,"base.group_portal,base.group_public,base.group_user","[('question_id.event_ids', 'any', [('is_published', '=', True)])]"
+website_event.ir_rule_event_question_event_user,event.question,1,0,1,0,0,event.group_event_registration_desk,"[(1, '=', 1)]"
+website_event.ir_rule_event_question_published,event.question,1,0,1,0,0,"base.group_portal,base.group_public,base.group_user","[('event_ids', 'any', [('is_published', '=', True)])]"
+website_event.ir_rule_event_slot_public,event.slot,1,0,1,0,0,"base.group_portal,base.group_public","[('event_id.website_published', '=', True)]"
+website_event.ir_rule_event_tag_public,event.tag,1,0,1,0,0,"base.group_portal,base.group_public","[('category_id.website_published', '=', True), ('color', '!=', False), ('color', '!=', 0)]"
+website_event_booth.ir_rule_event_booth_public,event.booth,1,0,1,0,0,"base.group_portal,base.group_public","[('event_id.website_published', '=', True)]"
+website_event_exhibitor.event_sponsor_rule_share,event.sponsor,1,0,1,0,0,"base.group_portal,base.group_public","[('website_published', '=', True)]"
+website_event_track.event_track_public,event.track,1,0,1,0,0,"base.group_portal,base.group_public","[('website_published', '=', True)]"
+website_event_track.ir_rule_event_track_tag_public,event.track.tag,1,0,1,0,0,"base.group_portal,base.group_public","['&', ('color', '!=', False), ('color', '!=', 0)]"
+website_forum.website_forum_connected,forum.forum,1,1,1,1,1,"base.group_portal,base.group_user","[
+            '|',
+                ('privacy', 'in', ['public', 'connected']),
+                '&',
+                    ('privacy', '=', 'private'),
+                    ('authorized_group_id', 'in', user.all_group_ids.ids)]"
+website_forum.website_forum_connected_post,forum.post,1,1,1,1,1,"base.group_portal,base.group_user","['|', ('forum_id.privacy', 'in', ['public', 'connected']), '&', ('forum_id.privacy', '=', 'private'), ('forum_id.authorized_group_id', 'in', user.all_group_ids.ids)]"
+website_forum.website_forum_connected_tag,forum.tag,1,1,1,1,1,"base.group_portal,base.group_user","['|', ('forum_id.privacy', 'in', ['public', 'connected']), '&', ('forum_id.privacy', '=', 'private'), ('forum_id.authorized_group_id', 'in', user.all_group_ids.ids)]"
+website_forum.website_forum_create_website_designer,forum.forum,1,1,0,0,0,website.group_website_designer,"[(1, '=', 1)]"
+website_forum.website_forum_post_vote_all,forum.post.vote,1,1,1,1,1,base.group_erp_manager,"[(1, '=', 1)]"
+website_forum.website_forum_post_vote_own,forum.post.vote,1,1,1,1,1,"base.group_portal,base.group_user","[('user_id', '=', user.id)]"
+website_forum.website_forum_private,forum.forum,1,1,1,1,1,base.group_erp_manager,"[(1, '=', 1)]"
+website_forum.website_forum_private_post,forum.post,1,1,1,1,1,base.group_erp_manager,"[(1, '=', 1)]"
+website_forum.website_forum_private_tag,forum.tag,1,1,1,1,1,base.group_erp_manager,"[(1, '=', 1)]"
+website_forum.website_forum_public,forum.forum,1,1,1,1,1,base.group_public,"[('privacy', '=', 'public')]"
+website_forum.website_forum_public_post,forum.post,1,1,1,1,1,base.group_public,"[('forum_id.privacy', '=', 'public')]"
+website_forum.website_forum_public_tag,forum.tag,1,1,1,1,1,base.group_public,"[('forum_id.privacy', '=', 'public')]"
+website_hr_recruitment.hr_department_public,hr.department,1,0,1,0,0,base.group_public,"['|', ('jobs_ids.website_published', '=', True), ('child_ids', 'not in', [])]"
+website_hr_recruitment.hr_job_officer,hr.job,1,0,1,0,0,hr_recruitment.group_hr_recruitment_user,"[(1, '=', 1)]"
+website_hr_recruitment.hr_job_portal,hr.job,1,0,1,0,0,base.group_portal,"[('website_published', '=', True)]"
+website_hr_recruitment.hr_job_public,hr.job,1,0,1,0,0,base.group_public,"[('website_published', '=', True)]"
+website_sale.empty_public_categories_rule,product.public.category,1,0,1,0,0,"base.group_portal,base.group_public","[('has_published_products', '=', True)]"
+website_sale.product_attribute_custom_value_portal_rule,product.attribute.custom.value,1,1,1,1,1,"base.group_portal,base.group_public,base.group_user","[('create_uid', '=', user.id)]"
+website_sale.product_attribute_custom_value_sale_rule,product.attribute.custom.value,1,1,1,1,1,"product.group_product_manager,sales_team.group_sale_salesman","[(1, '=', 1)]"
+website_sale.product_pricelist_comp_rule,product.pricelist,1,1,1,1,1,"","['|', ('company_id', 'in', [False, website.company_id.id]), ('company_id', 'in', company_ids)]"
+website_sale.product_pricelist_item_comp_rule,product.pricelist.item,1,1,1,1,1,"","['|', ('company_id', 'in', [False, website.company_id.id]), ('company_id', 'in', company_ids)]"
+website_sale.product_template_public,product.template,1,0,1,0,0,"base.group_portal,base.group_public","[('website_published', '=', True), ('sale_ok', '=', True)]"
+website_sale_wishlist.all_product_wishlist_rule,product.wishlist,1,1,1,1,1,sales_team.group_sale_manager,"[(1, '=', 1)]"
+website_sale_wishlist.product_wishlist_rule,product.wishlist,1,1,1,1,1,"base.group_portal,base.group_user","[('partner_id','=', user.partner_id.id)]"
+website_slides.rule_slide_channel_global,slide.channel,1,1,1,1,1,"","[(1, '=', 1)]"
+website_slides.rule_slide_channel_manager,slide.channel,1,1,1,1,1,website_slides.group_website_slides_manager,"[(1, '=', 1)]"
+website_slides.rule_slide_channel_officer_cw,slide.channel,1,1,0,1,0,website_slides.group_website_slides_officer,"[('user_id', '=', user.id)]"
+website_slides.rule_slide_channel_officer_r,slide.channel,1,0,1,0,0,website_slides.group_website_slides_officer,"[(1, '=', 1)]"
+website_slides.rule_slide_channel_partner_manager,slide.channel.partner,1,1,1,1,1,website_slides.group_website_slides_manager,"[(1, '=', 1)]"
+website_slides.rule_slide_channel_partner_officer,slide.channel.partner,1,1,0,1,1,website_slides.group_website_slides_officer,"[('channel_id.user_id', '=', user.id)]"
+website_slides.rule_slide_channel_tag_public,slide.channel.tag,1,0,1,0,0,"base.group_portal,base.group_public","['&', ('color', '!=', False), ('color', '!=', 0)]"
+website_slides.rule_slide_channel_visibility_public_user,slide.channel,1,0,1,0,0,base.group_public,"[('website_published', '=', True), ('visibility', 'in', ['public', 'link'])]"
+website_slides.rule_slide_channel_visibility_signed_in_user,slide.channel,1,0,1,0,0,"base.group_portal,base.group_user","[
+                '&',
+                    ('website_published', '=', True),
+                    '|',
+                        ('visibility', 'in', ('public', 'connected', 'link')),
+                        '|',
+                            ('is_member_invited', '=', True),
+                            ('is_member', '=', True),
+                ]
+            "
+website_slides.rule_slide_slide_global,slide.slide,1,1,1,1,1,"","[(1, '=', 1)]"
+website_slides.rule_slide_slide_manager,slide.slide,1,1,1,1,1,website_slides.group_website_slides_manager,"[(1, '=', 1)]"
+website_slides.rule_slide_slide_officer_cw,slide.slide,1,1,0,1,0,website_slides.group_website_slides_officer,"[('channel_id.user_id', '=', user.id)]"
+website_slides.rule_slide_slide_officer_r,slide.slide,1,0,1,0,0,website_slides.group_website_slides_officer,"[(1, '=', 1)]"
+website_slides.rule_slide_slide_partner_manager,slide.slide.partner,1,1,1,1,1,website_slides.group_website_slides_manager,"[(1, '=', 1)]"
+website_slides.rule_slide_slide_partner_officer,slide.slide.partner,1,1,0,1,1,website_slides.group_website_slides_officer,"[('channel_id.user_id', '=', user.id)]"
+website_slides.rule_slide_slide_public_user,slide.slide,1,0,1,0,0,base.group_public,"[
+                    ('channel_id.website_published', '=', True),
+                    ('website_published', '=', True),
+                    ('channel_id.visibility', 'in', ['public', 'link']),
+                    '|',
+                        ('is_category','=', True),
+                        ('is_preview', '=', True),
+                ]
+            "
+website_slides.rule_slide_slide_resource_downloadable,slide.slide.resource,1,0,1,0,0,"base.group_portal,base.group_user","[('slide_id.channel_id.is_member', '=', True)]"
+website_slides.rule_slide_slide_resource_downloadable_manager,slide.slide.resource,1,1,1,1,1,website_slides.group_website_slides_manager,"[(1, '=', 1)]"
+website_slides.rule_slide_slide_resource_officer_crud,slide.slide.resource,1,1,1,1,1,website_slides.group_website_slides_officer,"[('slide_id.channel_id.user_id', '=', user.id)]"
+website_slides.rule_slide_slide_resource_officer_read,slide.slide.resource,1,0,1,0,0,website_slides.group_website_slides_officer,"[(1, '=', 1)]"
+website_slides.rule_slide_slide_signed_in_user,slide.slide,1,0,1,0,0,"base.group_portal,base.group_user","[
+                '&',
+                    '|',
+                        ('user_id', '=', user.id),
+                        '&',
+                            ('website_published', '=', True),
+                            ('channel_id.website_published', '=', True),
+                    '|',
+                        '&',
+                            '|',
+                                ('channel_id.visibility', 'in', ('public', 'connected',  'link')),
+                                ('channel_id.is_member_invited', '=', True),
+                            '|',
+                                ('is_category', '=', True),
+                                ('is_preview', '=', True),
+                        ('channel_id.is_member', '=', True),
+                ]
+            "
+website_slides_forum.website_slides_forum_post_signed_in_user,forum.post,1,1,1,1,1,"base.group_portal,base.group_user","[
+            '&',
+                ('forum_id.slide_channel_ids.website_published', '=', True),
+                '|',
+                    ('forum_id.slide_channel_ids.visibility', 'in', ('public','connected')),
+                    ('forum_id.slide_channel_ids.is_member', '=', True)
+            ]
+        "
+website_slides_forum.website_slides_forum_public,forum.forum,1,1,1,1,1,base.group_public,"[('slide_channel_ids.website_published', '=', True), ('slide_channel_ids.visibility', '=', 'public')]"
+website_slides_forum.website_slides_forum_public_post,forum.post,1,1,1,1,1,base.group_public,"[('forum_id.slide_channel_ids.website_published', '=', True), ('forum_id.slide_channel_ids.visibility', '=', 'public')]"
+website_slides_forum.website_slides_forum_public_tag,forum.tag,1,1,1,1,1,base.group_public,"[('forum_id.slide_channel_ids.website_published', '=', True), ('forum_id.slide_channel_ids.visibility', '=', 'public')]"
+website_slides_forum.website_slides_forum_signed_in_user,forum.forum,1,1,1,1,1,"base.group_portal,base.group_user","[
+            '&',
+                ('slide_channel_ids.website_published', '=', True),
+                '|',
+                    ('slide_channel_ids.visibility', 'in', ('public','connected')),
+                    ('slide_channel_ids.is_member', '=', True)
+            ]
+        "
+website_slides_forum.website_slides_forum_tag_signed_in_user,forum.tag,1,1,1,1,1,"base.group_portal,base.group_user","[
+            '&',
+                ('forum_id.slide_channel_ids.website_published', '=', True),
+                '|',
+                    ('forum_id.slide_channel_ids.visibility', 'in', ('public','connected')),
+                    ('forum_id.slide_channel_ids.is_member', '=', True)
+            ]
+        "
+website_slides_forum.website_slides_forum_website_slides_officer,forum.forum,1,1,1,1,1,website_slides.group_website_slides_officer,"[(1, '=', 1)]"
+website_slides_forum.website_slides_forum_website_slides_officer_post,forum.post,1,1,1,1,1,website_slides.group_website_slides_officer,"[(1, '=', 1)]"
+website_slides_forum.website_slides_forum_website_slides_officer_tag,forum.tag,1,1,1,1,1,website_slides.group_website_slides_officer,"[(1, '=', 1)]"
+website_slides_survey.survey_question_answer_slide_channel_officer,survey.question.answer,1,0,1,0,0,website_slides.group_website_slides_officer,"[
+            '|',
+                '&',
+                    '&', ('question_id.survey_id.certification', '=', True), ('question_id.survey_id.survey_type', 'in', ('survey', 'live_session', 'assessment', 'custom')),
+                    '|', ('question_id.survey_id.restrict_user_ids', '=', False), ('question_id.survey_id.restrict_user_ids', 'in', user.id),
+                '&',
+                    '&', ('matrix_question_id.survey_id.certification', '=', True), ('matrix_question_id.survey_id.survey_type', 'in', ('survey', 'live_session', 'assessment', 'custom')),
+                    '|', ('matrix_question_id.survey_id.restrict_user_ids', '=', False), ('matrix_question_id.survey_id.restrict_user_ids', 'in', user.id),
+        ]"
+website_slides_survey.survey_question_rule_slide_channel_officer,survey.question,1,0,1,0,0,website_slides.group_website_slides_officer,"[('survey_id.certification', '=', True),
+            ('survey_id.survey_type', 'in', ('survey', 'live_session', 'assessment', 'custom')),
+            '|', ('survey_id.restrict_user_ids', '=', False),('survey_id.restrict_user_ids', 'in', user.id)]"
+website_slides_survey.survey_rule_slide_channel_officer,survey.survey,1,0,1,0,0,website_slides.group_website_slides_officer,"[('certification', '=', True),
+            ('survey_type', 'in', ('survey', 'live_session', 'assessment', 'custom')),
+            '|', ('restrict_user_ids', '=', False),('restrict_user_ids', 'in', user.id)]"
+website_slides_survey.survey_user_input_line_rule_slide_channel_officer,survey.user_input.line,1,0,1,0,0,website_slides.group_website_slides_officer,"[('survey_id.certification', '=', True),
+            ('survey_id.survey_type', 'in', ('survey', 'live_session', 'assessment', 'custom')),
+            '|', ('survey_id.restrict_user_ids', '=', False), ('survey_id.restrict_user_ids', 'in', user.id)]"
+website_slides_survey.survey_user_input_rule_slide_channel_officer,survey.user_input,1,0,1,0,0,website_slides.group_website_slides_officer,"[('survey_id.certification', '=', True),
+            ('survey_id.survey_type', 'in', ('survey', 'live_session', 'assessment', 'custom')),
+            '|', ('survey_id.restrict_user_ids', '=', False), ('survey_id.restrict_user_ids', 'in', user.id)]"

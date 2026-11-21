@@ -1,0 +1,8 @@
+---Models in module 'barcodes'---
+obsolete model barcodes.barcode_events_mixin [abstract]
+# NOTHING TO DO: abstract model
+
+---Fields in module 'barcodes'---
+---XML records in module 'barcodes'---
+NEW ir.ui.view: barcodes.view_partner_barcodes_form
+# NOTHING TO DO

@@ -1,0 +1,8 @@
+---Models in module 'pos_glory_cash'---
+---Fields in module 'pos_glory_cash'---
+# DONE: pre-migration: value glory_cash of pos.payment.method#payment_method_type is mapped to cash_machine with payment_provider glory
+
+pos_glory_cash / pos.payment.method       / glory_use_lna (boolean)       : NEW
+# NOTHING TO DO: new
+
+---XML records in module 'pos_glory_cash'---

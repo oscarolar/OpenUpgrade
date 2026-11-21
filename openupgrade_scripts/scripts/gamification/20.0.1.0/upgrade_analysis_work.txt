@@ -1,0 +1,23 @@
+---Models in module 'gamification'---
+---Fields in module 'gamification'---
+---XML records in module 'gamification'---
+NEW ir.access: gamification.gamification_badge_user_access
+NEW ir.access: gamification.gamification_badge_user_access_1
+ir.access: gamification.goal_gamification_manager_visibility (noupdate switched)
+ir.access: gamification.goal_global_multicompany (noupdate switched)
+ir.access: gamification.goal_user_visibility (noupdate switched)
+DEL ir.model.access: gamification.badge_portal
+DEL ir.model.access: gamification.badge_public
+DEL ir.model.access: gamification.badge_user_employee
+DEL ir.model.access: gamification.badge_user_manager
+DEL ir.model.access: gamification.badge_user_portal
+DEL ir.model.access: gamification.badge_user_public
+DEL ir.model.access: gamification.challenge_line_portal
+DEL ir.model.access: gamification.challenge_portal
+DEL ir.model.access: gamification.gamification_karma_rank_access_portal
+DEL ir.model.access: gamification.gamification_karma_rank_access_public
+DEL ir.model.access: gamification.gamification_karma_tracking_access_all
+DEL ir.model.access: gamification.goal_definition_portal
+DEL ir.model.access: gamification.goal_employee
+DEL ir.model.access: gamification.goal_portal
+# NOTHING TO DO: ir.model.access and ir.rule were merged into ir.access, handled by base

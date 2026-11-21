@@ -1,0 +1,28 @@
+---Models in module 'lunch'---
+---Fields in module 'lunch'---
+lunch        / lunch.alert              / notification_moment (selection): DEL required, selection_keys: ['am', 'pm']
+lunch        / lunch.supplier           / moment (selection)            : DEL required, selection_keys: ['am', 'pm']
+# DONE: post-migration: times are stored in 24 hours format, 12 hours are added to notification_time and automatic_email_time of the records with moment 'pm'
+
+---XML records in module 'lunch'---
+ir.access: lunch.ir_rule_lunch_location_multi_company (noupdate switched)
+ir.access: lunch.ir_rule_lunch_order_multi_company (noupdate switched)
+ir.access: lunch.ir_rule_lunch_product_category_multi_company (noupdate switched)
+ir.access: lunch.ir_rule_lunch_product_multi_company (noupdate switched)
+ir.access: lunch.ir_rule_lunch_supplier_multi_company (noupdate switched)
+NEW ir.access: lunch.lunch_cashmove_report_lunch_manager
+ir.access: lunch.lunch_mind_other_food_money (noupdate switched)
+ir.access: lunch.lunch_mind_your_own_food_money (noupdate switched)
+ir.access: lunch.lunch_order_rule_delete (noupdate switched)
+ir.access: lunch.lunch_order_rule_write (noupdate switched)
+ir.access: lunch.lunch_order_rule_write_manager (noupdate switched)
+# NOTHING TO DO: ir.access records are created from the module data, the previous ir.model.access and ir.rule are handled in base
+
+DEL ir.model.access: lunch.cashmove_manager
+DEL ir.model.access: lunch.cashmove_user
+DEL ir.model.access: lunch.order_manager
+# NOTHING TO DO: handled in base
+
+ir.model.constraint: lunch.constraint_lunch_alert_notification_time_range (changed definition: is now 'CHECK(notification_time >= 0 and notification_time <= 24)' ('CHECK(notification_time >= 0 and notification_time <= 12)'))
+ir.model.constraint: lunch.constraint_lunch_supplier_automatic_email_time_range (changed definition: is now 'CHECK(automatic_email_time >= 0 AND automatic_email_time <= 24)' ('CHECK(automatic_email_time >= 0 AND automatic_email_time <= 12)'))
+# NOTHING TO DO: the ORM recreates them with the new range before the times are converted in post-migration

@@ -1,8 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
 <odoo>
-  <record id="im_livechat_channel_data" model="im_livechat.channel">
-    <field name="name">Support</field>
-  </record>
   <template id="livechat_email_template">
     <!-- sudo: visitor can access header background color -->
     <t t-set="header_background_color" t-value="channel.livechat_channel_id.sudo().header_background_color or '#875A7B'"/>

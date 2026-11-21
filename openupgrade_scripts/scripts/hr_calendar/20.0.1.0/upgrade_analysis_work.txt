@@ -1,0 +1,14 @@
+---Models in module 'hr_calendar'---
+---Fields in module 'hr_calendar'---
+---XML records in module 'hr_calendar'---
+NEW ir.access: hr_calendar.homeworking_location_wizard_admin_rule [renamed from hr_homeworking_calendar module] (noupdate switched)
+NEW ir.access: hr_calendar.homeworking_location_wizard_own_rule [renamed from hr_homeworking_calendar module] (noupdate switched)
+NEW ir.actions.act_window: hr_calendar.set_location_wizard_action [renamed from hr_homeworking_calendar module]
+DEL ir.actions.act_window: hr_homeworking_calendar.set_location_wizard_action [renamed to hr_calendar module]
+DEL ir.model.access: hr_homeworking_calendar.access_homework_location_wizard
+DEL ir.rule: hr_homeworking_calendar.homeworking_location_wizard_admin_rule [renamed to hr_calendar module] (noupdate)
+DEL ir.rule: hr_homeworking_calendar.homeworking_location_wizard_own_rule [renamed to hr_calendar module] (noupdate)
+NEW ir.ui.menu: hr_calendar.menu_hr_homeworking_location_menu
+NEW ir.ui.view: hr_calendar.homework_location_wizard_view_form
+DEL ir.ui.view: hr_homeworking_calendar.homework_location_wizard_view_form
+# NOTHING TO DO: hr_homeworking_calendar is merged into hr_calendar in apriori, which renames its xmlids; base renames the xmlids of v19 ir.model.access and ir.rule records and the ir.access records are created anew

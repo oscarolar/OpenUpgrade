@@ -1,0 +1,10 @@
+---Models in module 'link_tracker'---
+---Fields in module 'link_tracker'---
+link_tracker / link.tracker             / utm_reference (reference)     : NEW
+# NOTHING TO DO: new field inherited from utm.mixin
+
+---XML records in module 'link_tracker'---
+DEL ir.model.access: link_tracker.access_link_tracker_click_public
+DEL ir.model.access: link_tracker.access_link_tracker_code_public
+DEL ir.model.access: link_tracker.access_link_tracker_public
+# NOTHING TO DO: ir.model.access and ir.rule were merged into ir.access, handled by base

@@ -1,0 +1,17 @@
+---Models in module 'website_crm_iap_reveal'---
+---Fields in module 'website_crm_iap_reveal'---
+---XML records in module 'website_crm_iap_reveal'---
+ir.access: website_crm_iap_reveal.ir_rule_crm_reveal_rule_all (noupdate switched)
+NEW ir.access: website_crm_iap_reveal.ir_rule_crm_reveal_rule_all_1
+ir.access: website_crm_iap_reveal.ir_rule_crm_reveal_rule_salesman (noupdate switched)
+ir.access: website_crm_iap_reveal.ir_rule_crm_reveal_view_all (noupdate switched)
+NEW ir.access: website_crm_iap_reveal.ir_rule_crm_reveal_view_all_1
+ir.access: website_crm_iap_reveal.ir_rule_crm_reveal_view_salesman (noupdate switched)
+DEL ir.model.access: website_crm_iap_reveal.access_crm_reveal_rule_manager
+DEL ir.model.access: website_crm_iap_reveal.access_crm_reveal_rule_salesman
+DEL ir.model.access: website_crm_iap_reveal.access_crm_reveal_view_manager
+DEL ir.model.access: website_crm_iap_reveal.access_crm_reveal_view_salesman
+# NOTHING TO DO: ir.model.access and ir.rule are converted to ir.access by base
+
+NEW ir.ui.view: website_crm_iap_reveal.enrich_company
+# NOTHING TO DO: crm.reveal.rule#industry_tag_ids is migrated to the v20 industries by crm_iap_mine

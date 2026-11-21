@@ -1,0 +1,107 @@
+---Models in module 'im_livechat'---
+obsolete model im_livechat.conversation.tag
+# NOTHING TO DO: conversation tags are removed without replacement
+
+---Fields in module 'im_livechat'---
+im_livechat  / chatbot.script           / source_id (many2one)          : DEL relation: utm.source, required
+# DONE: post-migration of crm_livechat: leads created by a chatbot are linked to it with utm_reference
+
+im_livechat  / discuss.channel          / livechat_conversation_tag_ids (many2many): DEL relation: im_livechat.conversation.tag
+# NOTHING TO DO: conversation tags are removed without replacement
+
+im_livechat  / discuss.channel          / livechat_looking_for_help_since_dt (datetime): NEW isfunction: function, stored
+# DONE: pre-migration: column created and filled with the last modification date for conversations looking for help
+
+im_livechat  / discuss.channel          / livechat_operator_id (many2one): DEL relation: res.partner
+# NOTHING TO DO: the agents of a conversation are already in livechat_agent_partner_ids
+
+im_livechat  / discuss.channel          / livechat_rating (selection)   : NEW selection_keys: ['1', '3', '5']
+# DONE: post-migration: livechat_rating filled from rating_last_value
+
+im_livechat  / discuss.channel          / livechat_status (selection)   : selection_keys removed: [waiting]
+# DONE: pre-migration: waiting mapped to in_progress
+
+im_livechat  / discuss.channel          / rating_last_text (selection)  : DEL selection_keys: function
+im_livechat  / discuss.channel          / rating_last_value (float)     : DEL
+# DONE: post-migration: livechat_rating filled from rating_last_value
+
+im_livechat  / im_livechat.channel      / rating_ids (one2many)         : DEL relation: rating.rating
+im_livechat  / im_livechat.channel      / rating_percentage_satisfaction (integer): type is now 'float' ('integer')
+# NOTHING TO DO: non stored
+
+im_livechat  / im_livechat.channel.member.history / rating (float)                : is now stored
+im_livechat  / im_livechat.channel.member.history / rating (float)                : not related anymore
+im_livechat  / im_livechat.channel.member.history / rating (float)                : now a function
+im_livechat  / im_livechat.channel.member.history / rating (float)                : selection_keys is now '['1', '3', '5']' ('False')
+im_livechat  / im_livechat.channel.member.history / rating (float)                : type is now 'selection' ('float')
+im_livechat  / im_livechat.channel.member.history / rating_id (many2one)          : DEL relation: rating.rating
+# DONE: pre-migration: column created; post-migration: filled from the rating record in rating_id
+
+im_livechat  / im_livechat.conversation.tag / color (integer)               : DEL
+im_livechat  / im_livechat.conversation.tag / conversation_ids (many2many)  : DEL relation: discuss.channel
+im_livechat  / im_livechat.conversation.tag / name (char)                   : DEL required
+# NOTHING TO DO: conversation tags are removed without replacement
+
+im_livechat  / im_livechat.expertise    / color (integer)               : NEW
+im_livechat  / mail.message             / chatbot_message_ids (one2many): NEW relation: chatbot.message
+# NOTHING TO DO
+
+---XML records in module 'im_livechat'---
+ir.access: im_livechat.ir_rule_discuss_call_history_im_livechat_group_user (noupdate switched)
+ir.access: im_livechat.ir_rule_discuss_channel_im_livechat_group_user (noupdate switched)
+ir.access: im_livechat.ir_rule_discuss_channel_member_im_livechat_group_user (noupdate switched)
+# NOTHING TO DO: ir.model.access and ir.rule are merged into ir.access, handled in base
+
+NEW ir.actions.act_window: im_livechat.im_livechat_channel_config_action
+DEL ir.actions.act_window: im_livechat.discuss_channel_looking_for_help_action
+# NOTHING TO DO
+
+DEL ir.actions.act_window: im_livechat.livechat_conversation_tag_action
+# NOTHING TO DO: conversation tags are removed without replacement
+
+NEW ir.actions.act_window.view: im_livechat.im_livechat_channel_config_action_kanban
+NEW ir.actions.act_window.view: im_livechat.im_livechat_channel_config_action_list
+DEL ir.actions.act_window.view: im_livechat.discuss_channel_looking_for_help_action_form
+DEL ir.actions.act_window.view: im_livechat.discuss_channel_looking_for_help_action_kanban
+DEL ir.actions.act_window.view: im_livechat.discuss_channel_looking_for_help_action_list
+DEL ir.model.access: im_livechat.access_chatbot_script_answer
+# NOTHING TO DO
+
+DEL ir.model.access: im_livechat.access_livechat_conversation_tag_livechat_manager
+DEL ir.model.access: im_livechat.access_livechat_conversation_tag_livechat_user
+# NOTHING TO DO: conversation tags are removed without replacement
+
+NEW ir.model.constraint: im_livechat.constraint_discuss_channel_livechat_looking_for_help_since_dt_constraint
+NEW ir.model.constraint: im_livechat.constraint_discuss_channel_livechat_rating_constraint
+# NOTHING TO DO
+
+NEW ir.model.constraint: im_livechat.constraint_discuss_channel_livechat_status_need_help_idx
+# DONE: pre-migration: waiting mapped to in_progress
+
+DEL ir.model.constraint: im_livechat.constraint_discuss_channel_livechat_operator_id
+# NOTHING TO DO: the agents of a conversation are already in livechat_agent_partner_ids
+
+DEL ir.model.constraint: im_livechat.constraint_im_livechat_conversation_tag_name_unique
+# NOTHING TO DO: conversation tags are removed without replacement
+
+NEW ir.ui.menu: im_livechat.livechat_channels_config
+DEL ir.ui.menu: im_livechat.menu_livechat_all_conversations
+# NOTHING TO DO
+
+DEL ir.ui.menu: im_livechat.menu_livechat_conversation_tag
+# NOTHING TO DO: conversation tags are removed without replacement
+
+DEL ir.ui.menu: im_livechat.menu_livechat_looking_for_help
+NEW ir.ui.view: im_livechat.im_livechat_channel_config_view_kanban
+NEW ir.ui.view: im_livechat.im_livechat_channel_view_list
+DEL ir.ui.view: im_livechat.discuss_channel_looking_for_help_view_kanban
+DEL ir.ui.view: im_livechat.discuss_channel_looking_for_help_view_list
+DEL ir.ui.view: im_livechat.discuss_channel_looking_for_help_view_search
+# NOTHING TO DO
+
+DEL ir.ui.view: im_livechat.im_livechat_channel_conversation_tag_view_form
+DEL ir.ui.view: im_livechat.im_livechat_channel_conversation_tag_view_list
+# NOTHING TO DO: conversation tags are removed without replacement
+
+NEW utm.source: im_livechat.utm_source_chatbot
+# NOTHING TO DO

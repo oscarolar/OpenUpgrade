@@ -1,0 +1,10 @@
+---Models in module 'sale_project_stock'---
+---Fields in module 'sale_project_stock'---
+---XML records in module 'sale_project_stock'---
+DEL ir.actions.act_window: sale_project_stock.stock_move_per_sale_order_line_action
+# NOTHING TO DO
+
+---Additional work in module 'sale_project_stock'---
+sale_project / account.analytic.line    / billable_type (selection)     : NEW selection_keys: function, isfunction: function, stored
+sale_project / account.analytic.line    / category_report (selection)   : NEW selection_keys: ['costs', 'revenues'], isfunction: function, stored
+# DONE: post-migration: lines with category picking_entry get the billable types this module adds (15_picking_entry_positive as revenues, 16_picking_entry_negative as costs), on top of the values sale_project's pre-migration wrote

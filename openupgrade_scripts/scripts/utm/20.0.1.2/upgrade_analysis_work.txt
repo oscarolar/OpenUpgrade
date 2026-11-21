@@ -1,0 +1,32 @@
+---Models in module 'utm'---
+obsolete model utm.source.mixin [abstract]
+# NOTHING TO DO: abstract model, its fields stay in the tables of the inheriting models (mass_mailing, im_livechat, hr_recruitment)
+
+---Fields in module 'utm'---
+---XML records in module 'utm'---
+NEW utm.medium: utm.utm_medium_messaging (noupdate)
+NEW utm.medium: utm.utm_medium_social_media (noupdate)
+# DONE: pre-migration: added the xmlid to an existing medium with the same name, to avoid a duplicate ('Social Media [2]')
+
+DEL utm.medium: utm.utm_medium_banner (noupdate)
+DEL utm.medium: utm.utm_medium_facebook (noupdate)
+DEL utm.medium: utm.utm_medium_google_adwords (noupdate)
+DEL utm.medium: utm.utm_medium_linkedin (noupdate)
+DEL utm.medium: utm.utm_medium_television (noupdate)
+DEL utm.medium: utm.utm_medium_twitter (noupdate)
+# NOTHING TO DO: mediums are kept as plain user data, as leads, links, mailings... can reference them (medium_id is ondelete set null, deleting them would lose that information)
+# DONE: pre-migration: set noupdate on the xmlids of mediums created at runtime by utm.medium#_fetch_or_create_utm_medium in v19 (utm.utm_medium_survey...), otherwise the module update deletes the records
+
+NEW utm.source: utm.utm_source_google (noupdate)
+NEW utm.source: utm.utm_source_instagram (noupdate)
+# DONE: pre-migration: added the xmlid to an existing source with the same name, to avoid a duplicate ('Google [2]')
+
+NEW utm.source: utm.utm_source_livechat [renamed from crm_livechat module] (noupdate)
+# DONE: pre-migration: renamed from crm_livechat.utm_source_livechat; if absent, added the xmlid to an existing source with the same name
+
+NEW utm.source: utm.utm_source_survey (noupdate)
+NEW utm.source: utm.utm_source_youtube (noupdate)
+# DONE: pre-migration: added the xmlid to an existing source with the same name, to avoid a duplicate
+
+DEL utm.source: utm.utm_source_search_engine (noupdate)
+# NOTHING TO DO: source is kept as plain user data, as leads, links, mailings... can reference it
