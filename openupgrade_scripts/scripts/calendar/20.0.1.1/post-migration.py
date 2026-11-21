@@ -15,9 +15,14 @@ def calendar_calendar_primary(env):
     env.cr.execute(
         """
         SELECT id FROM res_users
-        WHERE
+        WHERE (
             share IS NOT TRUE
             OR id IN (SELECT user_id FROM calendar_event WHERE user_id IS NOT NULL)
+        )
+        AND NOT EXISTS (
+            SELECT 1 FROM calendar_user
+            WHERE calendar_user.user_id = res_users.id AND calendar_user.is_primary
+        )
         ORDER BY id
         """
     )
