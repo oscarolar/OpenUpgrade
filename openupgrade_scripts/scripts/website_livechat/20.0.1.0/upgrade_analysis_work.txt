@@ -1,0 +1,9 @@
+---Models in module 'website_livechat'---
+---Fields in module 'website_livechat'---
+website_livechat / website.visitor          / livechat_operator_id (many2one): DEL relation: res.partner
+# NOTHING TO DO: replaced by the non stored computed field current_livechat_agent_ids
+
+---XML records in module 'website_livechat'---
+# NOTHING TO DO: noupdate_changes.xml only reflects the rename of
+#   website.default_website to base.default_website, loading it would overwrite the live
+#   chat channel chosen on the default website
