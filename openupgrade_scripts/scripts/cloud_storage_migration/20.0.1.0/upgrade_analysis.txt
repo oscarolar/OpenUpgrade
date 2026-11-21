@@ -1,5 +1,0 @@
----Models in module 'cloud_storage_migration'---
----Fields in module 'cloud_storage_migration'---
----XML records in module 'cloud_storage_migration'---
-NEW ir.access: cloud_storage_migration.access_cloud_storage_migration_report
-DEL ir.model.access: cloud_storage_migration.access_cloud_storage_migration_report

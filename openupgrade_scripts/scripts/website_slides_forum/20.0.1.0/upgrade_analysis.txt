@@ -1,8 +1,6 @@
 ---Models in module 'website_slides_forum'---
 ---Fields in module 'website_slides_forum'---
 ---XML records in module 'website_slides_forum'---
-NEW ir.access: website_slides_forum.access_forum_forum_website_slides_officer
-DEL ir.model.access: website_slides_forum.access_forum_forum_website_slides_officer
 DEL ir.rule: website_slides_forum.website_slides_forum_post_signed_in_user (noupdate)
 DEL ir.rule: website_slides_forum.website_slides_forum_public (noupdate)
 DEL ir.rule: website_slides_forum.website_slides_forum_public_post (noupdate)

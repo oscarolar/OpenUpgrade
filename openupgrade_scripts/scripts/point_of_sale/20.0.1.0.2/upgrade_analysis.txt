@@ -168,67 +168,26 @@ point_of_sale / stock.warehouse          / pos_type_id (many2one)        : modul
 ---XML records in module 'point_of_sale'---
 NEW ir.access: point_of_sale.access_account_bank_statement
 NEW ir.access: point_of_sale.access_account_bank_statement_manager
-NEW ir.access: point_of_sale.access_account_cash_rounding_pos_user
-NEW ir.access: point_of_sale.access_account_journal_pos_user
-NEW ir.access: point_of_sale.access_account_payment_method_line_pos_user
-NEW ir.access: point_of_sale.access_account_payment_method_pos_user
-NEW ir.access: point_of_sale.access_barcode_nomenclature_pos_manager
-NEW ir.access: point_of_sale.access_barcode_nomenclature_pos_user
-NEW ir.access: point_of_sale.access_barcode_rule_pos_manager
-NEW ir.access: point_of_sale.access_barcode_rule_pos_user
-NEW ir.access: point_of_sale.access_decimal_precision_user
-NEW ir.access: point_of_sale.access_pos_bill
-NEW ir.access: point_of_sale.access_pos_config_manager
-NEW ir.access: point_of_sale.access_pos_config_system_user
-NEW ir.access: point_of_sale.access_pos_config_user
-NEW ir.access: point_of_sale.access_pos_confirmation_wizard
-NEW ir.access: point_of_sale.access_pos_daily_sales_reports_wizard
-NEW ir.access: point_of_sale.access_pos_details_wizard
-NEW ir.access: point_of_sale.access_pos_make_invoice
-NEW ir.access: point_of_sale.access_pos_make_invoice_manager
-NEW ir.access: point_of_sale.access_pos_make_payment
-NEW ir.access: point_of_sale.access_pos_note
-NEW ir.access: point_of_sale.access_pos_note_manager
-NEW ir.access: point_of_sale.access_pos_order
-NEW ir.access: point_of_sale.access_pos_order_line
-NEW ir.access: point_of_sale.access_pos_payment_method_manager
-NEW ir.access: point_of_sale.access_pos_payment_method_user
-NEW ir.access: point_of_sale.access_pos_payment_user
-NEW ir.access: point_of_sale.access_pos_preset
-NEW ir.access: point_of_sale.access_pos_preset_manager
 NEW ir.access: point_of_sale.access_pos_price_inclusion_wizard
-NEW ir.access: point_of_sale.access_pos_printer
-NEW ir.access: point_of_sale.access_pos_printer_manager
-NEW ir.access: point_of_sale.access_pos_session_user
 NEW ir.access: point_of_sale.access_pos_snooze
 NEW ir.access: point_of_sale.access_preparation_line
 NEW ir.access: point_of_sale.access_preparation_order
-NEW ir.access: point_of_sale.access_product_category_pos_manager
-NEW ir.access: point_of_sale.access_product_category_pos_user
-NEW ir.access: point_of_sale.access_product_combo_item_pos_user
-NEW ir.access: point_of_sale.access_product_combo_pos_user
-NEW ir.access: point_of_sale.access_product_pricelist_manager
-NEW ir.access: point_of_sale.access_product_pricelist_user
-NEW ir.access: point_of_sale.access_product_product
-NEW ir.access: point_of_sale.access_product_product_supplierinfo_user
-NEW ir.access: point_of_sale.access_product_template_pos_user
-NEW ir.access: point_of_sale.access_report_pos_order
 NEW ir.access: point_of_sale.access_res_partner_pos_manager
 NEW ir.access: point_of_sale.base_user_account_move_line_rule
 NEW ir.access: point_of_sale.res_partner_rule_user
 NEW ir.access: point_of_sale.res_partner_rule_write_self
-NEW ir.access: point_of_sale.rule_invoice_pos_user
-NEW ir.access: point_of_sale.rule_pos_bank_statement_line_account_user
+ir.access: point_of_sale.rule_invoice_pos_user (noupdate switched)
+ir.access: point_of_sale.rule_pos_bank_statement_line_account_user (noupdate switched)
 NEW ir.access: point_of_sale.rule_pos_bank_statement_line_account_user_1
-NEW ir.access: point_of_sale.rule_pos_bank_statement_line_user
+ir.access: point_of_sale.rule_pos_bank_statement_line_user (noupdate switched)
 NEW ir.access: point_of_sale.rule_pos_bank_statement_line_user_1
-NEW ir.access: point_of_sale.rule_pos_config_multi_company
-NEW ir.access: point_of_sale.rule_pos_multi_company
-NEW ir.access: point_of_sale.rule_pos_order_line_multi_company
-NEW ir.access: point_of_sale.rule_pos_order_report_multi_company
-NEW ir.access: point_of_sale.rule_pos_payment_method_multi_company
-NEW ir.access: point_of_sale.rule_pos_payment_multi_company
-NEW ir.access: point_of_sale.rule_pos_session_multi_company
+ir.access: point_of_sale.rule_pos_config_multi_company (noupdate switched)
+ir.access: point_of_sale.rule_pos_multi_company (noupdate switched)
+ir.access: point_of_sale.rule_pos_order_line_multi_company (noupdate switched)
+ir.access: point_of_sale.rule_pos_order_report_multi_company (noupdate switched)
+ir.access: point_of_sale.rule_pos_payment_method_multi_company (noupdate switched)
+ir.access: point_of_sale.rule_pos_payment_multi_company (noupdate switched)
+ir.access: point_of_sale.rule_pos_session_multi_company (noupdate switched)
 NEW ir.actions.act_window: point_of_sale.pos_product_attribute_action
 NEW ir.actions.act_window: point_of_sale.pos_product_combo_choice_action
 NEW ir.actions.act_window: point_of_sale.pos_product_pricelist_action
@@ -239,70 +198,19 @@ NEW ir.cron: point_of_sale.ir_cron_process_pos_orders (noupdate)
 NEW ir.cron: point_of_sale.ir_cron_snooze_cleanup (noupdate)
 DEL ir.model.access: point_of_sale.access_account_bank_statement_line
 DEL ir.model.access: point_of_sale.access_account_bank_statement_line_manager
-DEL ir.model.access: point_of_sale.access_account_cash_rounding_pos_user
 DEL ir.model.access: point_of_sale.access_account_journal_entry
 DEL ir.model.access: point_of_sale.access_account_journal_item
-DEL ir.model.access: point_of_sale.access_account_journal_pos_user
-DEL ir.model.access: point_of_sale.access_account_payment_method_line_pos_user
-DEL ir.model.access: point_of_sale.access_account_payment_method_pos_user
-DEL ir.model.access: point_of_sale.access_barcode_nomenclature_pos_manager
-DEL ir.model.access: point_of_sale.access_barcode_nomenclature_pos_user
-DEL ir.model.access: point_of_sale.access_barcode_rule_pos_manager
-DEL ir.model.access: point_of_sale.access_barcode_rule_pos_user
-DEL ir.model.access: point_of_sale.access_decimal_precision_user
-DEL ir.model.access: point_of_sale.access_pos_bill
 DEL ir.model.access: point_of_sale.access_pos_close_session_wizard
-DEL ir.model.access: point_of_sale.access_pos_config_manager
-DEL ir.model.access: point_of_sale.access_pos_config_system_user
-DEL ir.model.access: point_of_sale.access_pos_config_user
-DEL ir.model.access: point_of_sale.access_pos_confirmation_wizard
 DEL ir.model.access: point_of_sale.access_pos_confirmation_wizard_manager
-DEL ir.model.access: point_of_sale.access_pos_daily_sales_reports_wizard
-DEL ir.model.access: point_of_sale.access_pos_details_wizard
-DEL ir.model.access: point_of_sale.access_pos_make_invoice
-DEL ir.model.access: point_of_sale.access_pos_make_invoice_manager
-DEL ir.model.access: point_of_sale.access_pos_make_payment
-DEL ir.model.access: point_of_sale.access_pos_note
-DEL ir.model.access: point_of_sale.access_pos_note_manager
-DEL ir.model.access: point_of_sale.access_pos_order
-DEL ir.model.access: point_of_sale.access_pos_order_line
-DEL ir.model.access: point_of_sale.access_pos_order_stock_worker
-DEL ir.model.access: point_of_sale.access_pos_pack_operation_lot
-DEL ir.model.access: point_of_sale.access_pos_payment_method_manager
-DEL ir.model.access: point_of_sale.access_pos_payment_method_user
-DEL ir.model.access: point_of_sale.access_pos_payment_user
-DEL ir.model.access: point_of_sale.access_pos_preset
-DEL ir.model.access: point_of_sale.access_pos_preset_manager
-DEL ir.model.access: point_of_sale.access_pos_printer
-DEL ir.model.access: point_of_sale.access_pos_printer_manager
-DEL ir.model.access: point_of_sale.access_pos_session_user
-DEL ir.model.access: point_of_sale.access_product_category_pos_manager
-DEL ir.model.access: point_of_sale.access_product_category_pos_user
-DEL ir.model.access: point_of_sale.access_product_combo_item_pos_user
-DEL ir.model.access: point_of_sale.access_product_combo_pos_user
-DEL ir.model.access: point_of_sale.access_product_pricelist_manager
-DEL ir.model.access: point_of_sale.access_product_pricelist_user
-DEL ir.model.access: point_of_sale.access_product_product
-DEL ir.model.access: point_of_sale.access_product_product_supplierinfo_user
-DEL ir.model.access: point_of_sale.access_product_template_pos_user
-DEL ir.model.access: point_of_sale.access_report_pos_order
-DEL ir.model.access: point_of_sale.access_stock_location_manager
-DEL ir.model.access: point_of_sale.access_stock_move_pos_user
-DEL ir.model.access: point_of_sale.access_stock_picking_pos_user
+DEL ir.model.access: point_of_sale.access_pos_order_stock_worker [renamed to pos_stock module]
+DEL ir.model.access: point_of_sale.access_pos_pack_operation_lot [renamed to pos_stock module]
+DEL ir.model.access: point_of_sale.access_stock_location_manager [renamed to pos_stock module]
+DEL ir.model.access: point_of_sale.access_stock_move_pos_user [renamed to pos_stock module]
+DEL ir.model.access: point_of_sale.access_stock_picking_pos_user [renamed to pos_stock module]
 DEL ir.model.access: point_of_sale.access_stock_warehouse_manager
-DEL ir.model.access: point_of_sale.access_stock_warehouse_pos_user
+DEL ir.model.access: point_of_sale.access_stock_warehouse_pos_user [renamed to pos_stock module]
 DEL ir.rule: point_of_sale.rule_invoice_line_pos_user (noupdate)
-DEL ir.rule: point_of_sale.rule_invoice_pos_user (noupdate)
 DEL ir.rule: point_of_sale.rule_pos_bank_statement_account_user (noupdate)
-DEL ir.rule: point_of_sale.rule_pos_bank_statement_line_account_user (noupdate)
-DEL ir.rule: point_of_sale.rule_pos_bank_statement_line_user (noupdate)
-DEL ir.rule: point_of_sale.rule_pos_config_multi_company (noupdate)
-DEL ir.rule: point_of_sale.rule_pos_multi_company (noupdate)
-DEL ir.rule: point_of_sale.rule_pos_order_line_multi_company (noupdate)
-DEL ir.rule: point_of_sale.rule_pos_order_report_multi_company (noupdate)
-DEL ir.rule: point_of_sale.rule_pos_payment_method_multi_company (noupdate)
-DEL ir.rule: point_of_sale.rule_pos_payment_multi_company (noupdate)
-DEL ir.rule: point_of_sale.rule_pos_session_multi_company (noupdate)
 NEW ir.ui.menu: point_of_sale.menu_pos_printers
 DEL ir.ui.menu: point_of_sale.menu_point_of_sale_list
 DEL ir.ui.menu: point_of_sale.menu_pos_preparation_printer

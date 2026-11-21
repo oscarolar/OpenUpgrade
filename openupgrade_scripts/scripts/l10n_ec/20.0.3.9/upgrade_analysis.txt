@@ -1,12 +1,6 @@
 ---Models in module 'l10n_ec'---
 ---Fields in module 'l10n_ec'---
 ---XML records in module 'l10n_ec'---
-NEW ir.access: l10n_ec.access_l10n_ec_sri_payment_admin
-NEW ir.access: l10n_ec.access_l10n_ec_sri_payment_invoice
-NEW ir.access: l10n_ec.access_l10n_ec_sri_payment_readonly
-DEL ir.model.access: l10n_ec.access_l10n_ec_sri_payment_admin
-DEL ir.model.access: l10n_ec.access_l10n_ec_sri_payment_invoice
-DEL ir.model.access: l10n_ec.access_l10n_ec_sri_payment_readonly
 DEL l10n_latam.identification.type: l10n_ec.ec_dni
 DEL l10n_latam.identification.type: l10n_ec.ec_passport
 DEL l10n_latam.identification.type: l10n_ec.ec_ruc

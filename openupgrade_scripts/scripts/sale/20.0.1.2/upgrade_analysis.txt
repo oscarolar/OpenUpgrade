@@ -52,60 +52,39 @@ sale         / utm.campaign             / currency_id (many2one)        : not re
 sale         / utm.campaign             / currency_id (many2one)        : now a function
 sale         / utm.campaign             / invoiced_amount (integer)     : type is now 'float' ('integer')
 sale_timesheet / account.analytic.line    / order_id (many2one)           : not related anymore
+stock        / product.template         / sale_delay (integer)          : now company_dependent
 ---XML records in module 'sale'---
-NEW ir.access: sale.access_account_account_salesman
-NEW ir.access: sale.access_account_account_tag_sale_salesman
-NEW ir.access: sale.access_account_analytic_account_salesman
-NEW ir.access: sale.access_account_partial_reconcile_salesman
-NEW ir.access: sale.access_account_payment_term_salesman
-NEW ir.access: sale.access_account_tax_group_sale_manager
-NEW ir.access: sale.access_account_tax_user
-NEW ir.access: sale.access_mail_activity_plan_sale_manager
-NEW ir.access: sale.access_mail_activity_plan_template_sale_manager
-NEW ir.access: sale.access_mail_activity_type_sale_manager
-NEW ir.access: sale.access_payment_link_wizard_sale
-NEW ir.access: sale.access_product_document_sale_manager
-NEW ir.access: sale.access_product_pricelist_item_sale_manager
-NEW ir.access: sale.access_product_pricelist_sale_manager
-NEW ir.access: sale.access_product_pricelist_sale_user
-NEW ir.access: sale.access_product_product_attribute_custom_value_sale_user
-NEW ir.access: sale.access_res_partner_sale_manager
-NEW ir.access: sale.access_sale_account_journal
-NEW ir.access: sale.access_sale_advance_payment_inv
-NEW ir.access: sale.access_sale_mass_cancel_orders
-NEW ir.access: sale.access_sale_order_discount
-NEW ir.access: sale.access_uom_uom_user
-NEW ir.access: sale.account_invoice_report_rule_see_all
-NEW ir.access: sale.account_invoice_report_rule_see_personal
-NEW ir.access: sale.account_invoice_rule_see_all
-NEW ir.access: sale.account_invoice_rule_see_personal
-NEW ir.access: sale.account_invoice_send_batch_rule_see_all
-NEW ir.access: sale.account_invoice_send_batch_rule_see_personal
-NEW ir.access: sale.account_invoice_send_single_rule_see_all
-NEW ir.access: sale.account_invoice_send_single_rule_see_personal
+ir.access: sale.account_invoice_report_rule_see_all (noupdate switched)
+ir.access: sale.account_invoice_report_rule_see_personal (noupdate switched)
+ir.access: sale.account_invoice_rule_see_all (noupdate switched)
+ir.access: sale.account_invoice_rule_see_personal (noupdate switched)
+ir.access: sale.account_invoice_send_batch_rule_see_all (noupdate switched)
+ir.access: sale.account_invoice_send_batch_rule_see_personal (noupdate switched)
+ir.access: sale.account_invoice_send_single_rule_see_all (noupdate switched)
+ir.access: sale.account_invoice_send_single_rule_see_personal (noupdate switched)
 NEW ir.access: sale.base_user_account_move_line_rule
-NEW ir.access: sale.mail_plan_rule_group_sale_manager
-NEW ir.access: sale.mail_plan_template_rule_group_sale_manager
-NEW ir.access: sale.payment_token_salesman_rule
+ir.access: sale.mail_plan_rule_group_sale_manager (noupdate switched)
+ir.access: sale.mail_plan_template_rule_group_sale_manager (noupdate switched)
+ir.access: sale.payment_token_salesman_rule (noupdate switched)
 NEW ir.access: sale.res_partner_rule_edit_all
 NEW ir.access: sale.res_partner_rule_user
-NEW ir.access: sale.sale_advance_payment_inv_rule
-NEW ir.access: sale.sale_mass_cancel_orders_rule
+ir.access: sale.sale_advance_payment_inv_rule (noupdate switched)
+ir.access: sale.sale_mass_cancel_orders_rule (noupdate switched)
 NEW ir.access: sale.sale_order_account_readonly_rule
-NEW ir.access: sale.sale_order_comp_rule
+ir.access: sale.sale_order_comp_rule (noupdate switched)
 NEW ir.access: sale.sale_order_invoicing_rule
 NEW ir.access: sale.sale_order_line_account_readonly_rule
-NEW ir.access: sale.sale_order_line_comp_rule
+ir.access: sale.sale_order_line_comp_rule (noupdate switched)
 NEW ir.access: sale.sale_order_line_invoicing_rule
-NEW ir.access: sale.sale_order_line_personal_rule
-NEW ir.access: sale.sale_order_line_rule_portal
-NEW ir.access: sale.sale_order_line_see_all
-NEW ir.access: sale.sale_order_personal_rule
-NEW ir.access: sale.sale_order_report_comp_rule
-NEW ir.access: sale.sale_order_report_personal_rule
-NEW ir.access: sale.sale_order_report_see_all
-NEW ir.access: sale.sale_order_rule_portal
-NEW ir.access: sale.sale_order_see_all
+ir.access: sale.sale_order_line_personal_rule (noupdate switched)
+ir.access: sale.sale_order_line_rule_portal (noupdate switched)
+ir.access: sale.sale_order_line_see_all (noupdate switched)
+ir.access: sale.sale_order_personal_rule (noupdate switched)
+ir.access: sale.sale_order_report_comp_rule (noupdate switched)
+ir.access: sale.sale_order_report_personal_rule (noupdate switched)
+ir.access: sale.sale_order_report_see_all (noupdate switched)
+ir.access: sale.sale_order_rule_portal (noupdate switched)
+ir.access: sale.sale_order_see_all (noupdate switched)
 NEW ir.access: sale.sale_order_see_all_1
 NEW ir.actions.act_window: sale.action_service_material
 DEL ir.actions.act_window: sale.action_accrued_revenue_entry
@@ -117,34 +96,13 @@ NEW ir.actions.server: sale.action_accrued_revenue_entry_sale_order_line
 NEW ir.actions.server: sale.model_sale_order_action_close_invoicing
 NEW ir.actions.server: sale.model_sale_order_action_deliver_sold_quantity
 NEW ir.actions.server: sale.model_sale_order_action_quotation_confirm
-DEL ir.model.access: sale.access_account_account_salesman
-DEL ir.model.access: sale.access_account_account_tag_sale_salesman
-DEL ir.model.access: sale.access_account_analytic_account_salesman
 DEL ir.model.access: sale.access_account_move_line_salesman
 DEL ir.model.access: sale.access_account_move_salesman
 DEL ir.model.access: sale.access_account_move_send_batch_wizard_salesman
 DEL ir.model.access: sale.access_account_move_send_wizard_salesman
-DEL ir.model.access: sale.access_account_partial_reconcile_salesman
-DEL ir.model.access: sale.access_account_payment_term_salesman
-DEL ir.model.access: sale.access_account_tax_group_sale_manager
-DEL ir.model.access: sale.access_account_tax_user
-DEL ir.model.access: sale.access_mail_activity_plan_sale_manager
-DEL ir.model.access: sale.access_mail_activity_plan_template_sale_manager
-DEL ir.model.access: sale.access_mail_activity_type_sale_manager
-DEL ir.model.access: sale.access_payment_link_wizard_sale
-DEL ir.model.access: sale.access_product_document_sale_manager
-DEL ir.model.access: sale.access_product_pricelist_item_sale_manager
-DEL ir.model.access: sale.access_product_pricelist_sale_manager
-DEL ir.model.access: sale.access_product_pricelist_sale_user
-DEL ir.model.access: sale.access_product_product_attribute_custom_value_sale_user
-DEL ir.model.access: sale.access_res_partner_sale_manager
 DEL ir.model.access: sale.access_res_partner_sale_user
-DEL ir.model.access: sale.access_sale_account_journal
-DEL ir.model.access: sale.access_sale_advance_payment_inv
-DEL ir.model.access: sale.access_sale_mass_cancel_orders
 DEL ir.model.access: sale.access_sale_order
 DEL ir.model.access: sale.access_sale_order_accountant
-DEL ir.model.access: sale.access_sale_order_discount
 DEL ir.model.access: sale.access_sale_order_invoicing_payments
 DEL ir.model.access: sale.access_sale_order_line
 DEL ir.model.access: sale.access_sale_order_line_accountant
@@ -155,36 +113,11 @@ DEL ir.model.access: sale.access_sale_order_manager
 DEL ir.model.access: sale.access_sale_order_portal
 DEL ir.model.access: sale.access_sale_order_readonly
 DEL ir.model.access: sale.access_sale_report_salesman
-DEL ir.model.access: sale.access_uom_uom_user
 ir.model.constraint: sale.constraint_sale_order_line_accountable_required_fields (changed definition: is now 'CHECK(display_type IS NOT NULL OR is_downpayment OR product_uom_id IS NOT NULL)' ('CHECK(display_type IS NOT NULL OR is_downpayment OR (product_id IS NOT NULL AND product_uom_id IS NOT NULL))'))
 NEW ir.model.constraint: sale.constraint_sale_order_line_section_fields_null
 DEL ir.rule: sale.account_invoice_line_rule_see_all (noupdate)
 DEL ir.rule: sale.account_invoice_line_rule_see_personal (noupdate)
-DEL ir.rule: sale.account_invoice_report_rule_see_all (noupdate)
-DEL ir.rule: sale.account_invoice_report_rule_see_personal (noupdate)
-DEL ir.rule: sale.account_invoice_rule_see_all (noupdate)
-DEL ir.rule: sale.account_invoice_rule_see_personal (noupdate)
-DEL ir.rule: sale.account_invoice_send_batch_rule_see_all (noupdate)
-DEL ir.rule: sale.account_invoice_send_batch_rule_see_personal (noupdate)
-DEL ir.rule: sale.account_invoice_send_single_rule_see_all (noupdate)
-DEL ir.rule: sale.account_invoice_send_single_rule_see_personal (noupdate)
-DEL ir.rule: sale.mail_plan_rule_group_sale_manager (noupdate)
-DEL ir.rule: sale.mail_plan_template_rule_group_sale_manager (noupdate)
-DEL ir.rule: sale.payment_token_salesman_rule (noupdate)
 DEL ir.rule: sale.payment_transaction_salesman_rule (noupdate)
-DEL ir.rule: sale.sale_advance_payment_inv_rule (noupdate)
-DEL ir.rule: sale.sale_mass_cancel_orders_rule (noupdate)
-DEL ir.rule: sale.sale_order_comp_rule (noupdate)
-DEL ir.rule: sale.sale_order_line_comp_rule (noupdate)
-DEL ir.rule: sale.sale_order_line_personal_rule (noupdate)
-DEL ir.rule: sale.sale_order_line_rule_portal (noupdate)
-DEL ir.rule: sale.sale_order_line_see_all (noupdate)
-DEL ir.rule: sale.sale_order_personal_rule (noupdate)
-DEL ir.rule: sale.sale_order_report_comp_rule (noupdate)
-DEL ir.rule: sale.sale_order_report_personal_rule (noupdate)
-DEL ir.rule: sale.sale_order_report_see_all (noupdate)
-DEL ir.rule: sale.sale_order_rule_portal (noupdate)
-DEL ir.rule: sale.sale_order_see_all (noupdate)
 NEW ir.ui.menu: sale.menu_sale_marketplaces
 NEW ir.ui.menu: sale.menu_service_material
 DEL ir.ui.menu: sale.menu_product_categories

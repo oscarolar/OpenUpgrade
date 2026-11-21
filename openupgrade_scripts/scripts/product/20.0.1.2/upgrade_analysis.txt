@@ -5,7 +5,7 @@ obsolete model report.product.report_producttemplatelabel4x12 [abstract]
 obsolete model report.product.report_producttemplatelabel4x12noprice [abstract]
 obsolete model report.product.report_producttemplatelabel4x7 [abstract]
 obsolete model report.product.report_producttemplatelabel_dymo [abstract]
-new model product.base.unit
+new model product.base.unit (renamed from website.base.unit in module website_sale)
 new model product.catalog.line.mixin [abstract]
 new model report.product.label.base [abstract]
 new model report.product.report_product_label_dymo [abstract]
@@ -13,8 +13,7 @@ new model report.product.report_product_label_pdf [abstract]
 new model report.product.report_product_label_zpl [abstract]
 ---Fields in module 'product'---
 product      / product.attribute        / display_type (selection)      : selection_keys added: [range] (most likely nothing to do)
-product      / product.base.unit        / name (char)                   : NEW required, translate
-product      / product.category         / _order                        : _order is now 'parent_id desc, name asc' ('complete_name')
+product      / product.category         / _order                        : _order is now 'parent_path' ('complete_name')
 product      / product.category         / company_id (many2one)         : NEW relation: res.company
 product      / product.category         / complete_name (char)          : not stored anymore
 product      / product.category         / name (char)                   : now translatable
@@ -62,57 +61,26 @@ product      / product.template.attribute.value / exclude_for (one2many)        
 product      / product.template.attribute.value / excluded_value_ids (many2many): NEW relation: product.template.attribute.value
 product      / product.template.attribute.value / sequence (integer)            : NEW
 product      / product.template.attribute.value / show_price_extra (boolean)    : NEW
+product      / website.base.unit        / _order                        : previously in module website_sale
+product      / website.base.unit        / display_name (char)           : previously in module website_sale
+product      / website.base.unit        / name (char)                   : previously in module website_sale
 stock        / product.product          / qty_available (float)         : is now stored
 stock        / product.product          / qty_available (float)         : not a function anymore
+stock        / product.product          / qty_available (float)         : now company_dependent
 stock        / product.product          / show_qty_update_button (boolean): not a function anymore
 stock        / product.product          / show_qty_update_button (boolean): now related
 website_sale / product.product          / base_unit_id (many2one)       : relation is now 'product.base.unit' ('website.base.unit') [nothing to do]
 website_sale / product.template         / base_unit_id (many2one)       : relation is now 'product.base.unit' ('website.base.unit') [nothing to do]
 ---XML records in module 'product'---
-NEW ir.access: product.access_product_attribute
-NEW ir.access: product.access_product_attribute_custom_value_manager
-NEW ir.access: product.access_product_attribute_custom_value_user
-NEW ir.access: product.access_product_attribute_manager
-NEW ir.access: product.access_product_attribute_value
-NEW ir.access: product.access_product_attribute_value_manager
 NEW ir.access: product.access_product_base_unit_product_manager
 NEW ir.access: product.access_product_base_unit_public_user
-NEW ir.access: product.access_product_category_manager
-NEW ir.access: product.access_product_category_user
-NEW ir.access: product.access_product_combo_item_manager
-NEW ir.access: product.access_product_combo_item_user
-NEW ir.access: product.access_product_combo_manager
-NEW ir.access: product.access_product_combo_user
-NEW ir.access: product.access_product_document_manager
-NEW ir.access: product.access_product_document_user
-NEW ir.access: product.access_product_label_layout_user
-NEW ir.access: product.access_product_pricelist_item_manager
-NEW ir.access: product.access_product_pricelist_item_user
-NEW ir.access: product.access_product_pricelist_manager
-NEW ir.access: product.access_product_pricelist_user
-NEW ir.access: product.access_product_product_attribute
-NEW ir.access: product.access_product_product_attribute_manager
-NEW ir.access: product.access_product_product_employee
-NEW ir.access: product.access_product_product_manager
-NEW ir.access: product.access_product_supplierinfo_manager
-NEW ir.access: product.access_product_supplierinfo_user
-NEW ir.access: product.access_product_tag_manager
-NEW ir.access: product.access_product_tag_user
-NEW ir.access: product.access_product_template_attribute_line
-NEW ir.access: product.access_product_template_attribute_line_manager
-NEW ir.access: product.access_product_template_manager
-NEW ir.access: product.access_product_template_user
-NEW ir.access: product.access_product_uom_manager
-NEW ir.access: product.access_product_uom_user
-NEW ir.access: product.access_uom_uom_product_manager
-NEW ir.access: product.access_update_product_attribute_value_manager
 NEW ir.access: product.product_category_comp_rule
-NEW ir.access: product.product_combo_comp_rule
-NEW ir.access: product.product_comp_rule
-NEW ir.access: product.product_document_comp_rule
-NEW ir.access: product.product_pricelist_comp_rule
-NEW ir.access: product.product_pricelist_item_comp_rule
-NEW ir.access: product.product_supplierinfo_comp_rule
+ir.access: product.product_combo_comp_rule (noupdate switched)
+ir.access: product.product_comp_rule (noupdate switched)
+ir.access: product.product_document_comp_rule (noupdate switched)
+ir.access: product.product_pricelist_comp_rule (noupdate switched)
+ir.access: product.product_pricelist_item_comp_rule (noupdate switched)
+ir.access: product.product_supplierinfo_comp_rule (noupdate switched)
 NEW ir.actions.act_window: product.base_unit_action [renamed from website_sale module]
 NEW ir.actions.act_window: product.product_uom_action_view_list
 NEW ir.actions.act_window: product.product_variant_edit_qty_action
@@ -129,50 +97,9 @@ DEL ir.actions.report: product.report_product_template_label_4x12_noprice
 DEL ir.actions.report: product.report_product_template_label_4x7
 DEL ir.actions.report: product.report_product_template_label_dymo
 NEW ir.actions.server: product.action_product_uom_print_labels
-DEL ir.model.access: product.access_product_attribute
-DEL ir.model.access: product.access_product_attribute_custom_value_manager
-DEL ir.model.access: product.access_product_attribute_custom_value_user
-DEL ir.model.access: product.access_product_attribute_manager
-DEL ir.model.access: product.access_product_attribute_value
-DEL ir.model.access: product.access_product_attribute_value_manager
-DEL ir.model.access: product.access_product_category_manager
-DEL ir.model.access: product.access_product_category_user
-DEL ir.model.access: product.access_product_combo_item_manager
-DEL ir.model.access: product.access_product_combo_item_user
-DEL ir.model.access: product.access_product_combo_manager
-DEL ir.model.access: product.access_product_combo_user
-DEL ir.model.access: product.access_product_document_manager
-DEL ir.model.access: product.access_product_document_user
-DEL ir.model.access: product.access_product_label_layout_user
-DEL ir.model.access: product.access_product_pricelist_item_manager
-DEL ir.model.access: product.access_product_pricelist_item_user
-DEL ir.model.access: product.access_product_pricelist_manager
 DEL ir.model.access: product.access_product_pricelist_partner_manager
-DEL ir.model.access: product.access_product_pricelist_user
-DEL ir.model.access: product.access_product_product_attribute
-DEL ir.model.access: product.access_product_product_attribute_manager
-DEL ir.model.access: product.access_product_product_employee
-DEL ir.model.access: product.access_product_product_manager
-DEL ir.model.access: product.access_product_supplierinfo_manager
-DEL ir.model.access: product.access_product_supplierinfo_user
-DEL ir.model.access: product.access_product_tag_manager
-DEL ir.model.access: product.access_product_tag_user
 DEL ir.model.access: product.access_product_template_attribute_exclusion
 DEL ir.model.access: product.access_product_template_attribute_exclusion_manager
-DEL ir.model.access: product.access_product_template_attribute_line
-DEL ir.model.access: product.access_product_template_attribute_line_manager
-DEL ir.model.access: product.access_product_template_manager
-DEL ir.model.access: product.access_product_template_user
-DEL ir.model.access: product.access_product_uom_manager
-DEL ir.model.access: product.access_product_uom_user
-DEL ir.model.access: product.access_uom_uom_product_manager
-DEL ir.model.access: product.access_update_product_attribute_value_manager
-DEL ir.rule: product.product_combo_comp_rule (noupdate)
-DEL ir.rule: product.product_comp_rule (noupdate)
-DEL ir.rule: product.product_document_comp_rule (noupdate)
-DEL ir.rule: product.product_pricelist_comp_rule (noupdate)
-DEL ir.rule: product.product_pricelist_item_comp_rule (noupdate)
-DEL ir.rule: product.product_supplierinfo_comp_rule (noupdate)
 NEW ir.ui.view: product.barcode_2x7_label
 NEW ir.ui.view: product.barcode_4x12_label
 NEW ir.ui.view: product.barcode_4x7_label

@@ -1,8 +1,6 @@
 ---Models in module 'website_sale'---
-obsolete model website.base.unit
-model product.attribute.category (moved from website_sale_comparison)
+obsolete model website.base.unit (renamed to product.base.unit in module product)
 new model product.stock.notification
-model product.wishlist (moved from website_sale_wishlist)
 new model website.checkout.alert.mixin [abstract]
 new model withdrawal.request
 ---Fields in module 'website_sale'---
@@ -14,13 +12,7 @@ website_sale / delivery.carrier         / delivery_estimate_range_days (integer)
 website_sale / delivery.carrier         / enable_delivery_estimate (boolean): NEW
 website_sale / delivery.carrier         / publish_on (datetime)         : NEW
 website_sale / delivery.carrier         / published_date (datetime)     : NEW
-website_sale / product.attribute        / category_id (many2one)        : previously in module website_sale_comparison
 website_sale / product.attribute        / external_identifier (char)    : NEW
-website_sale / product.attribute.category / _order                        : previously in module website_sale_comparison
-website_sale / product.attribute.category / attribute_ids (one2many)      : previously in module website_sale_comparison
-website_sale / product.attribute.category / display_name (char)           : previously in module website_sale_comparison
-website_sale / product.attribute.category / name (char)                   : previously in module website_sale_comparison
-website_sale / product.attribute.category / sequence (integer)            : previously in module website_sale_comparison
 website_sale / product.document         / attached_on_sale (False)      : previously in module sale_pdf_quote_builder
 website_sale / product.document         / shown_on_product_page (boolean): DEL
 website_sale / product.feed             / website_message_ids (one2many): DEL relation: mail.message
@@ -66,18 +58,7 @@ website_sale / product.template         / suggest_accessory_products (boolean): 
 website_sale / product.template         / suggest_alternative_products (boolean): NEW hasdefault: compute
 website_sale / product.template         / suggest_optional_products (boolean): NEW hasdefault: compute
 website_sale / product.template         / suggested_products_last_update (datetime): NEW
-website_sale / product.wishlist         / _order                        : previously in module website_sale_wishlist
-website_sale / product.wishlist         / active (boolean)              : previously in module website_sale_wishlist
-website_sale / product.wishlist         / currency_id (many2one)        : previously in module website_sale_wishlist
-website_sale / product.wishlist         / display_name (char)           : previously in module website_sale_wishlist
-website_sale / product.wishlist         / partner_id (many2one)         : previously in module website_sale_wishlist
-website_sale / product.wishlist         / price (float)                 : previously in module website_sale_wishlist
-website_sale / product.wishlist         / pricelist_id (many2one)       : previously in module website_sale_wishlist
-website_sale / product.wishlist         / product_id (many2one)         : previously in module website_sale_wishlist
-website_sale / product.wishlist         / website_id (many2one)         : previously in module website_sale_wishlist
 website_sale / res.company              / free_order_label (char)       : NEW hasdefault: default, translate
-website_sale / res.partner              / wishlist_ids (one2many)       : previously in module website_sale_wishlist
-website_sale / res.users                / wishlist_ids (one2many)       : previously in module website_sale_wishlist
 website_sale / sale.order               / alerts (json)                 : NEW
 website_sale / sale.order               / assigned_website_id (many2one): NEW relation: website, isfunction: function, stored
 website_sale / sale.order               / is_rating_email_sent (boolean): NEW
@@ -106,11 +87,9 @@ website_sale / website                  / show_category_description (boolean): N
 website_sale / website                  / show_category_title (boolean) : NEW hasdefault: default
 website_sale / website                  / show_line_subtotals_tax_selection (selection): now required
 website_sale / website                  / show_product_reference_price (boolean): NEW
-website_sale / website                  / wishlist_gap (char)           : previously in module website_sale_wishlist
-website_sale / website                  / wishlist_grid_columns (integer): previously in module website_sale_wishlist
-website_sale / website                  / wishlist_mobile_columns (integer): previously in module website_sale_wishlist
-website_sale / website                  / wishlist_opt_products_design_classes (char): previously in module website_sale_wishlist
-website_sale / website.base.unit        / name (char)                   : DEL required
+website_sale / website.base.unit        / _order                        : module is now 'product' ('website_sale')
+website_sale / website.base.unit        / display_name (char)           : module is now 'product' ('website_sale')
+website_sale / website.base.unit        / name (char)                   : module is now 'product' ('website_sale')
 website_sale / website.checkout.step    / publish_on (datetime)         : NEW
 website_sale / website.checkout.step    / published_date (datetime)     : NEW
 website_sale / website.checkout.step    / show_in_breadcrumb (boolean)  : NEW hasdefault: default
@@ -120,49 +99,27 @@ website_sale / withdrawal.request       / order_id (many2one)           : NEW re
 website_sale / withdrawal.request       / order_reference (char)        : NEW isrelated: related, stored
 website_sale / withdrawal.request       / recipient_emails (char)       : NEW
 ---XML records in module 'website_sale'---
-NEW ir.access: website_sale.access_account_tax_user
-NEW ir.access: website_sale.access_ecom_extra_fields_public_public
-NEW ir.access: website_sale.access_ecom_extra_fields_restricted_editor
-NEW ir.access: website_sale.access_fiscal_position_public
-NEW ir.access: website_sale.access_payment_term
-NEW ir.access: website_sale.access_product_attribute_category_public_public
-NEW ir.access: website_sale.access_product_attribute_category_public_saleman
-NEW ir.access: website_sale.access_product_attribute_public_public
-NEW ir.access: website_sale.access_product_attribute_value_public_public
+ir.access: product.product_pricelist_comp_rule (noupdate switched)
+ir.access: product.product_pricelist_item_comp_rule (noupdate switched)
+NEW ir.access: website_sale.access_product_attribute_category_public_public [renamed from website_sale_comparison module]
+NEW ir.access: website_sale.access_product_attribute_category_public_saleman [renamed from website_sale_comparison module]
 NEW ir.access: website_sale.access_product_base_unit_public_public
 NEW ir.access: website_sale.access_product_base_unit_sale_manager
-NEW ir.access: website_sale.access_product_category_pos_manager
-NEW ir.access: website_sale.access_product_category_public_public
-NEW ir.access: website_sale.access_product_feed_website_group_website_designer
-NEW ir.access: website_sale.access_product_image_public_public
-NEW ir.access: website_sale.access_product_image_restricted_editor
-NEW ir.access: website_sale.access_product_pricelist_item_public_public
-NEW ir.access: website_sale.access_product_pricelist_public_public
-NEW ir.access: website_sale.access_product_product_attribute_custom_value_public
-NEW ir.access: website_sale.access_product_product_attribute_public
-NEW ir.access: website_sale.access_product_product_public_public
-NEW ir.access: website_sale.access_product_public_category_designer
-NEW ir.access: website_sale.access_product_public_category_public_employee
-NEW ir.access: website_sale.access_product_ribbon_public_public
-NEW ir.access: website_sale.access_product_ribbon_sale_manager
-NEW ir.access: website_sale.access_product_tag_public_public
-NEW ir.access: website_sale.access_product_template_attribute_line_public_public
-NEW ir.access: website_sale.access_uom_public
-NEW ir.access: website_sale.access_website_checkout_step_website_designer
 NEW ir.access: website_sale.access_withdrawal_request_system
-NEW ir.access: website_sale.all_product_wishlist_rule
-NEW ir.access: website_sale.empty_public_categories_rule
+NEW ir.access: website_sale.all_product_wishlist_rule [renamed from website_sale_wishlist module] (noupdate switched)
+ir.access: website_sale.empty_public_categories_rule (noupdate switched)
 NEW ir.access: website_sale.product_feed_comp_rule
-NEW ir.access: website_sale.product_pricelist_comp_rule
-NEW ir.access: website_sale.product_pricelist_item_comp_rule
-NEW ir.access: website_sale.product_template_public
-NEW ir.access: website_sale.product_wishlist_rule
+ir.access: website_sale.product_pricelist_comp_rule (noupdate switched)
+ir.access: website_sale.product_pricelist_item_comp_rule (noupdate switched)
+ir.access: website_sale.product_template_public (noupdate switched)
+NEW ir.access: website_sale.product_wishlist_rule [renamed from website_sale_wishlist module] (noupdate switched)
 NEW ir.access: website_sale.product_wishlist_rule_1
 NEW ir.actions.act_url: website_sale.action_open_shop_page
 NEW ir.actions.act_window: website_sale.product_attribute_category_action [renamed from website_sale_comparison module]
 DEL ir.actions.act_window: website_sale.action_product_pages_list
 DEL ir.actions.act_window: website_sale.action_view_unpaid_quotation_tree
 DEL ir.actions.act_window: website_sale.base_unit_action [renamed to product module]
+DEL ir.actions.act_window: website_sale_comparison.product_attribute_category_action [renamed to website_sale module]
 NEW ir.actions.act_window.view: website_sale.website_sale_order_kanban
 NEW ir.actions.act_window.view: website_sale.website_sale_order_list
 NEW ir.actions.server: website_sale.action_update_suggested_products
@@ -175,82 +132,63 @@ NEW ir.filters: website_sale.dynamic_snippet_all_products_filter
 NEW ir.filters: website_sale.dynamic_snippet_newest_arrivals_filter
 DEL ir.filters: website_sale.dynamic_snippet_newest_products_filter
 NEW ir.model: website_sale.model_withdrawal_request
-DEL ir.model.access: website_sale.access_account_tax_user
 DEL ir.model.access: website_sale.access_ecom_extra_fields_public_employee
 DEL ir.model.access: website_sale.access_ecom_extra_fields_public_portal
-DEL ir.model.access: website_sale.access_ecom_extra_fields_public_public
-DEL ir.model.access: website_sale.access_ecom_extra_fields_restricted_editor
-DEL ir.model.access: website_sale.access_fiscal_position_public
-DEL ir.model.access: website_sale.access_payment_term
 DEL ir.model.access: website_sale.access_product_attribute_public_employee
 DEL ir.model.access: website_sale.access_product_attribute_public_portal
-DEL ir.model.access: website_sale.access_product_attribute_public_public
 DEL ir.model.access: website_sale.access_product_attribute_value_public_employee
 DEL ir.model.access: website_sale.access_product_attribute_value_public_portal
-DEL ir.model.access: website_sale.access_product_attribute_value_public_public
-DEL ir.model.access: website_sale.access_product_category_pos_manager
 DEL ir.model.access: website_sale.access_product_category_public_employee
 DEL ir.model.access: website_sale.access_product_category_public_portal
-DEL ir.model.access: website_sale.access_product_category_public_public
 DEL ir.model.access: website_sale.access_product_feed_base_group_system
-DEL ir.model.access: website_sale.access_product_feed_website_group_website_designer
 DEL ir.model.access: website_sale.access_product_image_public_employee
 DEL ir.model.access: website_sale.access_product_image_public_portal
-DEL ir.model.access: website_sale.access_product_image_public_public
-DEL ir.model.access: website_sale.access_product_image_restricted_editor
 DEL ir.model.access: website_sale.access_product_image_sale
 DEL ir.model.access: website_sale.access_product_pricelist_item_public_employee
 DEL ir.model.access: website_sale.access_product_pricelist_item_public_portal
-DEL ir.model.access: website_sale.access_product_pricelist_item_public_public
 DEL ir.model.access: website_sale.access_product_pricelist_public_employee
 DEL ir.model.access: website_sale.access_product_pricelist_public_portal
-DEL ir.model.access: website_sale.access_product_pricelist_public_public
 DEL ir.model.access: website_sale.access_product_product_attribute_custom_value_employee
 DEL ir.model.access: website_sale.access_product_product_attribute_custom_value_portal
-DEL ir.model.access: website_sale.access_product_product_attribute_custom_value_public
 DEL ir.model.access: website_sale.access_product_product_attribute_employee
 DEL ir.model.access: website_sale.access_product_product_attribute_portal
-DEL ir.model.access: website_sale.access_product_product_attribute_public
 DEL ir.model.access: website_sale.access_product_product_public_employee
 DEL ir.model.access: website_sale.access_product_product_public_portal
-DEL ir.model.access: website_sale.access_product_product_public_public
-DEL ir.model.access: website_sale.access_product_public_category_designer
-DEL ir.model.access: website_sale.access_product_public_category_public_employee
 DEL ir.model.access: website_sale.access_product_public_category_public_portal
 DEL ir.model.access: website_sale.access_product_public_category_public_public
 DEL ir.model.access: website_sale.access_product_ribbon_public_employee
 DEL ir.model.access: website_sale.access_product_ribbon_public_portal
-DEL ir.model.access: website_sale.access_product_ribbon_public_public
-DEL ir.model.access: website_sale.access_product_ribbon_sale_manager
 DEL ir.model.access: website_sale.access_product_tag_public_employee
 DEL ir.model.access: website_sale.access_product_tag_public_portal
-DEL ir.model.access: website_sale.access_product_tag_public_public
 DEL ir.model.access: website_sale.access_product_template_attribute_exclusion_employee
 DEL ir.model.access: website_sale.access_product_template_attribute_exclusion_portal
 DEL ir.model.access: website_sale.access_product_template_attribute_exclusion_public
 DEL ir.model.access: website_sale.access_product_template_attribute_line_public_employee
 DEL ir.model.access: website_sale.access_product_template_attribute_line_public_portal
-DEL ir.model.access: website_sale.access_product_template_attribute_line_public_public
 DEL ir.model.access: website_sale.access_product_template_public_employee
 DEL ir.model.access: website_sale.access_product_template_public_portal
 DEL ir.model.access: website_sale.access_product_template_public_public
 DEL ir.model.access: website_sale.access_uom_portal
-DEL ir.model.access: website_sale.access_uom_public
 DEL ir.model.access: website_sale.access_website_base_unit_public_employee
 DEL ir.model.access: website_sale.access_website_base_unit_public_portal
 DEL ir.model.access: website_sale.access_website_base_unit_public_public
 DEL ir.model.access: website_sale.access_website_base_unit_sale_manager
-DEL ir.model.access: website_sale.access_website_checkout_step_website_designer
+DEL ir.model.access: website_sale_comparison.access_product_attribute_category_public_employee
+DEL ir.model.access: website_sale_comparison.access_product_attribute_category_public_portal
+DEL ir.model.access: website_sale_comparison.access_product_attribute_category_public_public [renamed to website_sale module]
+DEL ir.model.access: website_sale_comparison.access_product_attribute_category_public_saleman [renamed to website_sale module]
+DEL ir.model.access: website_sale_wishlist.access_product_wishlist_default
+DEL ir.model.access: website_sale_wishlist.access_product_wishlist_portal
+DEL ir.model.access: website_sale_wishlist.access_product_wishlist_public
+DEL ir.model.access: website_sale_wishlist.access_product_wishlist_user
 NEW ir.model.constraint: website_sale.constraint_product_stock_notification_rel_product_stock_notificat_a3552ee5
-NEW ir.model.constraint: website_sale.constraint_product_template_description_ecommerce_gist_idx
 NEW ir.model.constraint: website_sale.constraint_product_template_minimum_quantity_non_negative
 NEW ir.model.constraint: website_sale.constraint_product_wishlist_product_unique_partner_id [renamed from website_sale_wishlist module]
-DEL ir.rule: website_sale.empty_public_categories_rule (noupdate)
+DEL ir.model.constraint: website_sale_wishlist.constraint_product_wishlist_product_unique_partner_id [renamed to website_sale module]
 DEL ir.rule: website_sale.product_attribute_custom_value_portal_rule (noupdate)
 DEL ir.rule: website_sale.product_attribute_custom_value_sale_rule (noupdate)
-DEL ir.rule: website_sale.product_pricelist_comp_rule (noupdate)
-DEL ir.rule: website_sale.product_pricelist_item_comp_rule (noupdate)
-DEL ir.rule: website_sale.product_template_public (noupdate)
+DEL ir.rule: website_sale_wishlist.all_product_wishlist_rule [renamed to website_sale module] (noupdate)
+DEL ir.rule: website_sale_wishlist.product_wishlist_rule [renamed to website_sale module] (noupdate)
 NEW ir.ui.menu: website_sale.menu_attribute_category_action [renamed from website_sale_comparison module]
 NEW ir.ui.menu: website_sale.menu_open_shop
 DEL ir.ui.menu: website_sale.menu_ecommerce_payment_methods
@@ -260,6 +198,7 @@ DEL ir.ui.menu: website_sale.menu_orders_unpaid_orders
 DEL ir.ui.menu: website_sale.menu_product_combos
 DEL ir.ui.menu: website_sale.menu_product_pages
 DEL ir.ui.menu: website_sale.product_catalog_product_tags
+DEL ir.ui.menu: website_sale_comparison.menu_attribute_category_action [renamed to website_sale module]
 NEW ir.ui.view: website_sale.accordion_specs_item
 NEW ir.ui.view: website_sale.add_to_compare
 NEW ir.ui.view: website_sale.add_to_wishlist
@@ -337,6 +276,35 @@ DEL ir.ui.view: website_sale.s_mega_menu_multi_menus
 DEL ir.ui.view: website_sale.s_mega_menu_odoo_menu
 DEL ir.ui.view: website_sale.s_mega_menu_thumbnails
 DEL ir.ui.view: website_sale.view_sales_order_filter_ecommerce_abondand
+DEL ir.ui.view: website_sale_comparison.accordion_specs_item
+DEL ir.ui.view: website_sale_comparison.add_to_compare
+DEL ir.ui.view: website_sale_comparison.product_add_to_compare
+DEL ir.ui.view: website_sale_comparison.product_attribute_category_tree_view
+DEL ir.ui.view: website_sale_comparison.product_attribute_tree_view_inherit
+DEL ir.ui.view: website_sale_comparison.product_attribute_view_form
+DEL ir.ui.view: website_sale_comparison.product_attributes_body
+DEL ir.ui.view: website_sale_comparison.product_compare
+DEL ir.ui.view: website_sale_comparison.specifications_table
+DEL ir.ui.view: website_sale_comparison_wishlist.product_wishlist
+DEL ir.ui.view: website_sale_wishlist.add_to_wishlist
+DEL ir.ui.view: website_sale_wishlist.empty_wishlist_svg
+DEL ir.ui.view: website_sale_wishlist.header_hide_empty_wishlist_link
+DEL ir.ui.view: website_sale_wishlist.header_wishlist_link
+DEL ir.ui.view: website_sale_wishlist.product_add_to_wishlist
+DEL ir.ui.view: website_sale_wishlist.product_cart_lines
+DEL ir.ui.view: website_sale_wishlist.product_wishlist
+DEL ir.ui.view: website_sale_wishlist.template_header_boxed
+DEL ir.ui.view: website_sale_wishlist.template_header_default
+DEL ir.ui.view: website_sale_wishlist.template_header_hamburger
+DEL ir.ui.view: website_sale_wishlist.template_header_mobile
+DEL ir.ui.view: website_sale_wishlist.template_header_sales_four
+DEL ir.ui.view: website_sale_wishlist.template_header_sales_one
+DEL ir.ui.view: website_sale_wishlist.template_header_sales_three
+DEL ir.ui.view: website_sale_wishlist.template_header_sales_two
+DEL ir.ui.view: website_sale_wishlist.template_header_search
+DEL ir.ui.view: website_sale_wishlist.template_header_sidebar
+DEL ir.ui.view: website_sale_wishlist.template_header_stretch
+DEL ir.ui.view: website_sale_wishlist.template_header_vertical
 NEW mail.template: website_sale.email_template_back_in_stock (noupdate)
 NEW mail.template: website_sale.mail_template_sale_order_rating (noupdate)
 NEW mail.template: website_sale.mail_template_sale_withdrawal_request_confirmation (noupdate)

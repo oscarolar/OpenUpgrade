@@ -1,5 +1,6 @@
 ---Models in module 'payment_xendit'---
 ---Fields in module 'payment_xendit'---
+payment_xendit / payment.provider         / code (False)                  : selection_keys added: [qfpay] (most likely nothing to do)
 ---XML records in module 'payment_xendit'---
 DEL ir.ui.view: payment_xendit.redirect_form
 NEW payment.method: payment_xendit.payment_method_7eleven (noupdate)

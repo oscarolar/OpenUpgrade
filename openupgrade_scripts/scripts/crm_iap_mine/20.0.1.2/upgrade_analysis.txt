@@ -127,16 +127,8 @@ NEW crm.iap.lead.industry.division: crm_iap_mine.crm_iap_mine_division_g
 NEW crm.iap.lead.industry.division: crm_iap_mine.crm_iap_mine_division_h
 NEW crm.iap.lead.industry.division: crm_iap_mine.crm_iap_mine_division_i
 NEW crm.iap.lead.industry.division: crm_iap_mine.crm_iap_mine_division_j
-NEW ir.access: crm_iap_mine.access_crm_iap_lead_industry
 NEW ir.access: crm_iap_mine.access_crm_iap_lead_industry_division
-NEW ir.access: crm_iap_mine.access_crm_iap_lead_mining_request
-NEW ir.access: crm_iap_mine.access_crm_iap_lead_role
-NEW ir.access: crm_iap_mine.access_crm_iap_lead_seniority
 DEL ir.model.access: crm_iap_mine.access_crm_iap_lead_helpers
-DEL ir.model.access: crm_iap_mine.access_crm_iap_lead_industry
-DEL ir.model.access: crm_iap_mine.access_crm_iap_lead_mining_request
-DEL ir.model.access: crm_iap_mine.access_crm_iap_lead_role
-DEL ir.model.access: crm_iap_mine.access_crm_iap_lead_seniority
 NEW ir.model.constraint: crm_iap_mine.constraint_crm_iap_lead_industry_division_name_uniq
 NEW ir.ui.view: crm_iap_mine.crm_iap_lead_industry_view_search
 NEW ir.ui.view: crm_iap_mine.crm_iap_lead_industry_view_tree

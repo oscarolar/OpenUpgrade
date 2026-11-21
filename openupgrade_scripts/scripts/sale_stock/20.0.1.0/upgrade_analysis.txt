@@ -16,47 +16,21 @@ sale_stock   / sale.order.line          / scheduled_date (datetime)     : module
 sale_stock   / sale.order.line          / virtual_available_at_date (float): module is now 'sale' ('sale_stock')
 sale_stock   / stock.picking            / return_reason_id (many2one)   : NEW relation: return.reason
 ---XML records in module 'sale_stock'---
-NEW ir.access: sale_stock.access_account_journal
-NEW ir.access: sale_stock.access_account_partial_reconcile
 NEW ir.access: sale_stock.access_return_reason_everyone
 NEW ir.access: sale_stock.access_return_reason_user
-NEW ir.access: sale_stock.access_stock_location_user
 NEW ir.access: sale_stock.access_stock_lot_salesman
-NEW ir.access: sale_stock.access_stock_move_manager
-NEW ir.access: sale_stock.access_stock_move_salesman
-NEW ir.access: sale_stock.access_stock_package_type_salesman
-NEW ir.access: sale_stock.access_stock_picking_sales
-NEW ir.access: sale_stock.access_stock_picking_salesman
-NEW ir.access: sale_stock.access_stock_rule
-NEW ir.access: sale_stock.access_stock_rule_salemanager
-NEW ir.access: sale_stock.access_stock_warehouse_orderpoint_sale_salesman
-NEW ir.access: sale_stock.access_stock_warehouse_user
-NEW ir.access: sale_stock.sale_order_line_rule_stock_user
+ir.access: sale_stock.sale_order_line_rule_stock_user (noupdate switched)
 NEW ir.access: sale_stock.sale_order_stock_rule
-NEW ir.access: sale_stock.stock_picking_rule_portal
+ir.access: sale_stock.stock_picking_rule_portal (noupdate switched)
 NEW ir.actions.act_window: sale_stock.action_open_return_reasons
 NEW ir.actions.act_window: sale_stock.action_stock_picking_return_report
 NEW ir.actions.act_window.view: sale_stock.action_stock_picking_return_report_graph
 NEW ir.actions.act_window.view: sale_stock.action_stock_picking_return_report_pivot
 NEW ir.actions.report: sale_stock.action_report_return_label
-DEL ir.model.access: sale_stock.access_account_journal
-DEL ir.model.access: sale_stock.access_account_partial_reconcile
 DEL ir.model.access: sale_stock.access_sale_order_line_stock_worker
 DEL ir.model.access: sale_stock.access_sale_order_stock_worker
 DEL ir.model.access: sale_stock.access_stock_location_sale_manager
-DEL ir.model.access: sale_stock.access_stock_location_user
-DEL ir.model.access: sale_stock.access_stock_move_manager
-DEL ir.model.access: sale_stock.access_stock_move_salesman
-DEL ir.model.access: sale_stock.access_stock_package_type_salesman
 DEL ir.model.access: sale_stock.access_stock_picking_portal
-DEL ir.model.access: sale_stock.access_stock_picking_sales
-DEL ir.model.access: sale_stock.access_stock_picking_salesman
-DEL ir.model.access: sale_stock.access_stock_rule
-DEL ir.model.access: sale_stock.access_stock_rule_salemanager
-DEL ir.model.access: sale_stock.access_stock_warehouse_orderpoint_sale_salesman
-DEL ir.model.access: sale_stock.access_stock_warehouse_user
-DEL ir.rule: sale_stock.sale_order_line_rule_stock_user (noupdate)
-DEL ir.rule: sale_stock.stock_picking_rule_portal (noupdate)
 NEW ir.ui.menu: sale_stock.menu_stock_picking_return_report
 NEW ir.ui.view: sale_stock.product_template_form_view_stock
 NEW ir.ui.view: sale_stock.return_label

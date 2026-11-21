@@ -6,33 +6,16 @@ website_crm_partner_assign / res.partner.grade        / website_absolute_url (ch
 website_crm_partner_assign / res.partner.grade        / website_published (boolean)   : module is now 'website_partnership' ('website_crm_partner_assign')
 website_crm_partner_assign / res.partner.grade        / website_url (char)            : module is now 'website_partnership' ('website_crm_partner_assign')
 ---XML records in module 'website_crm_partner_assign'---
-NEW ir.access: website_crm_partner_assign.access_crm_lead_assignation
-NEW ir.access: website_crm_partner_assign.access_crm_lead_forward_to_partner
-NEW ir.access: website_crm_partner_assign.access_partner_activation_manager
-NEW ir.access: website_crm_partner_assign.access_res_partner_activation_user
-NEW ir.access: website_crm_partner_assign.access_res_partner_grade_invoicing_payment
-NEW ir.access: website_crm_partner_assign.access_res_partner_grade_invoicing_payment_readonly
-NEW ir.access: website_crm_partner_assign.assigned_lead_portal_rule_1
-NEW ir.access: website_crm_partner_assign.ir_rule_crm_partner_report_assign_all
-NEW ir.access: website_crm_partner_assign.ir_rule_crm_partner_report_assign_salesman
-NEW ir.access: website_crm_partner_assign.partner_access_crm_stage
+ir.access: website_crm_partner_assign.assigned_lead_portal_rule_1 (noupdate switched)
+ir.access: website_crm_partner_assign.ir_rule_crm_partner_report_assign_all (noupdate switched)
+ir.access: website_crm_partner_assign.ir_rule_crm_partner_report_assign_salesman (noupdate switched)
 NEW ir.actions.act_window: website_crm_partner_assign.action_partner_pages_list
-DEL ir.model.access: website_crm_partner_assign.access_crm_lead_assignation
-DEL ir.model.access: website_crm_partner_assign.access_crm_lead_forward_to_partner
 DEL ir.model.access: website_crm_partner_assign.access_crm_partner_report
-DEL ir.model.access: website_crm_partner_assign.access_partner_activation_manager
-DEL ir.model.access: website_crm_partner_assign.access_res_partner_activation_user
-DEL ir.model.access: website_crm_partner_assign.access_res_partner_grade_invoicing_payment
-DEL ir.model.access: website_crm_partner_assign.access_res_partner_grade_invoicing_payment_readonly
 DEL ir.model.access: website_crm_partner_assign.access_res_partner_grade_portal
 DEL ir.model.access: website_crm_partner_assign.access_res_partner_grade_public
 DEL ir.model.access: website_crm_partner_assign.partner_access_crm_lead
-DEL ir.model.access: website_crm_partner_assign.partner_access_crm_stage
 NEW ir.model.constraint: website_crm_partner_assign.constraint_res_partner_country_id_grade_id_published_idx
-DEL ir.rule: website_crm_partner_assign.assigned_lead_portal_rule_1 (noupdate)
-DEL ir.rule: website_crm_partner_assign.ir_rule_crm_partner_report_assign_all (noupdate)
-DEL ir.rule: website_crm_partner_assign.ir_rule_crm_partner_report_assign_salesman (noupdate)
-DEL ir.rule: website_crm_partner_assign.res_partner_grade_rule_portal_public (noupdate)
+DEL ir.rule: website_crm_partner_assign.res_partner_grade_rule_portal_public [renamed to website_partnership module] (noupdate)
 NEW ir.ui.menu: website_crm_partner_assign.menu_partners_pages
 NEW ir.ui.view: website_crm_partner_assign.categories_setting
 NEW ir.ui.view: website_crm_partner_assign.countries_setting

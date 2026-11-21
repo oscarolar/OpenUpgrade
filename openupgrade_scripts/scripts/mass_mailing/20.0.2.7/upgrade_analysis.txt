@@ -20,33 +20,9 @@ mass_mailing / mailing.mailing          / mailing_filter_ids (many2many): NEW re
 mass_mailing / mailing.mailing          / website_message_ids (one2many): DEL relation: mail.message
 mass_mailing / res.partner              / mailing_contact_ids (one2many): NEW relation: mailing.contact
 ---XML records in module 'mass_mailing'---
-NEW ir.access: mass_mailing.access_ir_mail_server
-NEW ir.access: mass_mailing.access_ir_model
-NEW ir.access: mass_mailing.access_link_tracker_mailing
-NEW ir.access: mass_mailing.access_mail_blacklist_mass_mailing_user
-NEW ir.access: mass_mailing.access_mail_blacklist_remove_mass_mailing_user
-NEW ir.access: mass_mailing.access_mailing_contact_import_mailing_user
-NEW ir.access: mass_mailing.access_mailing_contact_mm_user
-NEW ir.access: mass_mailing.access_mailing_contact_to_list
-NEW ir.access: mass_mailing.access_mailing_filter_mailing_user
-NEW ir.access: mass_mailing.access_mailing_list_mm_user
-NEW ir.access: mass_mailing.access_mailing_mailing_mm_user
-NEW ir.access: mass_mailing.access_mailing_mailing_system
-NEW ir.access: mass_mailing.access_mailing_mailing_test
-NEW ir.access: mass_mailing.access_mailing_schedule_date
-NEW ir.access: mass_mailing.access_mailing_subscription_mm_user
-NEW ir.access: mass_mailing.access_mailing_subscription_optout_mm_user
-NEW ir.access: mass_mailing.access_mailing_trace_mm_user
-NEW ir.access: mass_mailing.access_mailing_trace_report_mm_user
-NEW ir.access: mass_mailing.access_utm_campaign_mass_mailing_user
-NEW ir.access: mass_mailing.access_utm_medium
-NEW ir.access: mass_mailing.access_utm_source
-NEW ir.access: mass_mailing.access_utm_stage
-NEW ir.access: mass_mailing.access_utm_tag_mass_mailing_campaign
 NEW ir.access: mass_mailing.ir_ui_view_mass_mailing_user_edit_access
 NEW ir.access: mass_mailing.ir_ui_view_mass_mailing_user_read_access
 NEW ir.access: mass_mailing.ir_ui_view_rule_system
-NEW ir.access: mass_mailing.properties_base_definition_rule_mailing_user
 NEW ir.actions.act_window: mass_mailing.action_mailing_filter_quick_create
 NEW ir.actions.act_window: mass_mailing.action_mailing_list_quick_create
 NEW ir.actions.act_window: mass_mailing.mailing_mailing_action_templates
@@ -68,33 +44,9 @@ NEW ir.attachment: mass_mailing.set_catalog_square_md_1
 NEW ir.attachment: mass_mailing.set_catalog_square_md_2
 NEW ir.attachment: mass_mailing.set_catalog_square_md_3
 NEW ir.attachment: mass_mailing.set_catalog_square_md_4
-DEL ir.model.access: mass_mailing.access_ir_mail_server
-DEL ir.model.access: mass_mailing.access_ir_model
-DEL ir.model.access: mass_mailing.access_link_tracker_mailing
-DEL ir.model.access: mass_mailing.access_mail_blacklist_mass_mailing_user
-DEL ir.model.access: mass_mailing.access_mail_blacklist_remove_mass_mailing_user
-DEL ir.model.access: mass_mailing.access_mailing_contact_import_mailing_user
-DEL ir.model.access: mass_mailing.access_mailing_contact_mm_user
-DEL ir.model.access: mass_mailing.access_mailing_contact_to_list
-DEL ir.model.access: mass_mailing.access_mailing_filter_mailing_user
 DEL ir.model.access: mass_mailing.access_mailing_list_merge
-DEL ir.model.access: mass_mailing.access_mailing_list_mm_user
-DEL ir.model.access: mass_mailing.access_mailing_mailing_mm_user
-DEL ir.model.access: mass_mailing.access_mailing_mailing_system
-DEL ir.model.access: mass_mailing.access_mailing_mailing_test
-DEL ir.model.access: mass_mailing.access_mailing_schedule_date
-DEL ir.model.access: mass_mailing.access_mailing_subscription_mm_user
-DEL ir.model.access: mass_mailing.access_mailing_subscription_optout_mm_user
-DEL ir.model.access: mass_mailing.access_mailing_trace_mm_user
-DEL ir.model.access: mass_mailing.access_mailing_trace_report_mm_user
 DEL ir.model.access: mass_mailing.access_properties_base_definition_mailing_user
-DEL ir.model.access: mass_mailing.access_utm_campaign_mass_mailing_user
-DEL ir.model.access: mass_mailing.access_utm_medium
-DEL ir.model.access: mass_mailing.access_utm_source
-DEL ir.model.access: mass_mailing.access_utm_stage
-DEL ir.model.access: mass_mailing.access_utm_tag_mass_mailing_campaign
 ir.model.constraint: mass_mailing.constraint_mailing_mailing_email_from (changed definition: is now 'CHECK(is_template = true OR email_from IS NOT NULL OR mailing_type != 'mail')' ('CHECK(email_from IS NOT NULL OR mailing_type != 'mail')'))
-DEL ir.rule: mass_mailing.properties_base_definition_rule_mailing_user
 NEW ir.ui.menu: mass_mailing.mass_mailing_template_menu
 NEW ir.ui.menu: mass_mailing.menu_email_mass_mailing_dynamic_lists
 DEL ir.ui.menu: mass_mailing.mailing_filter_menu_action

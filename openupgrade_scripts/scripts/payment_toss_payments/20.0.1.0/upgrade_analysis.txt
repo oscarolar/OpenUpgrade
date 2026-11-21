@@ -1,5 +1,6 @@
 ---Models in module 'payment_toss_payments'---
 ---Fields in module 'payment_toss_payments'---
+payment_toss_payments / payment.provider         / code (False)                  : selection_keys added: [qfpay] (most likely nothing to do)
 ---XML records in module 'payment_toss_payments'---
 NEW payment.method: payment_toss_payments.payment_method_amex (noupdate)
 NEW payment.method: payment_toss_payments.payment_method_bank_transfer (noupdate)

@@ -23,21 +23,9 @@ im_livechat  / im_livechat.conversation.tag / name (char)                   : DE
 im_livechat  / im_livechat.expertise    / color (integer)               : NEW
 im_livechat  / mail.message             / chatbot_message_ids (one2many): NEW relation: chatbot.message
 ---XML records in module 'im_livechat'---
-NEW ir.access: im_livechat.access_chatbot_message_user
-NEW ir.access: im_livechat.access_chatbot_script_answer_user
-NEW ir.access: im_livechat.access_chatbot_script_step_user
-NEW ir.access: im_livechat.access_chatbot_script_user
-NEW ir.access: im_livechat.access_im_livechat_channel_member_history_user
-NEW ir.access: im_livechat.access_livechat_channel_manager
-NEW ir.access: im_livechat.access_livechat_channel_rule_manager
-NEW ir.access: im_livechat.access_livechat_channel_rule_user
-NEW ir.access: im_livechat.access_livechat_channel_user
-NEW ir.access: im_livechat.access_livechat_expertise_internal_user
-NEW ir.access: im_livechat.access_livechat_expertise_livechat_manager
-NEW ir.access: im_livechat.access_livechat_support_report_channel
-NEW ir.access: im_livechat.ir_rule_discuss_call_history_im_livechat_group_user
-NEW ir.access: im_livechat.ir_rule_discuss_channel_im_livechat_group_user
-NEW ir.access: im_livechat.ir_rule_discuss_channel_member_im_livechat_group_user
+ir.access: im_livechat.ir_rule_discuss_call_history_im_livechat_group_user (noupdate switched)
+ir.access: im_livechat.ir_rule_discuss_channel_im_livechat_group_user (noupdate switched)
+ir.access: im_livechat.ir_rule_discuss_channel_member_im_livechat_group_user (noupdate switched)
 NEW ir.actions.act_window: im_livechat.im_livechat_channel_config_action
 DEL ir.actions.act_window: im_livechat.discuss_channel_looking_for_help_action
 DEL ir.actions.act_window: im_livechat.livechat_conversation_tag_action
@@ -46,28 +34,14 @@ NEW ir.actions.act_window.view: im_livechat.im_livechat_channel_config_action_li
 DEL ir.actions.act_window.view: im_livechat.discuss_channel_looking_for_help_action_form
 DEL ir.actions.act_window.view: im_livechat.discuss_channel_looking_for_help_action_kanban
 DEL ir.actions.act_window.view: im_livechat.discuss_channel_looking_for_help_action_list
-DEL ir.model.access: im_livechat.access_chatbot_message_user
 DEL ir.model.access: im_livechat.access_chatbot_script_answer
-DEL ir.model.access: im_livechat.access_chatbot_script_answer_user
-DEL ir.model.access: im_livechat.access_chatbot_script_step_user
-DEL ir.model.access: im_livechat.access_chatbot_script_user
-DEL ir.model.access: im_livechat.access_im_livechat_channel_member_history_user
-DEL ir.model.access: im_livechat.access_livechat_channel_manager
-DEL ir.model.access: im_livechat.access_livechat_channel_rule_manager
-DEL ir.model.access: im_livechat.access_livechat_channel_rule_user
-DEL ir.model.access: im_livechat.access_livechat_channel_user
 DEL ir.model.access: im_livechat.access_livechat_conversation_tag_livechat_manager
 DEL ir.model.access: im_livechat.access_livechat_conversation_tag_livechat_user
-DEL ir.model.access: im_livechat.access_livechat_expertise_internal_user
-DEL ir.model.access: im_livechat.access_livechat_expertise_livechat_manager
-DEL ir.model.access: im_livechat.access_livechat_support_report_channel
 NEW ir.model.constraint: im_livechat.constraint_discuss_channel_livechat_looking_for_help_since_dt_constraint
 NEW ir.model.constraint: im_livechat.constraint_discuss_channel_livechat_rating_constraint
+NEW ir.model.constraint: im_livechat.constraint_discuss_channel_livechat_status_need_help_idx
 DEL ir.model.constraint: im_livechat.constraint_discuss_channel_livechat_operator_id
 DEL ir.model.constraint: im_livechat.constraint_im_livechat_conversation_tag_name_unique
-DEL ir.rule: im_livechat.ir_rule_discuss_call_history_im_livechat_group_user (noupdate)
-DEL ir.rule: im_livechat.ir_rule_discuss_channel_im_livechat_group_user (noupdate)
-DEL ir.rule: im_livechat.ir_rule_discuss_channel_member_im_livechat_group_user (noupdate)
 NEW ir.ui.menu: im_livechat.livechat_channels_config
 DEL ir.ui.menu: im_livechat.menu_livechat_all_conversations
 DEL ir.ui.menu: im_livechat.menu_livechat_conversation_tag

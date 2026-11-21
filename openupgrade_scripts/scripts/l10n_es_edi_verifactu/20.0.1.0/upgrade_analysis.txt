@@ -16,15 +16,9 @@ l10n_es_edi_verifactu / res.company              / l10n_es_edi_verifactu_chain_s
 l10n_es_edi_verifactu / res.company              / l10n_es_edi_verifactu_next_batch_time (datetime): DEL
 l10n_es_edi_verifactu / res.company              / l10n_es_edi_verifactu_special_vat_regime (selection): DEL selection_keys: ['reagyp', 'recargo', 'simplified']
 ---XML records in module 'l10n_es_edi_verifactu'---
-NEW ir.access: l10n_es_edi_verifactu.access_l10n_es_edi_verifactu_document_readonly
-NEW ir.access: l10n_es_edi_verifactu.access_l10n_es_edi_verifactu_document_readonly_account_readonly
-NEW ir.access: l10n_es_edi_verifactu.access_l10n_es_edi_verifactu_document_user
 NEW ir.access: l10n_es_edi_verifactu.access_l10n_es_edi_verifactu_issuer_readonly
 NEW ir.access: l10n_es_edi_verifactu.access_l10n_es_edi_verifactu_issuer_readonly_account_readonly
 NEW ir.actions.server: l10n_es_edi_verifactu.action_l10n_es_edi_verifactu_button_cancel
-DEL ir.model.access: l10n_es_edi_verifactu.access_l10n_es_edi_verifactu_document_readonly
-DEL ir.model.access: l10n_es_edi_verifactu.access_l10n_es_edi_verifactu_document_readonly_account_readonly
-DEL ir.model.access: l10n_es_edi_verifactu.access_l10n_es_edi_verifactu_document_user
 NEW ir.model.constraint: l10n_es_edi_verifactu.constraint_l10n_es_edi_verifactu_issuer_unique_issuer_per_obligado
 NEW ir.ui.view: l10n_es_edi_verifactu.account_journal_dashboard_kanban_view_inherit_verifactu
 NEW ir.ui.view: l10n_es_edi_verifactu.view_account_move_filter_vf_rejected

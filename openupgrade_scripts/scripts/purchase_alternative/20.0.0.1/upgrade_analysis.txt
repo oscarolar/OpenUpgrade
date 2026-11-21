@@ -1,6 +1,6 @@
 ---Models in module 'purchase_alternative'---
-new model purchase.alternative.create [transient]
-new model purchase.alternative.warning [transient]
+new model purchase.alternative.create (renamed from purchase.requisition.create.alternative in module purchase_requisition) [transient]
+new model purchase.alternative.warning (renamed from purchase.requisition.alternative.warning in module purchase_requisition) [transient]
 model purchase.order.group (moved from purchase_requisition)
 ---Fields in module 'purchase_alternative'---
 purchase_alternative / purchase.order           / alternative_po_ids (one2many) : previously in module purchase_requisition

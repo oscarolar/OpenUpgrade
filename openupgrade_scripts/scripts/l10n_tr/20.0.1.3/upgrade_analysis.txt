@@ -1,9 +1,12 @@
 ---Models in module 'l10n_tr'---
-new model l10n_tr.tax.office
+new model l10n_tr.tax.office (renamed from l10n_tr_nilvera_einvoice_extended.tax.office in module l10n_tr_nilvera_einvoice_extended)
 ---Fields in module 'l10n_tr'---
-l10n_tr      / l10n_tr.tax.office       / code (integer)                : NEW
-l10n_tr      / l10n_tr.tax.office       / name (char)                   : NEW translate
-l10n_tr      / l10n_tr.tax.office       / state_id (many2one)           : NEW relation: res.country.state
+l10n_tr      / l10n_tr_nilvera_einvoice_extended.tax.office / _order                        : previously in module l10n_tr_nilvera_einvoice_extended
+l10n_tr      / l10n_tr_nilvera_einvoice_extended.tax.office / code (integer)                : previously in module l10n_tr_nilvera_einvoice_extended
+l10n_tr      / l10n_tr_nilvera_einvoice_extended.tax.office / display_name (char)           : previously in module l10n_tr_nilvera_einvoice_extended
+l10n_tr      / l10n_tr_nilvera_einvoice_extended.tax.office / name (char)                   : previously in module l10n_tr_nilvera_einvoice_extended
+l10n_tr      / l10n_tr_nilvera_einvoice_extended.tax.office / state_code (char)             : previously in module l10n_tr_nilvera_einvoice_extended
+l10n_tr      / l10n_tr_nilvera_einvoice_extended.tax.office / state_id (many2one)           : previously in module l10n_tr_nilvera_einvoice_extended
 l10n_tr      / res.company              / l10n_tr_tax_office_id (many2one): previously in module l10n_tr_nilvera_einvoice_extended
 l10n_tr      / res.partner              / l10n_tr_tax_office_id (many2one): previously in module l10n_tr_nilvera_einvoice_extended
 l10n_tr      / res.users                / l10n_tr_tax_office_id (many2one): previously in module l10n_tr_nilvera_einvoice_extended

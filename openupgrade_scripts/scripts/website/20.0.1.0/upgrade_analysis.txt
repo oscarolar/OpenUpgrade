@@ -65,38 +65,12 @@ website      / website.snippet.filter   / published_date (datetime)     : NEW
 website      / website.track            / _order                        : _order is now 'visit_datetime DESC, id DESC' ('visit_datetime DESC')
 ---XML records in module 'website'---
 NEW ir.access: website.access_portal_entry
-NEW ir.access: website.access_seo_designer
-NEW ir.access: website.access_seo_public_public
-NEW ir.access: website.access_theme_ir_asset_group_system
-NEW ir.access: website.access_theme_ir_attachment
-NEW ir.access: website.access_theme_ir_ui_view
-NEW ir.access: website.access_theme_website_menu
-NEW ir.access: website.access_theme_website_page
-NEW ir.access: website.access_website_configurator_feature_designer
-NEW ir.access: website.access_website_custom_blocked_third_party_domains
-NEW ir.access: website.access_website_designer
-NEW ir.access: website.access_website_dynamic_filter_system
-NEW ir.access: website.access_website_ir_asset_designer
 NEW ir.access: website.access_website_llms
-NEW ir.access: website.access_website_menu_designer
-NEW ir.access: website.access_website_menu_public
-NEW ir.access: website.access_website_page_designer
-NEW ir.access: website.access_website_page_properties_base_designer
-NEW ir.access: website.access_website_page_properties_base_employee
-NEW ir.access: website.access_website_page_properties_designer
-NEW ir.access: website.access_website_page_properties_employee
-NEW ir.access: website.access_website_rewrite_designer
-NEW ir.access: website.access_website_robots
-NEW ir.access: website.access_website_route_designer
-NEW ir.access: website.access_website_technical_page
-NEW ir.access: website.access_website_track_designer
-NEW ir.access: website.access_website_visitor_designer
-NEW ir.access: website.website_designer_edit_qweb
-NEW ir.access: website.website_designer_view
-NEW ir.access: website.website_group_system_edit_all_views
-NEW ir.access: website.website_menu
+ir.access: website.website_designer_edit_qweb (noupdate switched)
+ir.access: website.website_designer_view (noupdate switched)
+ir.access: website.website_group_system_edit_all_views (noupdate switched)
+ir.access: website.website_menu (noupdate switched)
 NEW ir.access: website.website_page_controller_rule_designer
-NEW ir.access: website.website_page_controller_rule_public
 NEW ir.asset: website.s_age_verification_popup_001_scss
 NEW ir.asset: website.s_animated_cover_000_scss
 NEW ir.asset: website.s_avatars_000_scss
@@ -167,58 +141,28 @@ NEW ir.attachment: website.ultrawide_lg_4
 NEW ir.attachment: website.ultrawide_lg_5
 NEW ir.attachment: website.ultrawide_lg_6
 NEW ir.cron: website.ir_cron_publish_scheduled_pages
-DEL ir.model.access: website.access_seo_designer
 DEL ir.model.access: website.access_seo_public_employee
 DEL ir.model.access: website.access_seo_public_portal
-DEL ir.model.access: website.access_seo_public_public
-DEL ir.model.access: website.access_theme_ir_asset_group_system
-DEL ir.model.access: website.access_theme_ir_attachment
-DEL ir.model.access: website.access_theme_ir_ui_view
-DEL ir.model.access: website.access_theme_website_menu
-DEL ir.model.access: website.access_theme_website_page
-DEL ir.model.access: website.access_website_configurator_feature_designer
 DEL ir.model.access: website.access_website_controller_page_designer
 DEL ir.model.access: website.access_website_controller_page_public
-DEL ir.model.access: website.access_website_custom_blocked_third_party_domains
-DEL ir.model.access: website.access_website_designer
 DEL ir.model.access: website.access_website_dynamic_filter_public
-DEL ir.model.access: website.access_website_dynamic_filter_system
-DEL ir.model.access: website.access_website_ir_asset_designer
 DEL ir.model.access: website.access_website_ir_ui_view_designer
 DEL ir.model.access: website.access_website_ir_ui_view_restricted_editor
-DEL ir.model.access: website.access_website_menu_designer
 DEL ir.model.access: website.access_website_menu_employee
 DEL ir.model.access: website.access_website_menu_portal
-DEL ir.model.access: website.access_website_menu_public
-DEL ir.model.access: website.access_website_page_designer
-DEL ir.model.access: website.access_website_page_properties_base_designer
-DEL ir.model.access: website.access_website_page_properties_base_employee
 DEL ir.model.access: website.access_website_page_properties_base_portal
 DEL ir.model.access: website.access_website_page_properties_base_public
-DEL ir.model.access: website.access_website_page_properties_designer
-DEL ir.model.access: website.access_website_page_properties_employee
 DEL ir.model.access: website.access_website_page_properties_portal
 DEL ir.model.access: website.access_website_page_properties_public
 DEL ir.model.access: website.access_website_public_employee
 DEL ir.model.access: website.access_website_public_portal
-DEL ir.model.access: website.access_website_public_public
+DEL ir.model.access: website.access_website_public_public [renamed to base module]
 DEL ir.model.access: website.access_website_rewrite
-DEL ir.model.access: website.access_website_rewrite_designer
-DEL ir.model.access: website.access_website_robots
-DEL ir.model.access: website.access_website_route_designer
-DEL ir.model.access: website.access_website_technical_page
-DEL ir.model.access: website.access_website_track_designer
 DEL ir.model.access: website.access_website_track_system
-DEL ir.model.access: website.access_website_visitor_designer
 DEL ir.model.access: website.access_website_visitor_system
 DEL ir.model.constraint: website.constraint_website_domain_unique [renamed to base module]
 DEL ir.rule: website.view_rule_visibility_connected (noupdate)
 DEL ir.rule: website.view_rule_visibility_public (noupdate)
-DEL ir.rule: website.website_designer_edit_qweb (noupdate)
-DEL ir.rule: website.website_designer_view (noupdate)
-DEL ir.rule: website.website_group_system_edit_all_views (noupdate)
-DEL ir.rule: website.website_menu (noupdate)
-DEL ir.rule: website.website_page_controller_rule_public
 DEL ir.rule: website.website_page_rule_public (noupdate)
 NEW ir.ui.view: website.400_hide_error
 NEW ir.ui.view: website.403_hide_error

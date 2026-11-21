@@ -4,8 +4,7 @@ hr_holidays_attendance / hr.attendance.overtime.line / compensable_as_leave (boo
 hr_holidays_attendance / hr.attendance.overtime.rule / compensable_as_leave (boolean): DEL
 hr_holidays_attendance / hr.leave.type            / overtime_deductible (boolean) : DEL
 ---XML records in module 'hr_holidays_attendance'---
-NEW ir.access: hr_holidays_attendance.access_hr_leave_attendance_report_manager
-DEL ir.model.access: hr_holidays_attendance.access_hr_leave_attendance_report_manager
+DEL hr.leave.type: hr_holidays.holiday_status_extra_hours (noupdate)
 NEW ir.ui.view: hr_holidays_attendance.view_attendance_overtime_leave_form
 NEW ir.ui.view: hr_holidays_attendance.view_attendance_search_inherit_holidays
 NEW ir.ui.view: hr_holidays_attendance.view_attendance_tree_inherit_holidays

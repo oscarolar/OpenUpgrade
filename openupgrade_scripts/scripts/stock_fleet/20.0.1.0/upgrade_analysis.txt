@@ -1,6 +1,4 @@
 ---Models in module 'stock_fleet'---
-new model report.stock_fleet.report_cmr [abstract]
-new model report.stock_fleet.report_cmr_batch [abstract]
 ---Fields in module 'stock_fleet'---
 stock_fleet  / stock.picking.type       / auto_print_cmr_report (boolean): NEW
 ---XML records in module 'stock_fleet'---

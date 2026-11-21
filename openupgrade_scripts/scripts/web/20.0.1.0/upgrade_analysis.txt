@@ -1,13 +1,9 @@
 ---Models in module 'web'---
 ---Fields in module 'web'---
 ---XML records in module 'web'---
-NEW ir.access: web.access_base_document_layout
-NEW ir.access: web.res_users_settings_embedded_action_rule_admin
-NEW ir.access: web.res_users_settings_embedded_action_rule_user
-DEL ir.model.access: web.access_base_document_layout
+ir.access: web.res_users_settings_embedded_action_rule_admin (noupdate switched)
+ir.access: web.res_users_settings_embedded_action_rule_user (noupdate switched)
 DEL ir.model.access: web.access_res_users_settings_embedded_action_user
-DEL ir.rule: web.res_users_settings_embedded_action_rule_admin (noupdate)
-DEL ir.rule: web.res_users_settings_embedded_action_rule_user (noupdate)
 NEW ir.ui.view: web.check_identity
 NEW ir.ui.view: web.company_address_list
 NEW ir.ui.view: web.external_layout_body

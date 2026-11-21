@@ -8,7 +8,7 @@ website_partnership / res.partner.grade        / website_absolute_url (char)   :
 website_partnership / res.partner.grade        / website_published (boolean)   : previously in module website_crm_partner_assign
 website_partnership / res.partner.grade        / website_url (char)            : previously in module website_crm_partner_assign
 ---XML records in module 'website_partnership'---
-NEW ir.access: website_partnership.res_partner_grade_rule_portal_public
+NEW ir.access: website_partnership.res_partner_grade_rule_portal_public [renamed from website_crm_partner_assign module] (noupdate switched)
 NEW ir.ui.view: website_partnership.categories_setting
 NEW ir.ui.view: website_partnership.companies_only_setting
 NEW ir.ui.view: website_partnership.contact_details

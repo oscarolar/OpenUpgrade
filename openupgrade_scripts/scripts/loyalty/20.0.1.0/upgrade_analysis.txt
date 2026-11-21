@@ -12,11 +12,11 @@ loyalty      / loyalty.program          / expire_after (integer)        : NEW
 loyalty      / loyalty.program          / once_per_user (boolean)       : NEW
 loyalty      / loyalty.program          / partner_ids (many2many)       : NEW relation: res.partner
 ---XML records in module 'loyalty'---
-NEW ir.access: loyalty.loyalty_history_company_rule
-NEW ir.access: loyalty.sale_loyalty_card_company_rule
-NEW ir.access: loyalty.sale_loyalty_program_company_rule
-NEW ir.access: loyalty.sale_loyalty_reward_company_rule
-NEW ir.access: loyalty.sale_loyalty_rule_company_rule
+ir.access: loyalty.loyalty_history_company_rule (noupdate switched)
+ir.access: loyalty.sale_loyalty_card_company_rule (noupdate switched)
+ir.access: loyalty.sale_loyalty_program_company_rule (noupdate switched)
+ir.access: loyalty.sale_loyalty_reward_company_rule (noupdate switched)
+ir.access: loyalty.sale_loyalty_rule_company_rule (noupdate switched)
 DEL ir.model.access: loyalty.access_loyalty_card
 DEL ir.model.access: loyalty.access_loyalty_card_update_balance_user
 DEL ir.model.access: loyalty.access_loyalty_generate_wizard
@@ -28,8 +28,3 @@ DEL ir.model.access: loyalty.access_loyalty_rule
 NEW ir.model.constraint: loyalty.constraint_loyalty_history_issued_and_used_positive
 NEW ir.model.constraint: loyalty.constraint_loyalty_history_issued_or_used
 NEW ir.model.constraint: loyalty.constraint_loyalty_program_check_expire_after
-DEL ir.rule: loyalty.loyalty_history_company_rule (noupdate)
-DEL ir.rule: loyalty.sale_loyalty_card_company_rule (noupdate)
-DEL ir.rule: loyalty.sale_loyalty_program_company_rule (noupdate)
-DEL ir.rule: loyalty.sale_loyalty_reward_company_rule (noupdate)
-DEL ir.rule: loyalty.sale_loyalty_rule_company_rule (noupdate)

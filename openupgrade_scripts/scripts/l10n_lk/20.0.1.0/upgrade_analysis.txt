@@ -1,8 +1,5 @@
 ---Models in module 'l10n_lk'---
 ---Fields in module 'l10n_lk'---
-l10n_lk      / res.company              / l10n_lk_vat_registered (boolean): previously in module l10n_lk_invoice
-l10n_lk      / res.partner              / l10n_lk_vat_registered (boolean): previously in module l10n_lk_invoice
-l10n_lk      / res.users                / l10n_lk_vat_registered (boolean): previously in module l10n_lk_invoice
 ---XML records in module 'l10n_lk'---
 NEW account.account.tag: l10n_lk.account_tag_fc
 NEW account.account.tag: l10n_lk.account_tag_ite
@@ -78,8 +75,14 @@ NEW account.report.expression: l10n_lk.l10n_lk_vat001_lk_vat_001e_s_cell_c
 NEW account.report.expression: l10n_lk.l10n_lk_vat001_lk_vat_001e_tit_cell_c
 NEW account.report.expression: l10n_lk.l10n_lk_vat001_lk_vat_001e_tot_cell_c
 NEW ir.actions.report: l10n_lk.action_report_commercial_invoice [renamed from l10n_th module]
+DEL ir.actions.report: l10n_lk_invoice.action_report_commercial_invoice [renamed to l10n_ph module]
 NEW ir.ui.view: l10n_lk.report_commercial_invoice
 NEW ir.ui.view: l10n_lk.report_invoice
 NEW ir.ui.view: l10n_lk.report_invoice_document
 NEW ir.ui.view: l10n_lk.view_company_form_l10n_lk_vat_registered
 NEW ir.ui.view: l10n_lk.view_partner_form_l10n_lk_vat_registered
+DEL ir.ui.view: l10n_lk_invoice.report_commercial_invoice
+DEL ir.ui.view: l10n_lk_invoice.report_invoice
+DEL ir.ui.view: l10n_lk_invoice.report_invoice_document
+DEL ir.ui.view: l10n_lk_invoice.view_company_form_l10n_lk_vat_registered
+DEL ir.ui.view: l10n_lk_invoice.view_partner_form_l10n_lk_vat_registered

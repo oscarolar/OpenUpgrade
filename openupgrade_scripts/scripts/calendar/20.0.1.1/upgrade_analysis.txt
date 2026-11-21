@@ -1,8 +1,8 @@
 ---Models in module 'calendar'---
-obsolete model calendar.popover.delete.wizard [transient]
+obsolete model calendar.popover.delete.wizard (renamed to calendar.event.archive.or.unlink.wizard) [transient]
 obsolete model calendar.provider.config [transient]
 new model calendar.calendar
-new model calendar.event.archive.or.unlink.wizard [transient]
+new model calendar.event.archive.or.unlink.wizard (renamed from calendar.popover.delete.wizard) [transient]
 new model calendar.event.multi.archive.or.unlink.wizard [transient]
 new model calendar.user
 ---Fields in module 'calendar'---
@@ -34,49 +34,32 @@ calendar     / res.users.settings       / calendar_default_privacy (selection): 
 calendar     / res.users.settings       / calendar_show_activities (boolean): NEW hasdefault: default
 ---XML records in module 'calendar'---
 NEW calendar.alarm: calendar.alarm_mail_1_day (noupdate)
-NEW ir.access: calendar.access_calendar_alarm
-NEW ir.access: calendar.access_calendar_alarm_manager
-NEW ir.access: calendar.access_calendar_attendee_employee
 NEW ir.access: calendar.access_calendar_attendee_employee_archive_or_unlink_wizard
 NEW ir.access: calendar.access_calendar_attendee_employee_multi_archive_or_unlink_wizard
-NEW ir.access: calendar.access_calendar_event_type_all
-NEW ir.access: calendar.access_calendar_event_type_manager
-NEW ir.access: calendar.access_calendar_filters_all
-NEW ir.access: calendar.access_calendar_recurrence
 NEW ir.access: calendar.calendar_calendar_rule_system
 NEW ir.access: calendar.calendar_calendar_rule_users_create_and_read
 NEW ir.access: calendar.calendar_calendar_rule_users_update
-NEW ir.access: calendar.calendar_event_rule_employee
-NEW ir.access: calendar.calendar_event_rule_my
-NEW ir.access: calendar.calendar_event_rule_private
+ir.access: calendar.calendar_event_rule_employee (noupdate switched)
+ir.access: calendar.calendar_event_rule_my (noupdate switched)
+ir.access: calendar.calendar_event_rule_private (noupdate switched)
 NEW ir.access: calendar.calendar_user_rule_create
 NEW ir.access: calendar.calendar_user_rule_own_or_owner
 NEW ir.access: calendar.calendar_user_rule_read
 NEW ir.actions.act_window: calendar.action_calendar_calendar
 DEL ir.actions.act_window: calendar.action_event_delete_wizard
-DEL ir.model.access: calendar.access_calendar_alarm
-DEL ir.model.access: calendar.access_calendar_alarm_manager
-DEL ir.model.access: calendar.access_calendar_attendee_employee
 DEL ir.model.access: calendar.access_calendar_attendee_employee_delete_wizard
 DEL ir.model.access: calendar.access_calendar_attendee_portal
 DEL ir.model.access: calendar.access_calendar_event_all_employee
 DEL ir.model.access: calendar.access_calendar_event_all_user
 DEL ir.model.access: calendar.access_calendar_event_partner_manager
-DEL ir.model.access: calendar.access_calendar_event_type_all
-DEL ir.model.access: calendar.access_calendar_event_type_manager
 DEL ir.model.access: calendar.access_calendar_filters
-DEL ir.model.access: calendar.access_calendar_filters_all
 DEL ir.model.access: calendar.access_calendar_provider_config_all
 DEL ir.model.access: calendar.access_calendar_provider_config_manager
-DEL ir.model.access: calendar.access_calendar_recurrence
 NEW ir.model.constraint: calendar.constraint_calendar_event_access_token_unique
 NEW ir.model.constraint: calendar.constraint_calendar_event_check_no_recurrent_draft
 NEW ir.model.constraint: calendar.constraint_calendar_user_single_primary_calendar_per_user
 NEW ir.model.constraint: calendar.constraint_calendar_user_unique_user_per_calendar
 DEL ir.rule: calendar.calendar_attendee_rule_my (noupdate)
-DEL ir.rule: calendar.calendar_event_rule_employee (noupdate)
-DEL ir.rule: calendar.calendar_event_rule_my (noupdate)
-DEL ir.rule: calendar.calendar_event_rule_private (noupdate)
 NEW ir.ui.menu: calendar.calendar_submenu_event_type
 NEW ir.ui.menu: calendar.menu_calendar_calendars
 NEW ir.ui.view: calendar.calendar_alarm_view_kanban

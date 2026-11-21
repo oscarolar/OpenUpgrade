@@ -18,10 +18,6 @@ pos_self_order / pos.preset               / delivery_product_price (float): NEW 
 pos_self_order / pos.preset               / free_delivery_min_amount (float): NEW
 pos_self_order / pos.snooze               / type (False)                  : NEW selection_keys: ['product', 'self-ordering'], mode: modify
 ---XML records in module 'pos_self_order'---
-NEW ir.access: pos_self_order.access_pos_self_order_custom_link_manager
-NEW ir.access: pos_self_order.access_pos_self_order_custom_link_user
-DEL ir.model.access: pos_self_order.access_pos_self_order_custom_link_manager
-DEL ir.model.access: pos_self_order.access_pos_self_order_custom_link_user
 NEW ir.ui.view: pos_self_order.DynamicQrReceipt
 NEW ir.ui.view: pos_self_order.pos_config_view_form_inherit_pos_self_order
 NEW ir.ui.view: pos_self_order.pos_order_change_receipt

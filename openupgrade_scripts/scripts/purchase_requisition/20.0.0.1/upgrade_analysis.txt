@@ -1,7 +1,7 @@
 ---Models in module 'purchase_requisition'---
 model purchase.order.group (moved to purchase_alternative)
-obsolete model purchase.requisition.alternative.warning [transient]
-obsolete model purchase.requisition.create.alternative [transient]
+obsolete model purchase.requisition.alternative.warning (renamed to purchase.alternative.warning in module purchase_alternative) [transient]
+obsolete model purchase.requisition.create.alternative (renamed to purchase.alternative.create in module purchase_alternative) [transient]
 ---Fields in module 'purchase_requisition'---
 purchase_requisition / purchase.order           / alternative_po_ids (one2many) : module is now 'purchase_alternative' ('purchase_requisition')
 purchase_requisition / purchase.order           / purchase_group_id (many2one)  : module is now 'purchase_alternative' ('purchase_requisition')
@@ -19,19 +19,13 @@ purchase_requisition / purchase.requisition.line / product_uom_id (many2one)    
 purchase_requisition / purchase.requisition.line / sequence (integer)            : NEW hasdefault: default
 purchase_requisition / purchase.requisition.line / uom_id (many2one)             : NEW relation: uom.uom, hasdefault: compute
 ---XML records in module 'purchase_requisition'---
-NEW ir.access: purchase_requisition.access_purchase_requisition
-NEW ir.access: purchase_requisition.access_purchase_requisition_line_purchase_user
-NEW ir.access: purchase_requisition.purchase_requisition_comp_rule
-NEW ir.access: purchase_requisition.purchase_requisition_line_comp_rule
-DEL ir.model.access: purchase_requisition.access_purchase_requisition
+ir.access: purchase_requisition.purchase_requisition_comp_rule (noupdate switched)
+ir.access: purchase_requisition.purchase_requisition_line_comp_rule (noupdate switched)
 DEL ir.model.access: purchase_requisition.access_purchase_requisition_alternative_warning
 DEL ir.model.access: purchase_requisition.access_purchase_requisition_create_alternative
 DEL ir.model.access: purchase_requisition.access_purchase_requisition_line_manager
-DEL ir.model.access: purchase_requisition.access_purchase_requisition_line_purchase_user
 DEL ir.model.access: purchase_requisition.access_purchase_requisition_manager
 DEL ir.model.access: purchase_requisition.access_purchase_requisition_purchase_order_group
-DEL ir.rule: purchase_requisition.purchase_requisition_comp_rule (noupdate)
-DEL ir.rule: purchase_requisition.purchase_requisition_line_comp_rule (noupdate)
 DEL ir.ui.view: purchase_requisition.purchase_order_line_compare_tree
 DEL ir.ui.view: purchase_requisition.purchase_requisition_alternative_warning_form
 DEL ir.ui.view: purchase_requisition.purchase_requisition_create_alternative_form

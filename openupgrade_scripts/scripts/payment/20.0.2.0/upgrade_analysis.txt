@@ -23,41 +23,29 @@ payment      / payment.transaction      / payment_data_ids (one2many)   : NEW re
 payment      / res.company              / pay_later_label (char)        : NEW hasdefault: default, translate
 payment      / res.company              / pay_now_label (char)          : NEW hasdefault: default, translate
 ---XML records in module 'payment'---
-NEW ir.access: payment.payment_capture_wizard_rule
-NEW ir.access: payment.payment_capture_wizard_user
+ir.access: payment.payment_capture_wizard_rule (noupdate switched)
 NEW ir.access: payment.payment_data_system
 NEW ir.access: payment.payment_method_rule
-NEW ir.access: payment.payment_method_system
-NEW ir.access: payment.payment_provider_company_rule
-NEW ir.access: payment.payment_provider_system
+ir.access: payment.payment_provider_company_rule (noupdate switched)
 NEW ir.access: payment.payment_token_admin_rule
-NEW ir.access: payment.payment_token_company_rule
+ir.access: payment.payment_token_company_rule (noupdate switched)
 NEW ir.access: payment.payment_token_public_rule
-NEW ir.access: payment.payment_transaction_system
-NEW ir.access: payment.transaction_company_rule
+ir.access: payment.transaction_company_rule (noupdate switched)
 NEW ir.actions.server: payment.action_add_payment_method
 NEW ir.actions.server: payment.action_confirm_payment_transaction
 NEW ir.cron: payment.post_processing_cron
 NEW ir.cron: payment.processing_cron
 DEL ir.cron: payment.cron_post_process_payment_tx
 DEL ir.model.access: payment.access_payment_link_wizard
-DEL ir.model.access: payment.payment_capture_wizard_user
 DEL ir.model.access: payment.payment_method_employee
 DEL ir.model.access: payment.payment_method_portal
 DEL ir.model.access: payment.payment_method_public
-DEL ir.model.access: payment.payment_method_system
-DEL ir.model.access: payment.payment_provider_system
 DEL ir.model.access: payment.payment_token_employee
 DEL ir.model.access: payment.payment_token_portal
 DEL ir.model.access: payment.payment_token_public
 DEL ir.model.access: payment.payment_token_system
-DEL ir.model.access: payment.payment_transaction_system
 NEW ir.model.constraint: payment.constraint_payment_method_provider_id_code_uniq
-DEL ir.rule: payment.payment_capture_wizard_rule (noupdate)
-DEL ir.rule: payment.payment_provider_company_rule (noupdate)
-DEL ir.rule: payment.payment_token_company_rule (noupdate)
 DEL ir.rule: payment.payment_token_user_rule (noupdate)
-DEL ir.rule: payment.transaction_company_rule (noupdate)
 NEW ir.ui.view: payment.amount_input
 NEW ir.ui.view: payment.generic_redirect_form
 NEW ir.ui.view: payment.payment_data_form
@@ -296,4 +284,5 @@ DEL payment.method: payment.payment_method_woori [renamed to payment_xendit modu
 DEL payment.method: payment.payment_method_zalopay [renamed to payment_xendit module] (noupdate)
 DEL payment.method: payment.payment_method_zip [renamed to payment_adyen module] (noupdate)
 NEW payment.provider: payment.payment_provider_pay_on_invoice (noupdate)
+NEW payment.provider: payment.payment_provider_qfpay (noupdate)
 NEW portal.entry: payment.payment_methods_portal_entry (noupdate)

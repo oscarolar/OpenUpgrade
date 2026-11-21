@@ -22,10 +22,6 @@ NEW account.report.expression: l10n_cz.l10n_cz_vat_declaration_line_4_raw_output
 NEW account.report.expression: l10n_cz.l10n_cz_vat_declaration_line_6_raw_output_tax
 NEW account.report.expression: l10n_cz.l10n_cz_vat_declaration_line_7_raw_output_tax
 NEW account.report.expression: l10n_cz.l10n_cz_vat_declaration_line_9_raw_output_tax
-NEW ir.access: l10n_cz.access_l10n_cz_tax_office_account_manager
-NEW ir.access: l10n_cz.access_l10n_cz_tax_office_account_user
-DEL ir.model.access: l10n_cz.access_l10n_cz_tax_office_account_manager
-DEL ir.model.access: l10n_cz.access_l10n_cz_tax_office_account_user
 NEW ir.ui.view: l10n_cz.cz_partner_address_form
 DEL ir.ui.view: l10n_cz.l10n_cz_external_layout_bold
 DEL ir.ui.view: l10n_cz.l10n_cz_external_layout_boxed

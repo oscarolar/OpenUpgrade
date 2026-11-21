@@ -15,55 +15,33 @@ hr_expense   / hr.expense.product.job.position.limit / product_id (many2one)    
 hr_expense   / hr.expense.product.job.position.limit / sequence (integer)            : NEW hasdefault: default
 hr_expense   / product.product          / expense_job_position_limit_ids (one2many): NEW relation: hr.expense.product.job.position.limit
 ---XML records in module 'hr_expense'---
-NEW ir.access: hr_expense.access_account_journal_user
-NEW ir.access: hr_expense.access_hr_expense_approve_duplicate
 NEW ir.access: hr_expense.access_hr_expense_product_job_position_limit_manager
 NEW ir.access: hr_expense.access_hr_expense_product_job_position_limit_user
-NEW ir.access: hr_expense.access_hr_expense_refuse_wizard
-NEW ir.access: hr_expense.access_hr_expense_split_manager
-NEW ir.access: hr_expense.access_mail_activity_type_expense_user
 NEW ir.access: hr_expense.base_user_account_move_line_rule
-NEW ir.access: hr_expense.hr_expense_comp_rule
+ir.access: hr_expense.hr_expense_comp_rule (noupdate switched)
 NEW ir.access: hr_expense.hr_expense_team_approver_account_analytic_line_rule
-NEW ir.access: hr_expense.hr_expense_team_approver_account_move_line_rule
-NEW ir.access: hr_expense.hr_expense_team_approver_account_move_rule
-NEW ir.access: hr_expense.ir_rule_hr_expense_approver
-NEW ir.access: hr_expense.ir_rule_hr_expense_employee
-NEW ir.access: hr_expense.ir_rule_hr_expense_employee_not_draft
-NEW ir.access: hr_expense.ir_rule_hr_expense_manager
+ir.access: hr_expense.hr_expense_team_approver_account_move_line_rule (noupdate switched)
+ir.access: hr_expense.hr_expense_team_approver_account_move_rule (noupdate switched)
+ir.access: hr_expense.ir_rule_hr_expense_approver (noupdate switched)
+ir.access: hr_expense.ir_rule_hr_expense_employee (noupdate switched)
+ir.access: hr_expense.ir_rule_hr_expense_employee_not_draft (noupdate switched)
+ir.access: hr_expense.ir_rule_hr_expense_manager (noupdate switched)
 NEW ir.access: hr_expense.ir_rule_hr_expense_manager_1
-NEW ir.access: hr_expense.ir_rule_hr_expense_split_accountant
-NEW ir.access: hr_expense.ir_rule_hr_expense_split_approver
-NEW ir.access: hr_expense.ir_rule_hr_expense_split_employee
-NEW ir.access: hr_expense.ir_rule_hr_expense_split_manager
-NEW ir.access: hr_expense.ir_rule_hr_expense_split_user
+ir.access: hr_expense.ir_rule_hr_expense_split_accountant (noupdate switched)
+ir.access: hr_expense.ir_rule_hr_expense_split_approver (noupdate switched)
+ir.access: hr_expense.ir_rule_hr_expense_split_employee (noupdate switched)
+ir.access: hr_expense.ir_rule_hr_expense_split_manager (noupdate switched)
+ir.access: hr_expense.ir_rule_hr_expense_split_user (noupdate switched)
 DEL ir.cron: hr_expense.ir_cron_send_submitted_expenses_mail
 DEL ir.model.access: hr_expense.access_account_analytic_line_user
-DEL ir.model.access: hr_expense.access_account_journal_user
 DEL ir.model.access: hr_expense.access_account_move_line_user
 DEL ir.model.access: hr_expense.access_account_move_user
 DEL ir.model.access: hr_expense.access_hr_expense_accountant
-DEL ir.model.access: hr_expense.access_hr_expense_approve_duplicate
 DEL ir.model.access: hr_expense.access_hr_expense_employee
 DEL ir.model.access: hr_expense.access_hr_expense_manager
 DEL ir.model.access: hr_expense.access_hr_expense_post
-DEL ir.model.access: hr_expense.access_hr_expense_refuse_wizard
-DEL ir.model.access: hr_expense.access_hr_expense_split_manager
 DEL ir.model.access: hr_expense.access_hr_expense_split_wizard_manager
 DEL ir.model.access: hr_expense.access_hr_expense_user
-DEL ir.model.access: hr_expense.access_mail_activity_type_expense_user
-DEL ir.rule: hr_expense.hr_expense_comp_rule (noupdate)
-DEL ir.rule: hr_expense.hr_expense_team_approver_account_move_line_rule (noupdate)
-DEL ir.rule: hr_expense.hr_expense_team_approver_account_move_rule (noupdate)
-DEL ir.rule: hr_expense.ir_rule_hr_expense_approver (noupdate)
-DEL ir.rule: hr_expense.ir_rule_hr_expense_employee (noupdate)
-DEL ir.rule: hr_expense.ir_rule_hr_expense_employee_not_draft (noupdate)
-DEL ir.rule: hr_expense.ir_rule_hr_expense_manager (noupdate)
-DEL ir.rule: hr_expense.ir_rule_hr_expense_split_accountant (noupdate)
-DEL ir.rule: hr_expense.ir_rule_hr_expense_split_approver (noupdate)
-DEL ir.rule: hr_expense.ir_rule_hr_expense_split_employee (noupdate)
-DEL ir.rule: hr_expense.ir_rule_hr_expense_split_manager (noupdate)
-DEL ir.rule: hr_expense.ir_rule_hr_expense_split_user (noupdate)
 DEL ir.sequence: hr_expense.seq_hr_expense_invoice (noupdate)
 DEL ir.ui.menu: hr_expense.menu_hr_expense_account_employee_expenses
 NEW ir.ui.view: hr_expense.account_journal_dashboard_kanban_view_inherit_expense

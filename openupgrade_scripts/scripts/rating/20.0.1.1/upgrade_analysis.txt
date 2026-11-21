@@ -6,9 +6,5 @@ rating       / rating.rating            / parent_res_id (integer)       : type i
 rating       / res.users                / rating_ids (one2many)         : is now stored
 rating       / res.users                / rating_ids (one2many)         : not related anymore
 ---XML records in module 'rating'---
-NEW ir.access: rating.access_rating_user
-NEW ir.access: rating.rating_rating_access_system
 DEL ir.model.access: rating.access_rating_portal
 DEL ir.model.access: rating.access_rating_public
-DEL ir.model.access: rating.access_rating_user
-DEL ir.model.access: rating.rating_rating_access_system

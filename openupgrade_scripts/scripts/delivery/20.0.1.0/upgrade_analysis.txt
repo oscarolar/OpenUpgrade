@@ -6,29 +6,12 @@ delivery     / payment.provider         / custom_mode (False)           : select
 delivery     / res.partner              / is_pickup_location (boolean)  : DEL
 delivery     / sale.order               / pickup_location_data (json)   : DEL
 ---XML records in module 'delivery'---
-NEW ir.access: delivery.access_choose_delivery_carrier
-NEW ir.access: delivery.access_delivery_carrier
-NEW ir.access: delivery.access_delivery_carrier_manager
-NEW ir.access: delivery.access_delivery_carrier_partner_manager
 NEW ir.access: delivery.access_delivery_note_line_user
 NEW ir.access: delivery.access_delivery_note_user
-NEW ir.access: delivery.access_delivery_price_rule
-NEW ir.access: delivery.access_delivery_price_rule_manager
-NEW ir.access: delivery.access_delivery_zip_prefix
-NEW ir.access: delivery.access_delivery_zip_prefix_sale_manager
-NEW ir.access: delivery.delivery_carrier_comp_rule
+ir.access: delivery.delivery_carrier_comp_rule (noupdate switched)
 NEW ir.actions.report: delivery.action_report_delivery_note
-DEL ir.model.access: delivery.access_choose_delivery_carrier
-DEL ir.model.access: delivery.access_delivery_carrier
-DEL ir.model.access: delivery.access_delivery_carrier_manager
-DEL ir.model.access: delivery.access_delivery_carrier_partner_manager
 DEL ir.model.access: delivery.access_delivery_carrier_system
-DEL ir.model.access: delivery.access_delivery_price_rule
-DEL ir.model.access: delivery.access_delivery_price_rule_manager
 DEL ir.model.access: delivery.access_delivery_price_rule_sale_manager
-DEL ir.model.access: delivery.access_delivery_zip_prefix
-DEL ir.model.access: delivery.access_delivery_zip_prefix_sale_manager
-DEL ir.rule: delivery.delivery_carrier_comp_rule (noupdate)
 NEW ir.sequence: delivery.seq_delivery_note (noupdate)
 NEW ir.ui.view: delivery.delivery_note_form_view
 NEW ir.ui.view: delivery.delivery_note_list_view

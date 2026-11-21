@@ -5,11 +5,9 @@ l10n_pe      / res.bank                 / l10n_pe_edi_code (char)       : DEL
 l10n_pe      / res.partner              / l10n_pe_sunat_id_code (char)  : NEW isfunction: function, stored
 l10n_pe      / res.partner              / l10n_pe_sunat_id_value (char) : NEW isfunction: function, stored
 ---XML records in module 'l10n_pe'---
-NEW ir.access: l10n_pe.access_l10n_pe_district_group_user
 DEL ir.model.access: l10n_pe.access_city_portal
 DEL ir.model.access: l10n_pe.access_city_public
 DEL ir.model.access: l10n_pe.access_l10n_pe_district_group_all
-DEL ir.model.access: l10n_pe.access_l10n_pe_district_group_user
 NEW ir.ui.view: l10n_pe.res_city_view_form_inherit_l10n_pe
 DEL ir.ui.view: l10n_pe.view_res_bank_inherit_l10n_pe_bank
 DEL l10n_latam.identification.type: l10n_pe.it_CPP

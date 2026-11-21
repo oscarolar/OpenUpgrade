@@ -1,5 +1,6 @@
 ---Models in module 'payment_redsys'---
 ---Fields in module 'payment_redsys'---
+payment_redsys / payment.provider         / code (False)                  : selection_keys added: [qfpay] (most likely nothing to do)
 ---XML records in module 'payment_redsys'---
 DEL ir.ui.view: payment_redsys.redirect_form
 NEW payment.method: payment_redsys.payment_method_amex (noupdate)

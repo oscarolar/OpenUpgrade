@@ -12,11 +12,9 @@ l10n_ar      / res.partner.bank         / account_type (False)          : NEW se
 ---XML records in module 'l10n_ar'---
 NEW account.account.tag: l10n_ar.tag_fixed_asset_account
 NEW account.account.tag: l10n_ar.tag_leases_rentals_account
-NEW ir.access: l10n_ar.access_l10n_ar_afip_responsibility_type_all
 NEW ir.access: l10n_ar.access_l10n_ar_arca_activity_manager
 NEW ir.access: l10n_ar.access_l10n_ar_arca_activity_user
 NEW ir.actions.act_window: l10n_ar.act_arca_activity
-DEL ir.model.access: l10n_ar.access_l10n_ar_afip_responsibility_type_all
 DEL ir.model.access: l10n_ar.access_l10n_ar_afip_responsibility_type_portal
 DEL ir.model.access: l10n_ar.access_l10n_ar_afip_responsibility_type_public
 NEW ir.model.constraint: l10n_ar.constraint_l10n_ar_arca_activity_code_length

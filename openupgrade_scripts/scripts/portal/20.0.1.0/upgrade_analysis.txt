@@ -38,12 +38,6 @@ portal       / product.template         / website_message_ids (one2many): DEL re
 portal       / res.partner              / website_message_ids (one2many): DEL relation: mail.message
 ---XML records in module 'portal'---
 NEW ir.access: portal.access_portal_entry_public
-NEW ir.access: portal.access_portal_share
-NEW ir.access: portal.access_portal_wizard
-NEW ir.access: portal.access_portal_wizard_user
-DEL ir.model.access: portal.access_portal_share
-DEL ir.model.access: portal.access_portal_wizard
-DEL ir.model.access: portal.access_portal_wizard_user
 NEW ir.ui.view: portal.address_warning_icon
 NEW ir.ui.view: portal.profile_picture_card
 NEW portal.entry: portal.portal_entry_addresses (noupdate)

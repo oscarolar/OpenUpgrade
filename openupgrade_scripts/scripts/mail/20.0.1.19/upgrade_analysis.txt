@@ -156,86 +156,41 @@ NEW discuss.channel.member: mail.channel_member_channel_admin_partner_admin (nou
 NEW ir.access: mail.access_discuss_category_erp_manager
 NEW ir.access: mail.access_discuss_category_user
 NEW ir.access: mail.access_discuss_channel_last_interest_update_system
-NEW ir.access: mail.access_discuss_channel_rtc_session_system
-NEW ir.access: mail.access_discuss_voice_metadata_user
-NEW ir.access: mail.access_fetchmail_server
-NEW ir.access: mail.access_mail_activity_plan_template_user
-NEW ir.access: mail.access_mail_activity_plan_user
-NEW ir.access: mail.access_mail_activity_schedule_line_user
-NEW ir.access: mail.access_mail_activity_schedule_user
-NEW ir.access: mail.access_mail_activity_type_system
-NEW ir.access: mail.access_mail_activity_type_user
-NEW ir.access: mail.access_mail_alias_domain_system
-NEW ir.access: mail.access_mail_alias_domain_user
-NEW ir.access: mail.access_mail_alias_system
-NEW ir.access: mail.access_mail_alias_user
-NEW ir.access: mail.access_mail_blacklist_remove_system
-NEW ir.access: mail.access_mail_blacklist_system
 NEW ir.access: mail.access_mail_call_artifact_admin
 NEW ir.access: mail.access_mail_call_artifact_user
-NEW ir.access: mail.access_mail_canned_reponse
-NEW ir.access: mail.access_mail_compose_message
-NEW ir.access: mail.access_mail_followers_edit
-NEW ir.access: mail.access_mail_followers_system
-NEW ir.access: mail.access_mail_followers_user
-NEW ir.access: mail.access_mail_gateway_allowed_system
-NEW ir.access: mail.access_mail_guest_system
-NEW ir.access: mail.access_mail_guest_user
-NEW ir.access: mail.access_mail_ice_server_system
-NEW ir.access: mail.access_mail_link_preview_admin
-NEW ir.access: mail.access_mail_mail_system
-NEW ir.access: mail.access_mail_message_link_preview_erp_manager
-NEW ir.access: mail.access_mail_message_reaction_system
-NEW ir.access: mail.access_mail_message_scheduled_system
-NEW ir.access: mail.access_mail_message_subtype_system
-NEW ir.access: mail.access_mail_message_subtype_user
-NEW ir.access: mail.access_mail_message_translation_system
-NEW ir.access: mail.access_mail_notification_system
-NEW ir.access: mail.access_mail_notification_user
 NEW ir.access: mail.access_mail_poll_erp_manager
 NEW ir.access: mail.access_mail_poll_option_erp_manager
 NEW ir.access: mail.access_mail_poll_vote_erp_manager
-NEW ir.access: mail.access_mail_presence
-NEW ir.access: mail.access_mail_push_device_system
-NEW ir.access: mail.access_mail_push_system
-NEW ir.access: mail.access_mail_template
-NEW ir.access: mail.access_mail_template_editor
-NEW ir.access: mail.access_mail_template_preview
-NEW ir.access: mail.access_mail_template_reset
-NEW ir.access: mail.access_publisher_warranty_contract_all
-NEW ir.access: mail.access_res_role_admin
-NEW ir.access: mail.access_res_role_user
-NEW ir.access: mail.discuss_gif_favorite_admin_rule
-NEW ir.access: mail.discuss_gif_favorite_user_rule
-NEW ir.access: mail.ir_actions_report_access_user
-NEW ir.access: mail.ir_rule_discuss_call_history_read_all
-NEW ir.access: mail.ir_rule_discuss_channel_all
+ir.access: mail.discuss_gif_favorite_admin_rule (noupdate switched)
+ir.access: mail.discuss_gif_favorite_user_rule (noupdate switched)
+ir.access: mail.ir_rule_discuss_call_history_read_all (noupdate switched)
+ir.access: mail.ir_rule_discuss_channel_all (noupdate switched)
 NEW ir.access: mail.ir_rule_discuss_channel_all_user_write
-NEW ir.access: mail.ir_rule_discuss_channel_group_system
-NEW ir.access: mail.ir_rule_discuss_channel_member_create_is_group_matching_all
-NEW ir.access: mail.ir_rule_discuss_channel_member_create_is_group_matching_group_user
-NEW ir.access: mail.ir_rule_discuss_channel_member_create_is_member_group_user
-NEW ir.access: mail.ir_rule_discuss_channel_member_group_system
+ir.access: mail.ir_rule_discuss_channel_group_system (noupdate switched)
+ir.access: mail.ir_rule_discuss_channel_member_create_is_group_matching_all (noupdate switched)
+ir.access: mail.ir_rule_discuss_channel_member_create_is_group_matching_group_user (noupdate switched)
+ir.access: mail.ir_rule_discuss_channel_member_create_is_member_group_user (noupdate switched)
+ir.access: mail.ir_rule_discuss_channel_member_group_system (noupdate switched)
 NEW ir.access: mail.ir_rule_discuss_channel_member_is_channel_admin_unlink
 NEW ir.access: mail.ir_rule_discuss_channel_member_is_channel_owner_unlink
-NEW ir.access: mail.ir_rule_discuss_channel_member_is_self_all
+ir.access: mail.ir_rule_discuss_channel_member_is_self_all (noupdate switched)
 NEW ir.access: mail.ir_rule_discuss_channel_member_is_self_unlink
-NEW ir.access: mail.ir_rule_discuss_channel_member_read_all
-NEW ir.access: mail.ir_rule_mail_canned_response_admin
-NEW ir.access: mail.ir_rule_mail_canned_response_user_read
-NEW ir.access: mail.ir_rule_mail_canned_response_user_update
-NEW ir.access: mail.ir_rule_mail_notifications_group_portal
-NEW ir.access: mail.ir_rule_mail_notifications_group_user
+ir.access: mail.ir_rule_discuss_channel_member_read_all (noupdate switched)
+ir.access: mail.ir_rule_mail_canned_response_admin (noupdate switched)
+ir.access: mail.ir_rule_mail_canned_response_user_read (noupdate switched)
+ir.access: mail.ir_rule_mail_canned_response_user_update (noupdate switched)
+ir.access: mail.ir_rule_mail_notifications_group_portal (noupdate switched)
+ir.access: mail.ir_rule_mail_notifications_group_user (noupdate switched)
 NEW ir.access: mail.ir_rule_mail_scheduled_message
-NEW ir.access: mail.ir_rule_mail_scheduled_message_user
-NEW ir.access: mail.mail_activity_plan_rule_admin
-NEW ir.access: mail.mail_activity_plan_template_rule_admin
+ir.access: mail.ir_rule_mail_scheduled_message_user (noupdate switched)
+ir.access: mail.mail_activity_plan_rule_admin (noupdate switched)
+ir.access: mail.mail_activity_plan_template_rule_admin (noupdate switched)
 NEW ir.access: mail.mail_activity_rule_access_create
 NEW ir.access: mail.mail_activity_rule_access_read
 NEW ir.access: mail.mail_activity_rule_access_unlink
 NEW ir.access: mail.mail_activity_rule_access_write
-NEW ir.access: mail.mail_activity_rule_user
-NEW ir.access: mail.mail_compose_message_rule
+ir.access: mail.mail_activity_rule_user (noupdate switched)
+ir.access: mail.mail_compose_message_rule (noupdate switched)
 NEW ir.access: mail.mail_message_rule_access_create
 NEW ir.access: mail.mail_message_rule_access_create_1
 NEW ir.access: mail.mail_message_rule_access_read
@@ -243,11 +198,11 @@ NEW ir.access: mail.mail_message_rule_access_unlink
 NEW ir.access: mail.mail_message_rule_access_unlink_1
 NEW ir.access: mail.mail_message_rule_access_write
 NEW ir.access: mail.mail_message_rule_access_write_1
-NEW ir.access: mail.mail_message_subtype_rule_public
-NEW ir.access: mail.mail_template_editor_rule
-NEW ir.access: mail.mail_template_employee_rule
-NEW ir.access: mail.res_users_settings_volumes_rule_admin
-NEW ir.access: mail.res_users_settings_volumes_rule_user
+ir.access: mail.mail_message_subtype_rule_public (noupdate switched)
+ir.access: mail.mail_template_editor_rule (noupdate switched)
+ir.access: mail.mail_template_employee_rule (noupdate switched)
+ir.access: mail.res_users_settings_volumes_rule_admin (noupdate switched)
+ir.access: mail.res_users_settings_volumes_rule_user (noupdate switched)
 NEW ir.actions.act_url: mail.action_open_discuss_settings
 NEW ir.actions.act_window: mail.discuss_category_settings_action
 NEW ir.actions.act_window: mail.discuss_my_conversations_action
@@ -267,67 +222,22 @@ DEL ir.model.access: mail.access_discuss_channel_member_public
 DEL ir.model.access: mail.access_discuss_channel_member_user
 DEL ir.model.access: mail.access_discuss_channel_portal
 DEL ir.model.access: mail.access_discuss_channel_public
-DEL ir.model.access: mail.access_discuss_channel_rtc_session_system
 DEL ir.model.access: mail.access_discuss_channel_system
 DEL ir.model.access: mail.access_discuss_channel_user
 DEL ir.model.access: mail.access_discuss_gif_favorite
-DEL ir.model.access: mail.access_discuss_voice_metadata_user
-DEL ir.model.access: mail.access_fetchmail_server
 DEL ir.model.access: mail.access_mail_activity_plan_system
 DEL ir.model.access: mail.access_mail_activity_plan_template_system
-DEL ir.model.access: mail.access_mail_activity_plan_template_user
-DEL ir.model.access: mail.access_mail_activity_plan_user
-DEL ir.model.access: mail.access_mail_activity_schedule_line_user
-DEL ir.model.access: mail.access_mail_activity_schedule_user
-DEL ir.model.access: mail.access_mail_activity_type_system
-DEL ir.model.access: mail.access_mail_activity_type_user
 DEL ir.model.access: mail.access_mail_activity_user
-DEL ir.model.access: mail.access_mail_alias_domain_system
-DEL ir.model.access: mail.access_mail_alias_domain_user
-DEL ir.model.access: mail.access_mail_alias_system
-DEL ir.model.access: mail.access_mail_alias_user
-DEL ir.model.access: mail.access_mail_blacklist_remove_system
-DEL ir.model.access: mail.access_mail_blacklist_system
-DEL ir.model.access: mail.access_mail_canned_reponse
-DEL ir.model.access: mail.access_mail_compose_message
-DEL ir.model.access: mail.access_mail_followers_edit
-DEL ir.model.access: mail.access_mail_followers_system
-DEL ir.model.access: mail.access_mail_followers_user
-DEL ir.model.access: mail.access_mail_gateway_allowed_system
-DEL ir.model.access: mail.access_mail_guest_system
-DEL ir.model.access: mail.access_mail_guest_user
-DEL ir.model.access: mail.access_mail_ice_server_system
-DEL ir.model.access: mail.access_mail_link_preview_admin
-DEL ir.model.access: mail.access_mail_mail_system
 DEL ir.model.access: mail.access_mail_message_all
-DEL ir.model.access: mail.access_mail_message_link_preview_erp_manager
 DEL ir.model.access: mail.access_mail_message_portal
-DEL ir.model.access: mail.access_mail_message_reaction_system
-DEL ir.model.access: mail.access_mail_message_scheduled_system
 DEL ir.model.access: mail.access_mail_message_subtype_portal
 DEL ir.model.access: mail.access_mail_message_subtype_public
-DEL ir.model.access: mail.access_mail_message_subtype_system
-DEL ir.model.access: mail.access_mail_message_subtype_user
-DEL ir.model.access: mail.access_mail_message_translation_system
 DEL ir.model.access: mail.access_mail_message_user
 DEL ir.model.access: mail.access_mail_notification_portal
-DEL ir.model.access: mail.access_mail_notification_system
-DEL ir.model.access: mail.access_mail_notification_user
-DEL ir.model.access: mail.access_mail_presence
-DEL ir.model.access: mail.access_mail_push_device_system
-DEL ir.model.access: mail.access_mail_push_system
 DEL ir.model.access: mail.access_mail_scheduled_message
-DEL ir.model.access: mail.access_mail_template
-DEL ir.model.access: mail.access_mail_template_editor
-DEL ir.model.access: mail.access_mail_template_preview
-DEL ir.model.access: mail.access_mail_template_reset
 DEL ir.model.access: mail.access_mail_template_system
-DEL ir.model.access: mail.access_mail_tracking_value_system
-DEL ir.model.access: mail.access_publisher_warranty_contract_all
-DEL ir.model.access: mail.access_res_role_admin
-DEL ir.model.access: mail.access_res_role_user
+DEL ir.model.access: mail.access_mail_tracking_value_system [renamed to mail_tracking module]
 DEL ir.model.access: mail.access_res_users_settings_volumes_user
-DEL ir.model.access: mail.ir_actions_report_access_user
 NEW ir.model.constraint: mail.constraint_discuss_category_name_unique
 NEW ir.model.constraint: mail.constraint_discuss_channel_member_channel_id_id_idx
 NEW ir.model.constraint: mail.constraint_discuss_channel_member_indices_channel_check
@@ -344,32 +254,7 @@ NEW ir.model.constraint: mail.constraint_mail_poll_unique_start_message_id
 NEW ir.model.constraint: mail.constraint_mail_poll_vote_check_user_or_guest_set
 NEW ir.model.constraint: mail.constraint_mail_poll_vote_unique_option_id_guest_id
 NEW ir.model.constraint: mail.constraint_mail_poll_vote_unique_option_id_user_id
-DEL ir.rule: mail.discuss_gif_favorite_admin_rule (noupdate)
-DEL ir.rule: mail.discuss_gif_favorite_user_rule (noupdate)
-DEL ir.rule: mail.ir_rule_discuss_call_history_read_all (noupdate)
-DEL ir.rule: mail.ir_rule_discuss_channel_all (noupdate)
-DEL ir.rule: mail.ir_rule_discuss_channel_group_system (noupdate)
-DEL ir.rule: mail.ir_rule_discuss_channel_member_create_is_group_matching_all (noupdate)
-DEL ir.rule: mail.ir_rule_discuss_channel_member_create_is_group_matching_group_user (noupdate)
-DEL ir.rule: mail.ir_rule_discuss_channel_member_create_is_member_group_user (noupdate)
-DEL ir.rule: mail.ir_rule_discuss_channel_member_group_system (noupdate)
-DEL ir.rule: mail.ir_rule_discuss_channel_member_is_self_all (noupdate)
-DEL ir.rule: mail.ir_rule_discuss_channel_member_read_all (noupdate)
-DEL ir.rule: mail.ir_rule_mail_canned_response_admin (noupdate)
-DEL ir.rule: mail.ir_rule_mail_canned_response_user_read (noupdate)
-DEL ir.rule: mail.ir_rule_mail_canned_response_user_update (noupdate)
-DEL ir.rule: mail.ir_rule_mail_notifications_group_portal (noupdate)
-DEL ir.rule: mail.ir_rule_mail_notifications_group_user (noupdate)
-DEL ir.rule: mail.ir_rule_mail_scheduled_message_user (noupdate)
-DEL ir.rule: mail.mail_activity_plan_rule_admin (noupdate)
-DEL ir.rule: mail.mail_activity_plan_template_rule_admin (noupdate)
-DEL ir.rule: mail.mail_activity_rule_user (noupdate)
-DEL ir.rule: mail.mail_compose_message_rule (noupdate)
-DEL ir.rule: mail.mail_message_subtype_rule_public (noupdate)
-DEL ir.rule: mail.mail_template_editor_rule (noupdate)
-DEL ir.rule: mail.mail_template_employee_rule (noupdate)
-DEL ir.rule: mail.res_users_settings_volumes_rule_admin (noupdate)
-DEL ir.rule: mail.res_users_settings_volumes_rule_user (noupdate)
+NEW ir.model.constraint: mail.constraint_res_partner_internal_active_idx
 NEW ir.ui.menu: mail.ir_ui_view_menu_usage_mail_post
 NEW ir.ui.menu: mail.menu_discuss_category
 NEW ir.ui.menu: mail.menu_discuss_user_settings

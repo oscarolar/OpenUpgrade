@@ -1,5 +1,5 @@
 ---Models in module 'stock_account'---
-obsolete model stock_account.stock.valuation.report [abstract]
+obsolete model stock_account.stock.valuation.report (renamed to account.stock.valuation.report in module account) [abstract]
 ---Fields in module 'stock_account'---
 stock_account / account.account          / account_stock_expense_id (many2one): module is now 'account' ('stock_account')
 stock_account / account.account          / account_stock_variation_id (many2one): module is now 'account' ('stock_account')
@@ -35,34 +35,16 @@ stock_account / res.company              / inventory_valuation (selection): modu
 stock_account / stock.move               / invoice_line_ids (one2many)   : NEW relation: account.move.line
 stock_account / stock.move               / product_value_ids (one2many)  : NEW relation: product.value
 ---XML records in module 'stock_account'---
-NEW ir.access: stock_account.access_account_account_stock_manager
-NEW ir.access: stock_account.access_account_journal_stock_manager
 NEW ir.access: stock_account.access_product_value_account_manager
 NEW ir.access: stock_account.access_product_value_stock_manager
-NEW ir.access: stock_account.access_stock_avco_report_account_readonly
-NEW ir.access: stock_account.access_stock_avco_report_stock_manager
-NEW ir.access: stock_account.access_stock_move_invoicing_payments
-NEW ir.access: stock_account.access_stock_move_invoicing_payments_readonly
-NEW ir.access: stock_account.access_stock_picking_invoicing_payments
-NEW ir.access: stock_account.access_stock_picking_invoicing_payments_readonly
-NEW ir.access: stock_account.product_value_rule
-NEW ir.access: stock_account.stock_avco_report_rule
+ir.access: stock_account.product_value_rule (noupdate switched)
+ir.access: stock_account.stock_avco_report_rule (noupdate switched)
 NEW ir.actions.act_window: stock_account.product_value_list_action
 DEL ir.actions.client: stock_account.action_report_stock_valuation [renamed to account module]
 DEL ir.cron: stock_account.ir_cron_post_stock_valuation [renamed to account module] (noupdate)
 NEW ir.filters: stock_account.filter_stock_move_aging_report
 NEW ir.filters: stock_account.filter_stock_move_intercompany_deliveries
-DEL ir.model.access: stock_account.access_account_account_stock_manager
-DEL ir.model.access: stock_account.access_account_journal_stock_manager
-DEL ir.model.access: stock_account.access_stock_avco_report_account_readonly
-DEL ir.model.access: stock_account.access_stock_avco_report_stock_manager
-DEL ir.model.access: stock_account.access_stock_move_invoicing_payments
-DEL ir.model.access: stock_account.access_stock_move_invoicing_payments_readonly
-DEL ir.model.access: stock_account.access_stock_picking_invoicing_payments
-DEL ir.model.access: stock_account.access_stock_picking_invoicing_payments_readonly
 DEL ir.model.access: stock_account.access_stock_product_value
-DEL ir.rule: stock_account.product_value_rule (noupdate)
-DEL ir.rule: stock_account.stock_avco_report_rule (noupdate)
 NEW ir.ui.menu: stock_account.valuation_adjustments_menu
 NEW ir.ui.view: stock_account.product_template_form_view_stock_account
 NEW ir.ui.view: stock_account.product_value_list_view

@@ -15,28 +15,16 @@ spreadsheet_dashboard / spreadsheet.dashboard.share / name (char)               
 spreadsheet_dashboard / spreadsheet.dashboard.share / name (char)                   : not translatable anymore
 spreadsheet_dashboard / spreadsheet.dashboard.share / name (char)                   : now required
 ---XML records in module 'spreadsheet_dashboard'---
-NEW ir.access: spreadsheet_dashboard.access_spreadsheet_dashboard_group
-NEW ir.access: spreadsheet_dashboard.access_spreadsheet_dashboard_group_user
 NEW ir.access: spreadsheet_dashboard.dashboard_fav_user_rule
-NEW ir.access: spreadsheet_dashboard.ir_rule_spreadsheet_dashboard
 NEW ir.access: spreadsheet_dashboard.ir_rule_spreadsheet_dashboard_user
 NEW ir.access: spreadsheet_dashboard.spreadsheet_dashboard_favorite_filters_rule_manager
-NEW ir.access: spreadsheet_dashboard.spreadsheet_dashboard_rule_company
-NEW ir.access: spreadsheet_dashboard.spreadsheet_dashboard_rule_manager
-NEW ir.access: spreadsheet_dashboard.spreadsheet_dashboard_share_create_uid_rule
 NEW ir.access: spreadsheet_dashboard.spreadsheet_dashboard_share_rule_manager
 NEW ir.actions.act_window: spreadsheet_dashboard.actions_spreadsheet_dashboard_favorite_filters_view
 NEW ir.actions.act_window: spreadsheet_dashboard.spreadsheet_dashboard_group_action_configuration_sections
 NEW ir.actions.act_window: spreadsheet_dashboard.spreadsheet_dashboard_share_action_configuration_share_links
-DEL ir.model.access: spreadsheet_dashboard.access_spreadsheet_dashboard_group
-DEL ir.model.access: spreadsheet_dashboard.access_spreadsheet_dashboard_group_user
 DEL ir.model.access: spreadsheet_dashboard.access_spreadsheet_dashboard_share
 DEL ir.model.access: spreadsheet_dashboard.spreadsheet_dashboard
 DEL ir.model.access: spreadsheet_dashboard.spreadsheet_dashboard_user"
-DEL ir.rule: spreadsheet_dashboard.ir_rule_spreadsheet_dashboard
-DEL ir.rule: spreadsheet_dashboard.spreadsheet_dashboard_rule_company
-DEL ir.rule: spreadsheet_dashboard.spreadsheet_dashboard_rule_manager
-DEL ir.rule: spreadsheet_dashboard.spreadsheet_dashboard_share_create_uid_rule
 NEW ir.ui.menu: spreadsheet_dashboard.spreadsheet_dashboard_group_menu_configuration_sections
 NEW ir.ui.menu: spreadsheet_dashboard.spreadsheet_dashboard_menu_configuration_global_filters
 NEW ir.ui.menu: spreadsheet_dashboard.spreadsheet_dashboard_menu_technical

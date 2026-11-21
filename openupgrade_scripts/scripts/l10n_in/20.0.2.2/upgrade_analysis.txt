@@ -65,17 +65,11 @@ NEW account.account.tag: l10n_in.account_tag_short_term_provisions
 NEW account.account.tag: l10n_in.account_tag_trade_payables
 NEW account.account.tag: l10n_in.account_tag_trade_receivables
 DEL account.cash.rounding: l10n_in.cash_rounding_in_half_up
-NEW ir.access: l10n_in.access_l10n_in_pan_entity
-NEW ir.access: l10n_in.access_port_code_account_manager
-NEW ir.access: l10n_in.access_port_code_user
 DEL ir.actions.act_window: l10n_in.l10n_in_section_alert_action
 DEL ir.actions.act_window: l10n_in.l10n_in_withholding_entry_form_action
-DEL ir.model.access: l10n_in.access_l10n_in_pan_entity
 DEL ir.model.access: l10n_in.access_l10n_in_section_alert_account_manager
 DEL ir.model.access: l10n_in.access_l10n_in_section_alert_account_readonly
 DEL ir.model.access: l10n_in.access_l10n_in_withhold_wizard
-DEL ir.model.access: l10n_in.access_port_code_account_manager
-DEL ir.model.access: l10n_in.access_port_code_user
 DEL ir.model.constraint: l10n_in.constraint_l10n_in_section_alert_aggregate_limit
 DEL ir.model.constraint: l10n_in.constraint_l10n_in_section_alert_per_transaction_limit
 NEW ir.ui.view: l10n_in.external_layout_footer_content

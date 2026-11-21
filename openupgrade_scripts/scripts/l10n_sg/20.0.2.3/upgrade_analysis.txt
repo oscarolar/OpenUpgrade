@@ -4,7 +4,7 @@ l10n_sg      / account.tax              / ubl_cii_tax_category_code (False): pre
 l10n_sg      / res.partner              / l10n_sg_unique_entity_number (char): not stored anymore
 l10n_sg      / res.partner              / l10n_sg_unique_entity_number (char): now a function
 l10n_sg      / res.partner.bank         / proxy_type (False)            : selection_keys added: [atm_card, bank_acc, br_cpf_cnpj, br_random, ewallet_id, merchant_id, merchant_tax_id, payment_service] (most likely nothing to do)
-l10n_sg_ubl_pint / account.tax              / ubl_cii_tax_category_code (False): selection_keys added: [BL, EP, IGDS, IM, IM-ESS, IM-N33, IM-RE, ME, NR, OP, TX, TX-ESS, TX-LVG, TX-N33, TX-RE, TXCA, TXNA, TXRC-ESS, TXRC-N33, TXRC-RE, TXRC-TS, ZP] (most likely nothing to do)
+l10n_sg_ubl_pint / account.tax              / ubl_cii_tax_category_code (False): selection_keys added: [BL, EP, IGDS, IM, IM-ESS, IM-N33, IM-RE, ME, N, NR, OP, TX, TX-ESS, TX-LVG, TX-N33, TX-RE, TXCA, TXNA, TXRC-ESS, TXRC-N33, TXRC-RE, TXRC-TS, ZP] (most likely nothing to do)
 ---XML records in module 'l10n_sg'---
 NEW account.account.tag: l10n_sg.account_tag_fc (noupdate)
 NEW account.account.tag: l10n_sg.account_tag_ite (noupdate)

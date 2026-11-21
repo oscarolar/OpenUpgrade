@@ -6,7 +6,3 @@ snailmail    / snailmail.letter         / error_code (selection)        : select
 snailmail    / snailmail.letter         / letter_uid (char)             : NEW
 snailmail    / snailmail.letter         / state (selection)             : selection_keys added: [process] (most likely nothing to do)
 ---XML records in module 'snailmail'---
-NEW ir.access: snailmail.access_snailmail_letter_system
-NEW ir.access: snailmail.access_snailmail_letter_user
-DEL ir.model.access: snailmail.access_snailmail_letter_system
-DEL ir.model.access: snailmail.access_snailmail_letter_user

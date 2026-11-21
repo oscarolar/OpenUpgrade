@@ -9,22 +9,20 @@ survey       / survey.survey            / session_question_can_answer (boolean):
 survey       / survey.survey            / website_message_ids (one2many): DEL relation: mail.message
 survey       / survey.user_input        / website_message_ids (one2many): DEL relation: mail.message
 ---XML records in module 'survey'---
-NEW ir.access: survey.access_gamification_badge_survey_user
-NEW ir.access: survey.survey_invite_survey_manager
-NEW ir.access: survey.survey_invite_survey_user
-NEW ir.access: survey.survey_question_answer_rule_survey_manager
-NEW ir.access: survey.survey_question_answer_rule_survey_user
-NEW ir.access: survey.survey_question_rule_survey_manager
-NEW ir.access: survey.survey_question_rule_survey_user
-NEW ir.access: survey.survey_survey_rule_survey_manager
-NEW ir.access: survey.survey_survey_rule_survey_user
-NEW ir.access: survey.survey_user_input_line_rule_survey_manager
-NEW ir.access: survey.survey_user_input_line_rule_survey_user
+ir.access: survey.survey_invite_survey_manager (noupdate switched)
+ir.access: survey.survey_invite_survey_user (noupdate switched)
+ir.access: survey.survey_question_answer_rule_survey_manager (noupdate switched)
+ir.access: survey.survey_question_answer_rule_survey_user (noupdate switched)
+ir.access: survey.survey_question_rule_survey_manager (noupdate switched)
+ir.access: survey.survey_question_rule_survey_user (noupdate switched)
+ir.access: survey.survey_survey_rule_survey_manager (noupdate switched)
+ir.access: survey.survey_survey_rule_survey_user (noupdate switched)
+ir.access: survey.survey_user_input_line_rule_survey_manager (noupdate switched)
+ir.access: survey.survey_user_input_line_rule_survey_user (noupdate switched)
 NEW ir.access: survey.survey_user_input_line_rule_survey_user_1
-NEW ir.access: survey.survey_user_input_rule_survey_manager
-NEW ir.access: survey.survey_user_input_rule_survey_user
+ir.access: survey.survey_user_input_rule_survey_manager (noupdate switched)
+ir.access: survey.survey_user_input_rule_survey_user (noupdate switched)
 NEW ir.actions.act_window: survey.survey_user_input_action_certified
-DEL ir.model.access: survey.access_gamification_badge_survey_user
 DEL ir.model.access: survey.access_survey_all
 DEL ir.model.access: survey.access_survey_invite
 DEL ir.model.access: survey.access_survey_question_all
@@ -46,18 +44,6 @@ DEL ir.model.access: survey.access_survey_user_input_line_user
 DEL ir.model.access: survey.access_survey_user_input_survey_manager
 DEL ir.model.access: survey.access_survey_user_input_survey_user
 DEL ir.model.access: survey.access_survey_user_input_user
-DEL ir.rule: survey.survey_invite_survey_manager (noupdate)
-DEL ir.rule: survey.survey_invite_survey_user (noupdate)
-DEL ir.rule: survey.survey_question_answer_rule_survey_manager (noupdate)
-DEL ir.rule: survey.survey_question_answer_rule_survey_user (noupdate)
-DEL ir.rule: survey.survey_question_rule_survey_manager (noupdate)
-DEL ir.rule: survey.survey_question_rule_survey_user (noupdate)
-DEL ir.rule: survey.survey_survey_rule_survey_manager (noupdate)
-DEL ir.rule: survey.survey_survey_rule_survey_user (noupdate)
-DEL ir.rule: survey.survey_user_input_line_rule_survey_manager (noupdate)
-DEL ir.rule: survey.survey_user_input_line_rule_survey_user (noupdate)
-DEL ir.rule: survey.survey_user_input_rule_survey_manager (noupdate)
-DEL ir.rule: survey.survey_user_input_rule_survey_user (noupdate)
 NEW ir.ui.view: survey.digest_digest_view_form
 NEW ir.ui.view: survey.survey_brand_message
 NEW ir.ui.view: survey.survey_toolbar

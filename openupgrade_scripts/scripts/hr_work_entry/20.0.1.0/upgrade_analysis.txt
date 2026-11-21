@@ -149,6 +149,16 @@ NEW hr.work.entry.type: hr_work_entry.fr_work_entry_type_overtime (noupdate)
 NEW hr.work.entry.type: hr_work_entry.fr_work_entry_type_public_holiday (noupdate)
 NEW hr.work.entry.type: hr_work_entry.fr_work_entry_type_sick_leave (noupdate)
 NEW hr.work.entry.type: hr_work_entry.fr_work_entry_type_unpaid_leave (noupdate)
+NEW hr.work.entry.type: hr_work_entry.ge_hr_work_entry_type_out_of_contract (noupdate)
+NEW hr.work.entry.type: hr_work_entry.ge_work_entry_type_attendance (noupdate)
+NEW hr.work.entry.type: hr_work_entry.ge_work_entry_type_compensatory (noupdate)
+NEW hr.work.entry.type: hr_work_entry.ge_work_entry_type_home_working (noupdate)
+NEW hr.work.entry.type: hr_work_entry.ge_work_entry_type_leave (noupdate)
+NEW hr.work.entry.type: hr_work_entry.ge_work_entry_type_legal_leave (noupdate)
+NEW hr.work.entry.type: hr_work_entry.ge_work_entry_type_overtime (noupdate)
+NEW hr.work.entry.type: hr_work_entry.ge_work_entry_type_public_holiday (noupdate)
+NEW hr.work.entry.type: hr_work_entry.ge_work_entry_type_sick_leave (noupdate)
+NEW hr.work.entry.type: hr_work_entry.ge_work_entry_type_unpaid_leave (noupdate)
 NEW hr.work.entry.type: hr_work_entry.generic_hr_work_entry_type_out_of_contract (noupdate)
 NEW hr.work.entry.type: hr_work_entry.generic_work_entry_type_attendance (noupdate)
 NEW hr.work.entry.type: hr_work_entry.generic_work_entry_type_compensatory (noupdate)
@@ -289,6 +299,7 @@ NEW hr.work.entry.type: hr_work_entry.l10n_be_work_entry_type_prophylactic_time_
 NEW hr.work.entry.type: hr_work_entry.l10n_be_work_entry_type_prophylactic_time_off_maternity_protection (noupdate)
 NEW hr.work.entry.type: hr_work_entry.l10n_be_work_entry_type_public_holiday_temporary_unemployment (noupdate)
 NEW hr.work.entry.type: hr_work_entry.l10n_be_work_entry_type_public_holiday_temporary_unemployment_no_onss (noupdate)
+NEW hr.work.entry.type: hr_work_entry.l10n_be_work_entry_type_public_holiday_variable_schedule (noupdate)
 NEW hr.work.entry.type: hr_work_entry.l10n_be_work_entry_type_public_holiday_working_with_recovery (noupdate)
 NEW hr.work.entry.type: hr_work_entry.l10n_be_work_entry_type_public_holiday_working_without_recovery (noupdate)
 NEW hr.work.entry.type: hr_work_entry.l10n_be_work_entry_type_public_mandate_unpaid (noupdate)
@@ -340,6 +351,11 @@ NEW hr.work.entry.type: hr_work_entry.l10n_eg_work_entry_type_overtime_rest_days
 NEW hr.work.entry.type: hr_work_entry.l10n_eg_work_entry_type_overtime_work_days_daytime (noupdate)
 NEW hr.work.entry.type: hr_work_entry.l10n_eg_work_entry_type_overtime_work_days_nighttime (noupdate)
 NEW hr.work.entry.type: hr_work_entry.l10n_eg_work_entry_type_weekend (noupdate)
+NEW hr.work.entry.type: hr_work_entry.l10n_ge_work_entry_type_additional_leave (noupdate)
+NEW hr.work.entry.type: hr_work_entry.l10n_ge_work_entry_type_additional_parental_leave (noupdate)
+NEW hr.work.entry.type: hr_work_entry.l10n_ge_work_entry_type_adoption_leave (noupdate)
+NEW hr.work.entry.type: hr_work_entry.l10n_ge_work_entry_type_maternity_leave (noupdate)
+NEW hr.work.entry.type: hr_work_entry.l10n_ge_work_entry_type_parental_leave (noupdate)
 NEW hr.work.entry.type: hr_work_entry.l10n_hk_work_entry_type_annual_leave (noupdate)
 NEW hr.work.entry.type: hr_work_entry.l10n_hk_work_entry_type_work_injury_sick_leave_80 (noupdate)
 NEW hr.work.entry.type: hr_work_entry.l10n_id_work_entry_type_annual_leave (noupdate)
@@ -368,6 +384,11 @@ NEW hr.work.entry.type: hr_work_entry.l10n_kw_work_entry_type_public_holiday (no
 NEW hr.work.entry.type: hr_work_entry.l10n_kw_work_entry_type_sick_leave (noupdate)
 NEW hr.work.entry.type: hr_work_entry.l10n_kw_work_entry_type_study_leave (noupdate)
 NEW hr.work.entry.type: hr_work_entry.l10n_kw_work_entry_type_unpaid_leave (noupdate)
+NEW hr.work.entry.type: hr_work_entry.l10n_lb_work_entry_type_bereavement_leave (noupdate)
+NEW hr.work.entry.type: hr_work_entry.l10n_lb_work_entry_type_maternity_leave (noupdate)
+NEW hr.work.entry.type: hr_work_entry.l10n_lb_work_entry_type_overtime_public_holiday (noupdate)
+NEW hr.work.entry.type: hr_work_entry.l10n_lb_work_entry_type_sick_leave_half (noupdate)
+NEW hr.work.entry.type: hr_work_entry.l10n_lb_work_entry_type_sick_leave_unpaid (noupdate)
 NEW hr.work.entry.type: hr_work_entry.l10n_lu_work_entry_type_caring_leave (noupdate)
 NEW hr.work.entry.type: hr_work_entry.l10n_lu_work_entry_type_family_reason_leave (noupdate)
 NEW hr.work.entry.type: hr_work_entry.l10n_lu_work_entry_type_maternity_leave (noupdate)
@@ -452,6 +473,16 @@ NEW hr.work.entry.type: hr_work_entry.l10n_vn_work_entry_type_bereavement_leave 
 NEW hr.work.entry.type: hr_work_entry.l10n_vn_work_entry_type_marriage_leave (noupdate)
 NEW hr.work.entry.type: hr_work_entry.l10n_vn_work_entry_type_maternity_leave (noupdate)
 NEW hr.work.entry.type: hr_work_entry.l10n_vn_work_entry_type_paternity_leave (noupdate)
+NEW hr.work.entry.type: hr_work_entry.lb_hr_work_entry_type_out_of_contract (noupdate)
+NEW hr.work.entry.type: hr_work_entry.lb_work_entry_type_attendance (noupdate)
+NEW hr.work.entry.type: hr_work_entry.lb_work_entry_type_compensatory (noupdate)
+NEW hr.work.entry.type: hr_work_entry.lb_work_entry_type_home_working (noupdate)
+NEW hr.work.entry.type: hr_work_entry.lb_work_entry_type_leave (noupdate)
+NEW hr.work.entry.type: hr_work_entry.lb_work_entry_type_legal_leave (noupdate)
+NEW hr.work.entry.type: hr_work_entry.lb_work_entry_type_overtime (noupdate)
+NEW hr.work.entry.type: hr_work_entry.lb_work_entry_type_public_holiday (noupdate)
+NEW hr.work.entry.type: hr_work_entry.lb_work_entry_type_sick_leave (noupdate)
+NEW hr.work.entry.type: hr_work_entry.lb_work_entry_type_unpaid_leave (noupdate)
 NEW hr.work.entry.type: hr_work_entry.lt_hr_work_entry_type_out_of_contract (noupdate)
 NEW hr.work.entry.type: hr_work_entry.lt_work_entry_type_attendance (noupdate)
 NEW hr.work.entry.type: hr_work_entry.lt_work_entry_type_compensatory (noupdate)
@@ -670,15 +701,12 @@ DEL hr.work.entry.type: hr_work_entry.work_entry_type_legal_leave (noupdate)
 DEL hr.work.entry.type: hr_work_entry.work_entry_type_overtime (noupdate)
 DEL hr.work.entry.type: hr_work_entry.work_entry_type_sick_leave (noupdate)
 DEL hr.work.entry.type: hr_work_entry.work_entry_type_unpaid_leave (noupdate)
-NEW ir.access: hr_work_entry.access_hr_work_entry_employee
 NEW ir.access: hr_work_entry.access_hr_work_entry_employee_export
 NEW ir.access: hr_work_entry.access_hr_work_entry_export
-NEW ir.access: hr_work_entry.access_hr_work_entry_type_manager
-NEW ir.access: hr_work_entry.access_hr_work_entry_type_officer
-NEW ir.access: hr_work_entry.hr_user_work_entry_employee
+ir.access: hr_work_entry.hr_user_work_entry_employee (noupdate switched)
 NEW ir.access: hr_work_entry.ir_rule_hr_export_work_entry_multi_company
 NEW ir.access: hr_work_entry.ir_rule_hr_time_rule_multi_company
-NEW ir.access: hr_work_entry.ir_rule_hr_work_entry_type_multi_company
+ir.access: hr_work_entry.ir_rule_hr_work_entry_type_multi_company (noupdate switched)
 NEW ir.actions.act_window: hr_work_entry.action_open_export_wizard
 NEW ir.actions.act_window: hr_work_entry.hr_time_rule_action
 DEL ir.actions.act_window: hr_work_entry.hr_work_entry_action
@@ -687,20 +715,15 @@ DEL ir.actions.act_window: hr_work_entry.hr_work_entry_regeneration_wizard_actio
 NEW ir.actions.server: hr_work_entry.action_hr_employee_export_work_entries
 DEL ir.actions.server: hr_work_entry.action_hr_work_entry_set_to_draft
 DEL ir.cron: hr_work_entry.ir_cron_generate_missing_work_entries (noupdate)
-DEL ir.model.access: hr_work_entry.access_hr_work_entry_employee
 DEL ir.model.access: hr_work_entry.access_hr_work_entry_officer
 DEL ir.model.access: hr_work_entry.access_hr_work_entry_regeneration_wizard
 DEL ir.model.access: hr_work_entry.access_hr_work_entry_system
-DEL ir.model.access: hr_work_entry.access_hr_work_entry_type_manager
-DEL ir.model.access: hr_work_entry.access_hr_work_entry_type_officer
 NEW ir.model.constraint: hr_work_entry.constraint_hr_time_rule_at_least_one_day
 NEW ir.model.constraint: hr_work_entry.constraint_hr_time_rule_timing_start_is_hour
 NEW ir.model.constraint: hr_work_entry.constraint_hr_time_rule_timing_start_less_than_timing_stop
 NEW ir.model.constraint: hr_work_entry.constraint_hr_time_rule_timing_stop_is_hour
 DEL ir.model.constraint: hr_work_entry.constraint_hr_work_entry_contract_date_start_stop_idx
-DEL ir.rule: hr_work_entry.hr_user_work_entry_employee (noupdate)
 DEL ir.rule: hr_work_entry.ir_rule_hr_work_entry_multi_company (noupdate)
-DEL ir.rule: hr_work_entry.ir_rule_hr_work_entry_type_multi_company (noupdate)
 NEW ir.ui.menu: hr_work_entry.menu_hr_work_entry_type_view_employee
 NEW ir.ui.view: hr_work_entry.hr_export_work_entries_wizard
 NEW ir.ui.view: hr_work_entry.hr_time_rule_view_form

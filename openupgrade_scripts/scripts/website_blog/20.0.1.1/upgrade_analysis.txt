@@ -9,35 +9,25 @@ website_blog / blog.post                / website_message_ids (one2many): DEL re
 website_blog / res.partner              / blog_post_ids (one2many)      : NEW relation: blog.post
 website_blog / website.track            / blog_post_id (many2one)       : NEW relation: blog.post
 ---XML records in module 'website_blog'---
-NEW ir.access: website_blog.blog_blog_employee
 NEW ir.access: website_blog.blog_blog_manager
-NEW ir.access: website_blog.blog_post_employee
 NEW ir.access: website_blog.blog_post_manager
 NEW ir.access: website_blog.blog_tag_category_manager
-NEW ir.access: website_blog.blog_tag_category_public
 NEW ir.access: website_blog.blog_tag_manager
-NEW ir.access: website_blog.blog_tag_public
-NEW ir.access: website_blog.website_blog_post_public
-NEW ir.access: website_blog.website_blog_public
+ir.access: website_blog.website_blog_post_public (noupdate switched)
+ir.access: website_blog.website_blog_public (noupdate switched)
 NEW ir.actions.act_window: website_blog.website_blog_visitor_blog_post_action
 DEL ir.model.access: website_blog.blog_blog
-DEL ir.model.access: website_blog.blog_blog_employee
 DEL ir.model.access: website_blog.blog_blog_portal
 DEL ir.model.access: website_blog.blog_blog_public
 DEL ir.model.access: website_blog.blog_post
-DEL ir.model.access: website_blog.blog_post_employee
 DEL ir.model.access: website_blog.blog_post_portal
 DEL ir.model.access: website_blog.blog_post_public
 DEL ir.model.access: website_blog.blog_tag_category
 DEL ir.model.access: website_blog.blog_tag_category_employee
 DEL ir.model.access: website_blog.blog_tag_category_portal
-DEL ir.model.access: website_blog.blog_tag_category_public
 DEL ir.model.access: website_blog.blog_tag_edition
 DEL ir.model.access: website_blog.blog_tag_employee
 DEL ir.model.access: website_blog.blog_tag_portal
-DEL ir.model.access: website_blog.blog_tag_public
-DEL ir.rule: website_blog.website_blog_post_public (noupdate)
-DEL ir.rule: website_blog.website_blog_public (noupdate)
 NEW ir.ui.view: website_blog.blog_post_card
 NEW ir.ui.view: website_blog.blog_post_comment_count
 NEW ir.ui.view: website_blog.blog_post_content_footer_archive

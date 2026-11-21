@@ -28,17 +28,7 @@ pos_restaurant / restaurant.table         / width (float)                 : DEL
 ---XML records in module 'pos_restaurant'---
 NEW ir.access: pos_restaurant.access_pos_course
 NEW ir.access: pos_restaurant.access_pos_course_manager
-NEW ir.access: pos_restaurant.access_restaurant_floor
-NEW ir.access: pos_restaurant.access_restaurant_floor_manager
-NEW ir.access: pos_restaurant.access_restaurant_order_course
-NEW ir.access: pos_restaurant.access_restaurant_table
-NEW ir.access: pos_restaurant.access_restaurant_table_manager
 NEW ir.actions.act_window: pos_restaurant.action_pos_course
-DEL ir.model.access: pos_restaurant.access_restaurant_floor
-DEL ir.model.access: pos_restaurant.access_restaurant_floor_manager
-DEL ir.model.access: pos_restaurant.access_restaurant_order_course
-DEL ir.model.access: pos_restaurant.access_restaurant_table
-DEL ir.model.access: pos_restaurant.access_restaurant_table_manager
 NEW ir.model.constraint: pos_restaurant.constraint_pos_course_name_unique
 NEW ir.ui.menu: pos_restaurant.menu_pos_course
 NEW ir.ui.view: pos_restaurant.pos_order_change_receipt
