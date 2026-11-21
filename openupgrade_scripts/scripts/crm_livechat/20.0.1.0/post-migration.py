@@ -9,6 +9,10 @@ def chatbot_script_step_create_lead_and_forward(env):
     Steps of type create_lead_and_forward were mapped to create_lead, add a
     forward_operator step right after them
     """
+    if not openupgrade.column_exists(
+        env.cr, "chatbot_script_step", openupgrade.get_legacy_name("step_type")
+    ):
+        return
     env.cr.execute(
         f"""
         SELECT id
@@ -41,6 +45,14 @@ def chatbot_script_step_create_lead_and_forward(env):
                 "step_type": "forward_operator",
                 "triggering_answer_ids": [(6, 0, step.triggering_answer_ids.ids)],
             }
+        )
+        env.cr.execute(
+            f"""
+            UPDATE chatbot_script_step
+            SET {openupgrade.get_legacy_name("step_type")}='create_lead'
+            WHERE id=%s
+            """,
+            (step.id,),
         )
 
 

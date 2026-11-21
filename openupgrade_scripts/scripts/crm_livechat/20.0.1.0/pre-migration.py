@@ -12,6 +12,10 @@ _copied_columns = {
 
 @openupgrade.migrate()
 def migrate(env, version):
+    if openupgrade.column_exists(
+        env.cr, "chatbot_script_step", openupgrade.get_legacy_name("step_type")
+    ):
+        return
     openupgrade.copy_columns(env.cr, _copied_columns)
     openupgrade.map_values(
         env.cr,
