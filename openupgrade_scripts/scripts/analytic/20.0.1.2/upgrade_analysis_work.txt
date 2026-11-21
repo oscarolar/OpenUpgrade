@@ -1,0 +1,28 @@
+---Models in module 'analytic'---
+---Fields in module 'analytic'---
+analytic     / account.analytic.distribution.model / analytic_distribution (json)  : now required
+
+# DONE: pre-migration: empty distribution for the models that had none
+
+analytic     / account.analytic.line    / x_plan1_id (many2one)         : NEW relation: account.analytic.account
+
+# NOTHING TO DO: column of an analytic plan of the analysis database
+
+---XML records in module 'analytic'---
+ir.access: analytic.analytic_applicability_comp_rule (noupdate switched)
+ir.access: analytic.analytic_comp_rule (noupdate switched)
+ir.access: analytic.analytic_distribution_model_comp_rule (noupdate switched)
+
+# NOTHING TO DO: ir.rule and ir.model.access become ir.access in base
+
+NEW ir.access: analytic.analytic_line_analytic
+
+# NOTHING TO DO
+
+ir.access: analytic.analytic_line_comp_rule (noupdate switched)
+
+# NOTHING TO DO: ir.rule and ir.model.access become ir.access in base
+
+DEL ir.model.access: analytic.access_account_analytic_line
+
+# NOTHING TO DO: removed by the ORM
