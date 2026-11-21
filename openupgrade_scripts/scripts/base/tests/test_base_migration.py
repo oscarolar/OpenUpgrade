@@ -60,19 +60,19 @@ class TestBaseMigration(TransactionCase):
         above it have a standard permission without domain
         """
         self._skip_without_customization_data()
-        domain = "[('active', '=', True)]"
+        domain = "[('sequence_id', '!=', False)]"
         self.assertFalse(
-            self.env.ref("base.access_res_partner_industry_group_user").active
+            self.env.ref("base.access_ir_sequence_date_range_group_user").active
         )
         self.assertFalse(
-            self.env.ref("base.access_res_partner_industry_group_system").active
+            self.env.ref("base.access_ir_sequence_date_range_group_system").active
         )
         self.assertItemsEqual(
             (
                 (self.env.ref("base.group_user"), "r", domain),
                 (self.env.ref("base.group_system"), "cud", domain),
             ),
-            self._get_access([("model_id.model", "=", "res.partner.industry")]),
+            self._get_access([("model_id.model", "=", "ir.sequence.date_range")]),
         )
 
     def test_ir_access_manual_access_keeps_standard_rule(self):
