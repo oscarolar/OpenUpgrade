@@ -61,7 +61,7 @@ sale         / sale.order               / delivery_status (selection)   : previo
 # DONE: pre-migration: when sale_stock was not installed, column precreated and filled by SQL following sale's compute
 
 sale         / sale.order               / document_tax_mode (selection) : NEW required, selection_keys: ['tax_excluded', 'tax_included'], hasdefault: compute
-# DONE: pre-migration: column precreated and filled from res.company#account_price_include
+# DONE: pre-migration: column precreated and filled from the root company's res.company#account_price_include
 
 sale         / sale.order               / incoterm (many2one)           : previously in module sale_stock
 sale         / sale.order               / incoterm_location (char)      : previously in module sale_stock
