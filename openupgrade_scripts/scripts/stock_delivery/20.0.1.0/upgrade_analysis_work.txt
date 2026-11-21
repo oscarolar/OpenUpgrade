@@ -1,0 +1,50 @@
+---Models in module 'stock_delivery'---
+new model pay.on.delivery [transient]
+# NOTHING TO DO: new transient model
+
+---Fields in module 'stock_delivery'---
+stock_delivery / product.product          / country_of_origin (many2one)  : is now stored
+stock_delivery / product.product          / country_of_origin (many2one)  : not related anymore
+stock_delivery / product.product          / hs_code (char)                : is now stored
+stock_delivery / product.product          / hs_code (char)                : not related anymore
+stock_delivery / product.template         / country_of_origin (many2one)  : not stored anymore
+stock_delivery / product.template         / country_of_origin (many2one)  : now a function
+stock_delivery / product.template         / hs_code (char)                : not stored anymore
+stock_delivery / product.template         / hs_code (char)                : now a function
+# DONE: pre-migration: columns added on product.product and filled from the template for all its variants
+
+stock_delivery / res.partner              / pickup_location_data (json)   : NEW
+# DONE: pre-migration: column added and filled from sale.order#pickup_location_data of the last order delivered to partners with is_pickup_location (both removed from delivery)
+
+stock_delivery / stock.picking.type       / auto_print_carrier_labels (boolean): NEW
+stock_delivery / stock.picking.type       / auto_print_export_documents (boolean): NEW
+# NOTHING TO DO: new functionality
+
+---XML records in module 'stock_delivery'---
+NEW ir.access: stock_delivery.access_pay_on_delivery_sale_user
+NEW ir.access: stock_delivery.access_pay_on_delivery_stock_user
+NEW ir.access: stock_delivery.access_printer_stock_manager
+NEW ir.actions.act_window: stock_delivery.open_export_docs_report
+NEW ir.actions.act_window: stock_delivery.open_shipping_labels_report
+NEW ir.actions.report: stock_delivery.action_report_shipping_docs
+NEW ir.actions.report: stock_delivery.action_report_shipping_labels
+NEW ir.ui.menu: stock_delivery.cached_printers_action
+NEW ir.ui.menu: stock_delivery.cached_printers_section
+NEW ir.ui.menu: stock_delivery.manage_printers_action
+NEW ir.ui.view: stock_delivery.barcode_alternative_label
+NEW ir.ui.view: stock_delivery.barcode_normal_label
+NEW ir.ui.view: stock_delivery.package_pdf_label_delivery
+NEW ir.ui.view: stock_delivery.package_zpl_label_delivery
+NEW ir.ui.view: stock_delivery.pay_on_delivery_form
+NEW ir.ui.view: stock_delivery.product_product_hs_code
+NEW ir.ui.view: stock_delivery.product_product_hs_code_list
+NEW ir.ui.view: stock_delivery.report_shipping_docs
+NEW ir.ui.view: stock_delivery.report_shipping_labels
+# NOTHING TO DO: new records, ir.access is handled in base
+
+DEL ir.ui.view: delivery_stock_picking_batch.view_picking_type_form_inherit
+DEL ir.ui.view: stock_delivery.alternative_zpl_label
+DEL ir.ui.view: stock_delivery.label_package_template_view_delivery
+DEL ir.ui.view: stock_delivery.normal_zpl_label
+DEL ir.ui.view: stock_delivery.report_package_barcode_small_delivery
+# NOTHING TO DO: handled by the ORM, delivery_stock_picking_batch is merged into this module in apriori
