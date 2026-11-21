@@ -20,12 +20,12 @@ env.ref("base.res_partner_bank_rule").domain_force = "[('company_id', '=', compa
 env.ref("base.res_currency_rate_rule").active = False
 Rule = env["ir.rule"]
 Rule.search([("name", "=", "rule with faulty domain")]).unlink()
-Rule.search([("name", "=", "OU20 industry")]) or Rule.create(
+Rule.search([("name", "=", "OU20 date range")]) or Rule.create(
     {
-        "name": "OU20 industry",
-        "model_id": env.ref("base.model_res_partner_industry").id,
+        "name": "OU20 date range",
+        "model_id": env.ref("base.model_ir_sequence_date_range").id,
         "groups": [(6, 0, env.ref("base.group_user").ids)],
-        "domain_force": "[('active', '=', True)]",
+        "domain_force": "[('sequence_id', '!=', False)]",
     }
 )
 Access = env["ir.model.access"]
