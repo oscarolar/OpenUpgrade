@@ -1,0 +1,204 @@
+---Models in module 'project'---
+new model project.task.stage.report [sql_view]
+# NOTHING TO DO: new report model
+
+---Fields in module 'project'---
+project      / project.collaborator     / access_mode (selection)       : NEW required, selection_keys: ['advanced_edit', 'edit', 'view'], hasdefault: default
+project      / project.collaborator     / limited_access (boolean)      : DEL
+# DONE: pre-migration: access_mode filled from limited_access (limited -> edit, not limited -> advanced_edit). In 20 every collaborator reads all the tasks of the project, there is no equivalent of the limited access
+
+project      / project.milestone        / website_message_ids (one2many): DEL relation: mail.message
+# NOTHING TO DO: non stored field of the mixin
+
+project      / project.project          / allowed_internal_user_ids (many2many): NEW relation: res.users, hasdefault: compute
+# DONE: post-migration: the ORM adds the project manager, the internal followers of private projects are added as access to them now comes from this field instead of the followers
+
+project      / project.project          / date_last_stage_update (datetime): NEW hasdefault: default
+# DONE: pre-migration: filled with the date of the last stage change (creation date without stage trackings) instead of the date of the migration
+
+project      / project.project          / duration_tracking (json)      : is now stored
+# DONE: pre-migration: filled from the stage trackings with the new structure (minutes per stage, current stage and date of the last change)
+
+project      / project.project          / website_message_ids (one2many): DEL relation: mail.message
+# NOTHING TO DO: non stored field of the mixin
+
+project      / project.project.stage    / color (integer)               : DEL
+# NOTHING TO DO: removed feature
+
+project      / project.project.stage    / rotting_threshold_days (integer): NEW hasdefault: default
+# NOTHING TO DO: new functionality, disabled by default
+
+project      / project.role             / user_ids (many2many)          : NEW relation: res.users
+# NOTHING TO DO: new functionality
+
+project      / project.task             / allow_recurring_tasks (boolean): not related anymore
+project      / project.task             / allow_recurring_tasks (boolean): now a function
+project      / project.task             / allow_task_dependencies (boolean): not related anymore
+project      / project.task             / allow_task_dependencies (boolean): now a function
+# NOTHING TO DO: non stored fields
+
+project      / project.task             / duration_tracking (json)      : is now stored
+# DONE: pre-migration: filled from the stage trackings with the new structure (minutes per stage, current stage and date of the last change)
+
+project      / project.task             / email_cc (char)               : DEL
+# NOTHING TO DO: mail.thread.cc is obsolete, the column is kept without replacement
+
+project      / project.task             / website_message_ids (one2many): DEL relation: mail.message
+# NOTHING TO DO: non stored field of the mixin
+
+project      / project.task.type        / color (integer)               : DEL
+# NOTHING TO DO: removed feature
+
+project      / project.update           / _order                        : _order is now 'date desc, id desc' ('id desc')
+# NOTHING TO DO
+
+project      / project.update           / email_cc (char)               : DEL
+# NOTHING TO DO: mail.thread.cc is obsolete, the column is kept without replacement
+
+project      / project.update           / website_message_ids (one2many): DEL relation: mail.message
+# NOTHING TO DO: non stored field of the mixin
+
+project      / res.users                / followed_project_ids (many2many): NEW relation: project.project, stored: False
+project      / res.users                / project_role_ids (many2many)  : NEW relation: project.role
+# NOTHING TO DO: new functionality
+
+---XML records in module 'project'---
+NEW digest.tip: project.digest_tip_project_4
+NEW digest.tip: project.digest_tip_project_5
+NEW digest.tip: project.digest_tip_project_6
+NEW digest.tip: project.digest_tip_project_7
+NEW digest.tip: project.digest_tip_project_8
+NEW digest.tip: project.digest_tip_project_9
+# NOTHING TO DO
+
+NEW ir.access: project.access_project_task_stage_report
+NEW ir.access: project.account_analytic_line_rule_manager
+ir.access: project.burndown_chart_project_manager_rule (noupdate switched)
+ir.access: project.burndown_chart_project_user_rule (noupdate switched)
+ir.access: project.ir_rule_private_task (noupdate switched)
+ir.access: project.ir_rule_project_personal_stage_my (noupdate switched)
+ir.access: project.mail_plan_rule_group_project_manager_task (noupdate switched)
+ir.access: project.mail_plan_templates_rule_group_project_manager_task (noupdate switched)
+ir.access: project.milestone_comp_rule (noupdate switched)
+ir.access: project.milestone_visibility_project_admin (noupdate switched)
+ir.access: project.milestone_visibility_rule (noupdate switched)
+NEW ir.access: project.milestone_visibility_rule_1
+ir.access: project.project_collaborator_rule_portal (noupdate switched)
+ir.access: project.project_comp_rule (noupdate switched)
+ir.access: project.project_manager_all_project_tasks_rule (noupdate switched)
+ir.access: project.project_milestone_rule_portal_project_sharing (noupdate switched)
+ir.access: project.project_project_manager_rule (noupdate switched)
+ir.access: project.project_project_rule_portal (noupdate switched)
+ir.access: project.project_project_stage_rule (noupdate switched)
+ir.access: project.project_public_members_rule (noupdate switched)
+ir.access: project.project_task_rule_portal (noupdate switched)
+NEW ir.access: project.project_user_read_on_tasks_templates_without_project_rule
+ir.access: project.report_project_task_manager_rule (noupdate switched)
+ir.access: project.report_project_task_user_report_comp_rule (noupdate switched)
+NEW ir.access: project.res_partner_rule_user
+NEW ir.access: project.resource_calendar_leaves_rule_group_user_create
+NEW ir.access: project.resource_calendar_leaves_rule_group_user_modify
+NEW ir.access: project.tags_manager_rule
+NEW ir.access: project.tags_user_rule
+ir.access: project.task_comp_rule (noupdate switched)
+ir.access: project.task_type_manager_rule (noupdate switched)
+ir.access: project.task_type_own_write_rule (noupdate switched)
+ir.access: project.task_type_visibility_rule (noupdate switched)
+ir.access: project.task_visibility_rule (noupdate switched)
+ir.access: project.task_visibility_rule_project_user (noupdate switched)
+ir.access: project.update_comp_rule (noupdate switched)
+ir.access: project.update_visibility_project_admin (noupdate switched)
+ir.access: project.update_visibility_rule (noupdate switched)
+NEW ir.access: project.update_visibility_rule_1
+# NOTHING TO DO: ir.access records are created from the module data, the previous ir.model.access and ir.rule are handled in base
+# DONE: post-migration: project.project_task_rule_portal_project_sharing (created inactive) is activated when there are collaborators
+
+NEW ir.actions.act_window: project.action_project_time_by_stage_report
+NEW ir.actions.act_window: project.open_create_project_template
+NEW ir.actions.act_window: project.open_view_project_template
+DEL ir.actions.act_window: project.project_milestone_action_view_tasks
+NEW ir.actions.act_window.view: project.open_view_project_template_form_action_view
+NEW ir.actions.act_window.view: project.open_view_project_template_kanban_action_view
+NEW ir.actions.act_window.view: project.open_view_project_template_tree_action_view
+DEL ir.actions.act_window.view: project.project_milestone_action_view_graph
+DEL ir.actions.act_window.view: project.project_milestone_action_view_pivot
+DEL ir.actions.act_window.view: project.project_milestone_action_view_tasks_calendar
+DEL ir.actions.act_window.view: project.project_milestone_action_view_tasks_kanban
+DEL ir.actions.act_window.view: project.project_milestone_action_view_tasks_list
+NEW ir.actions.server: project.action_server_share_project
+NEW ir.actions.server: project.action_server_share_task
+NEW ir.config_parameter: project.portal_task_page_limit_param (noupdate)
+NEW ir.embedded.actions: project.project_embedded_action_project_burndown_chart
+NEW ir.embedded.actions: project.project_embedded_action_project_overview
+NEW ir.embedded.actions: project.project_embedded_action_time_by_stage
+NEW ir.embedded.actions: project.project_embedded_action_update_burndown_chart
+# NOTHING TO DO
+
+DEL ir.model.access: project.access_account_analytic_line_project
+DEL ir.model.access: project.access_partner_task_user
+DEL ir.model.access: project.access_project_collaborator_portal
+DEL ir.model.access: project.access_project_milestone_portal
+DEL ir.model.access: project.access_project_milestone_project_manager
+DEL ir.model.access: project.access_project_milestone_project_user
+DEL ir.model.access: project.access_project_milestone_user
+DEL ir.model.access: project.access_project_portal
+DEL ir.model.access: project.access_project_project
+DEL ir.model.access: project.access_project_project_manager
+DEL ir.model.access: project.access_project_sharing_task_portal (noupdate)
+DEL ir.model.access: project.access_project_tags_all
+DEL ir.model.access: project.access_project_tags_manager
+DEL ir.model.access: project.access_project_task
+DEL ir.model.access: project.access_project_task_burndown_chart_report
+DEL ir.model.access: project.access_project_task_burndown_chart_report_user
+DEL ir.model.access: project.access_project_task_share_user
+DEL ir.model.access: project.access_project_task_type_manager
+DEL ir.model.access: project.access_project_task_type_project_user
+DEL ir.model.access: project.access_project_update_portal
+DEL ir.model.access: project.access_project_update_project_manager
+DEL ir.model.access: project.access_project_update_project_user
+DEL ir.model.access: project.access_project_update_user
+DEL ir.model.access: project.access_project_user
+DEL ir.model.access: project.access_report_project_task_user
+DEL ir.model.access: project.access_report_project_task_user_project_user
+DEL ir.model.access: project.access_resource_calendar_leaves_user
+DEL ir.model.access: project.access_task_on_partner
+DEL ir.model.access: project.access_task_portal
+# NOTHING TO DO: handled in base
+
+NEW ir.model.constraint: project.constraint_mail_activity_task_user_active_idx
+ir.model.constraint: project.constraint_project_task_private_task_has_no_parent (changed definition: is now 'CHECK (NOT (project_id IS NULL AND parent_id IS NOT NULL) OR is_template IS TRUE)' ('CHECK (NOT (project_id IS NULL AND parent_id IS NOT NULL))'))
+# NOTHING TO DO: the new definition is less restrictive, the ORM recreates it
+
+DEL ir.rule: project.project_task_rule_portal_project_sharing_create_access (noupdate)
+DEL ir.rule: project.report_project_task_user_rule (noupdate)
+# NOTHING TO DO: handled in base
+
+NEW ir.ui.menu: project.menu_project_config_project_template
+NEW ir.ui.view: project.portal_format_date
+NEW ir.ui.view: project.project_sharing_project_task_view_card
+NEW ir.ui.view: project.project_templates_view_card
+NEW ir.ui.view: project.project_time_by_stage_report_view_graph
+NEW ir.ui.view: project.project_time_by_stage_report_view_pivot
+NEW ir.ui.view: project.project_time_by_stage_report_view_search
+NEW ir.ui.view: project.project_update_view_graph
+NEW ir.ui.view: project.project_view_card_inherit_project
+NEW ir.ui.view: project.view_project_card
+NEW ir.ui.view: project.view_project_card_group_stage
+NEW ir.ui.view: project.view_task_card
+NEW ir.ui.view: project.view_task_card_subtask_mobile
+NEW ir.ui.view: project.view_task_kanban_no_default_grouping
+DEL ir.ui.view: project.portal_my_home
+DEL ir.ui.view: project.project_task_graph_view_project_milestone
+DEL ir.ui.view: project.project_task_kanban_view_project_milestone
+DEL ir.ui.view: project.project_task_pivot_view_project_milestone
+DEL ir.ui.view: project.project_task_templates_kanban
+DEL ir.ui.view: project.project_task_templates_list
+DEL ir.ui.view: project.project_task_tree_view_project_milestone
+DEL ir.ui.view: project.project_view_kanban_inherit_project
+DEL ir.ui.view: project.view_task_template_search_form
+# NOTHING TO DO
+
+NEW portal.entry: project.portal_projects (noupdate)
+NEW portal.entry: project.portal_tasks (noupdate)
+# NOTHING TO DO: new functionality
+# DONE: post-migration: external followers of shared projects get a project.collaborator with view access, as portal access to a project now requires being a collaborator instead of a follower
