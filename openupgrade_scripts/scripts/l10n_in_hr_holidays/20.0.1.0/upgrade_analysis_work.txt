@@ -1,0 +1,14 @@
+---Models in module 'l10n_in_hr_holidays'---
+---Fields in module 'l10n_in_hr_holidays'---
+l10n_in_hr_holidays / hr.work.entry.type       / l10n_in_sandwich_policy (selection): NEW selection_keys: ['full', 'public_holiday', 'weekend'], hasdefault: default
+
+# NOTHING TO DO: the ORM sets the default
+
+---XML records in module 'l10n_in_hr_holidays'---
+NEW ir.ui.view: l10n_in_hr_holidays.hr_work_entry_type_view_form_inherit
+
+# NOTHING TO DO
+
+DEL ir.ui.view: l10n_in_hr_holidays.hr_leave_type_view_form_inherit
+
+# NOTHING TO DO: removed by the ORM
