@@ -1,0 +1,80 @@
+---Models in module 'fleet'---
+---Fields in module 'fleet'---
+fleet        / fleet.service.type       / company_id (many2one)         : NEW relation: res.company, hasdefault: default
+# DONE: pre-migration: column added empty, otherwise the ORM assigns every existing service type to the company of the user running the migration and the new multi-company rule hides them from the other companies
+
+fleet        / fleet.vehicle            / contract_state (selection)    : selection_keys added: [done] (most likely nothing to do)
+# NOTHING TO DO
+
+fleet        / fleet.vehicle            / horsepower_tax (float)        : DEL
+# NOTHING TO DO: removed feature
+
+fleet        / fleet.vehicle            / plan_to_change_bike (boolean) : DEL
+fleet        / fleet.vehicle            / plan_to_change_car (boolean)  : DEL
+fleet        / fleet.vehicle            / plan_to_change_vehicle (boolean): NEW
+# DONE: pre-migration: plan_to_change_car renamed to plan_to_change_vehicle and plan_to_change_bike merged into it
+
+fleet        / fleet.vehicle            / transmission (selection)      : selection_keys added: [semi_automatic] (most likely nothing to do)
+fleet        / fleet.vehicle.log.contract / state (selection)             : selection_keys added: [done] (most likely nothing to do)
+# NOTHING TO DO
+
+fleet        / fleet.vehicle.log.services / date (date)                   : DEL
+fleet        / fleet.vehicle.log.services / date_from (date)              : NEW hasdefault: default
+fleet        / fleet.vehicle.log.services / date_to (date)                : NEW
+# DONE: pre-migration: date renamed to date_from, date_to is new
+
+fleet        / fleet.vehicle.model      / color (char)                  : DEL
+# NOTHING TO DO: removed, the vehicles keep their own color
+
+fleet        / fleet.vehicle.model      / company_id (many2one)         : NEW relation: res.company
+# NOTHING TO DO: new functionality, existing models stay shared
+
+fleet        / fleet.vehicle.model      / horsepower_tax (float)        : DEL
+fleet        / fleet.vehicle.model      / trailer_hook (boolean)        : DEL
+# NOTHING TO DO: removed, the vehicles keep their own value of trailer_hook
+
+fleet        / fleet.vehicle.model      / transmission (selection)      : selection_keys added: [semi_automatic] (most likely nothing to do)
+fleet        / fleet.vehicle.model      / vehicle_type (selection)      : selection_keys added: [other] (most likely nothing to do)
+# NOTHING TO DO
+
+---XML records in module 'fleet'---
+ir.access: fleet.fleet_rule_service_visibility_manager (noupdate switched)
+NEW ir.access: fleet.fleet_rule_vehicle_visibility_user
+ir.access: fleet.ir_rule_fleet_log_services (noupdate switched)
+ir.access: fleet.ir_rule_fleet_odometer (noupdate switched)
+ir.access: fleet.ir_rule_fleet_report (noupdate switched)
+NEW ir.access: fleet.ir_rule_fleet_service_type
+ir.access: fleet.ir_rule_fleet_vehicle (noupdate switched)
+ir.access: fleet.ir_rule_fleet_vehicle_log_contract (noupdate switched)
+# NOTHING TO DO: ir.access records are created from the module data, the previous ir.model.access and ir.rule are handled in base
+
+NEW ir.access: fleet.ir_rule_fleet_vehicle_model
+# NOTHING TO DO
+
+NEW ir.actions.act_window: fleet.fleet_vehicle_contract_types_action
+# NOTHING TO DO
+
+DEL ir.model.access: fleet.fleet_vehicle_access_right
+DEL ir.model.access: fleet.fleet_vehicle_access_right_user
+DEL ir.model.access: fleet.fleet_vehicle_log_contract_access_right
+DEL ir.model.access: fleet.fleet_vehicle_log_services_access_right
+# NOTHING TO DO: handled in base
+
+NEW ir.model.constraint: fleet.constraint_fleet_vehicle_log_services_check_service_dates
+# NOTHING TO DO: date_to is empty on the existing records
+
+NEW ir.model.constraint: fleet.constraint_fleet_vehicle_unique_license_plate
+# TODO: the constraint is not created if the database has vehicles with the same license plate (or several with an empty string), the duplicates need to be fixed by hand
+
+DEL ir.rule: fleet.fleet_rule_contract_visibility_manager (noupdate)
+DEL ir.rule: fleet.fleet_rule_odometer_visibility_manager (noupdate)
+DEL ir.rule: fleet.fleet_rule_vehicle_visibility_manager (noupdate)
+# NOTHING TO DO: handled in base
+
+NEW ir.ui.menu: fleet.fleet_contracts_configuration
+NEW ir.ui.menu: fleet.fleet_vehicle_contract_types_menu
+NEW ir.ui.view: fleet.fleet_service_type_view_form_shared
+NEW ir.ui.view: fleet.fleet_vehicle_odometer_report_view_tree
+NEW ir.ui.view: fleet.view_partner_form
+DEL ir.ui.view: fleet.fleet_vehicle_odometer_view_graph
+# NOTHING TO DO
