@@ -460,19 +460,34 @@ DEL digest.tip: account.digest_tip_account_0
 
 NEW ir.access: account.access_base_document_layout_account_user
 NEW ir.access: account.access_ir_model_account_reports
+
+# NOTHING TO DO
+
 ir.access: account.account_analytic_line_rule_billing_user (noupdate switched)
 ir.access: account.account_analytic_line_rule_readonly_user (noupdate switched)
 ir.access: account.account_bank_statement_comp_rule (noupdate switched)
 ir.access: account.account_bank_statement_line_comp_rule (noupdate switched)
+
+# NOTHING TO DO: ir.rule and ir.model.access become ir.access in base
+
 NEW ir.access: account.account_bank_statement_line_rule_basic_user
 NEW ir.access: account.account_bank_statement_line_rule_invoice_user
 NEW ir.access: account.account_bank_statement_line_rule_readonly_user
 NEW ir.access: account.account_cash_rounding_comp_rule
+
+# NOTHING TO DO
+
 ir.access: account.account_comp_rule (noupdate switched)
 ir.access: account.account_fiscal_position_comp_rule (noupdate switched)
 ir.access: account.account_invoice_line_rule_portal (noupdate switched)
+
+# NOTHING TO DO: ir.rule and ir.model.access become ir.access in base
+
 NEW ir.access: account.account_invoice_report_rule_invoice
 NEW ir.access: account.account_invoice_report_rule_readonly
+
+# NOTHING TO DO
+
 ir.access: account.account_invoice_rule_portal (noupdate switched)
 ir.access: account.account_move_comp_rule (noupdate switched)
 ir.access: account.account_move_line_comp_rule (noupdate switched)
@@ -490,10 +505,19 @@ ir.access: account.invoice_analysis_comp_rule (noupdate switched)
 ir.access: account.ir_rule_res_partner_bank_billing_officers (noupdate switched)
 ir.access: account.journal_comp_rule (noupdate switched)
 ir.access: account.report_external_value_comp_rule (noupdate switched)
+
+# NOTHING TO DO: ir.rule and ir.model.access become ir.access in base
+
 NEW ir.access: account.res_partner_rule_user
+
+# NOTHING TO DO
+
 ir.access: account.tax_comp_rule (noupdate switched)
 ir.access: account.tax_group_comp_rule (noupdate switched)
 ir.access: account.tax_rep_comp_rule (noupdate switched)
+
+# NOTHING TO DO: ir.rule and ir.model.access become ir.access in base
+
 NEW ir.actions.act_window: account.action_account_cashflow_analysis
 NEW ir.actions.act_window: account.action_account_matching_rules
 
