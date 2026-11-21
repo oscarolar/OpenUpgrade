@@ -37,6 +37,9 @@ fleet        / fleet.vehicle.model      / transmission (selection)      : select
 fleet        / fleet.vehicle.model      / vehicle_type (selection)      : selection_keys added: [other] (most likely nothing to do)
 # NOTHING TO DO
 
+# DONE: post-migration: fleet.vehicle#name is not in the analysis but its compute
+# changed to 'plate: brand/model', recomputed on all the vehicles, archived included
+
 ---XML records in module 'fleet'---
 ir.access: fleet.fleet_rule_service_visibility_manager (noupdate switched)
 NEW ir.access: fleet.fleet_rule_vehicle_visibility_user
@@ -64,7 +67,12 @@ NEW ir.model.constraint: fleet.constraint_fleet_vehicle_log_services_check_servi
 # NOTHING TO DO: date_to is empty on the existing records
 
 NEW ir.model.constraint: fleet.constraint_fleet_vehicle_unique_license_plate
-# TODO: the constraint is not created if the database has vehicles with the same license plate (or several with an empty string), the duplicates need to be fixed by hand
+# DONE: pre-migration: blank license plates (empty or only spaces) become NULL and
+# the repeated ones get ' (<id>)' appended except on the oldest active vehicle, so
+# that the constraint is created; the original plate is kept in
+# openupgrade_legacy_20_0_license_plate
+# DONE: post-migration: a note is posted on every vehicle whose plate changed and the
+# list is logged as a warning
 
 DEL ir.rule: fleet.fleet_rule_contract_visibility_manager (noupdate)
 DEL ir.rule: fleet.fleet_rule_odometer_visibility_manager (noupdate)
