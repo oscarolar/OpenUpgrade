@@ -134,23 +134,10 @@ env["res.device.log"].create(
         "session_identifier": "ou20_migration",
     }
 )
-test_bank = env["res.bank"].create(
-    {
-        "name": "OpenUpgrade v20 bank",
-        "bic": "OUPGMXMM",
-        "city": "Monterrey",
-        "country": env.ref("base.mx").id,
-    }
-)
 env["res.partner.bank"].create(
     {
         "partner_id": env.ref("base.main_partner").id,
         "acc_number": "12345",
-        "bank_id": test_bank.id,
     }
 )
-env.ref("base.res_partner_bank_rule").domain_force = "[('company_id', '=', company_id)]"
-env.ref("base.res_currency_rate_rule").active = False
-env.ref("base.res_users_rule").groups = env.ref("base.group_system")
-env.ref("base.fr").zip_required = False
 env.cr.commit()

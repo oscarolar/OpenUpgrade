@@ -64,6 +64,8 @@ class TestBaseMigration(TransactionCase):
         Test that changes to ir.rule records provided by modules are carried over
         """
         IrAccess = self.env["ir.access"].with_context(active_test=False)
+        if not IrAccess.search([("name", "like", "Customized in v19 (%")]):
+            self.skipTest("data_base_migration_customization.py was not loaded")
         self.assertFalse(self.env.ref("base.res_partner_bank_rule").active)
         custom_access = IrAccess.search(
             [
@@ -95,7 +97,9 @@ class TestBaseMigration(TransactionCase):
         account = self.env["res.partner.bank"].search(
             [("bank_name", "=", "OpenUpgrade v20 bank")]
         )
-        self.assertEqual(account.account_number, "12345")
+        if not account:
+            self.skipTest("data_base_migration_customization.py was not loaded")
+        self.assertEqual(account.account_number, "OU20 67890")
         self.assertEqual(account.bank_bic, "OUPGMXMM")
         self.assertEqual(account.city, "Monterrey")
         self.assertEqual(account.country_id, self.env.ref("base.mx"))
@@ -107,4 +111,8 @@ class TestBaseMigration(TransactionCase):
         """
         Test that countries where the zip was not required keep it optional
         """
+        if not self.env["res.partner.bank"].search(
+            [("bank_name", "=", "OpenUpgrade v20 bank")]
+        ):
+            self.skipTest("data_base_migration_customization.py was not loaded")
         self.assertEqual(self.env.ref("base.fr").zip_applicability, "optional")
