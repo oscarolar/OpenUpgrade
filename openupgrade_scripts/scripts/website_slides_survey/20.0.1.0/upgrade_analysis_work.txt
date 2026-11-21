@@ -1,0 +1,14 @@
+---Models in module 'website_slides_survey'---
+---Fields in module 'website_slides_survey'---
+---XML records in module 'website_slides_survey'---
+ir.access: website_slides_survey.survey_question_answer_slide_channel_officer (noupdate switched)
+ir.access: website_slides_survey.survey_question_rule_slide_channel_officer (noupdate switched)
+ir.access: website_slides_survey.survey_rule_slide_channel_officer (noupdate switched)
+ir.access: website_slides_survey.survey_user_input_line_rule_slide_channel_officer (noupdate switched)
+ir.access: website_slides_survey.survey_user_input_rule_slide_channel_officer (noupdate switched)
+DEL ir.model.access: website_slides_survey.access_survey_question_answer_slides_officer
+DEL ir.model.access: website_slides_survey.access_survey_question_slides_officer
+DEL ir.model.access: website_slides_survey.access_survey_slides_officer
+DEL ir.model.access: website_slides_survey.access_survey_user_input_line_slides_officer
+DEL ir.model.access: website_slides_survey.access_survey_user_input_slides_officer
+# NOTHING TO DO: ir.model.access and ir.rule were merged into ir.access, handled by base
