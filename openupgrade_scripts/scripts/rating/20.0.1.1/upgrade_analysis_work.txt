@@ -1,0 +1,17 @@
+---Models in module 'rating'---
+---Fields in module 'rating'---
+rating       / ir.access                / rating_ids (one2many)         : NEW relation: rating.rating
+# NOTHING TO DO: new one2many inherited from the rating mixin
+
+rating       / rating.rating            / parent_res_id (integer)       : relation is now 'parent_res_model' ('False') [nothing to do]
+rating       / rating.rating            / parent_res_id (integer)       : type is now 'many2one_reference' ('integer')
+# NOTHING TO DO: many2one_reference is stored in the same integer column
+
+rating       / res.users                / rating_ids (one2many)         : is now stored
+rating       / res.users                / rating_ids (one2many)         : not related anymore
+# NOTHING TO DO: one2many now inherited from the rating mixin, no column involved
+
+---XML records in module 'rating'---
+DEL ir.model.access: rating.access_rating_portal
+DEL ir.model.access: rating.access_rating_public
+# NOTHING TO DO: ir.model.access and ir.rule were merged into ir.access, handled by base

@@ -1,0 +1,82 @@
+---Models in module 'website_forum'---
+new model forum.post.comment
+# DONE: post-migration: comments of posts (mail.message of type comment) are copied to forum.post.comment, the messages are kept
+
+---Fields in module 'website_forum'---
+website_forum / forum.forum              / website_message_ids (one2many): DEL relation: mail.message
+# NOTHING TO DO: non stored field of mail.thread
+
+website_forum / forum.post               / comment_ids (one2many)        : NEW relation: forum.post.comment
+# DONE: post-migration: comments of posts (mail.message of type comment) are copied to forum.post.comment, the messages are kept
+
+website_forum / forum.post               / follower_ids (many2many)      : NEW relation: res.partner
+website_forum / forum.post               / message_follower_ids (one2many): DEL relation: mail.followers
+# DONE: post-migration: partners following through mail.followers are copied to the new many2many relation
+
+website_forum / forum.post               / message_ids (one2many)        : DEL relation: mail.message
+# DONE: post-migration: comments of posts (mail.message of type comment) are copied to forum.post.comment, the messages are kept
+
+website_forum / forum.post               / rating_ids (one2many)         : DEL relation: rating.rating
+# NOTHING TO DO: the models don't inherit mail.thread anymore, tags had no comments and none had ratings
+
+website_forum / forum.post               / website_message_ids (one2many): DEL relation: mail.message
+# DONE: post-migration: comments of posts (mail.message of type comment) are copied to forum.post.comment, the messages are kept
+
+website_forum / forum.post               / write_date_content (datetime) : NEW
+# NOTHING TO DO: only set when the content is edited from now on
+
+website_forum / forum.post.comment       / body (html)                   : NEW
+website_forum / forum.post.comment       / post_id (many2one)            : NEW relation: forum.post, required
+# DONE: post-migration: comments of posts (mail.message of type comment) are copied to forum.post.comment, the messages are kept
+
+website_forum / forum.tag                / follower_ids (many2many)      : NEW relation: res.partner
+website_forum / forum.tag                / message_follower_ids (one2many): DEL relation: mail.followers
+# DONE: post-migration: partners following through mail.followers are copied to the new many2many relation
+
+website_forum / forum.tag                / message_ids (one2many)        : DEL relation: mail.message
+website_forum / forum.tag                / rating_ids (one2many)         : DEL relation: rating.rating
+website_forum / forum.tag                / website_message_ids (one2many): DEL relation: mail.message
+# NOTHING TO DO: the models don't inherit mail.thread anymore, tags had no comments and none had ratings
+
+---XML records in module 'website_forum'---
+NEW ir.access: website_forum.access_forum_post_comment_portal
+NEW ir.access: website_forum.access_forum_post_comment_public
+NEW ir.access: website_forum.access_forum_post_comment_user
+NEW ir.access: website_forum.access_forum_post_reason_website_designer
+NEW ir.access: website_forum.website_forum
+ir.access: website_forum.website_forum_create_website_designer (noupdate switched)
+NEW ir.access: website_forum.website_forum_post
+NEW ir.access: website_forum.website_forum_post_comment
+ir.access: website_forum.website_forum_post_vote_all (noupdate switched)
+ir.access: website_forum.website_forum_post_vote_own (noupdate switched)
+NEW ir.access: website_forum.website_forum_post_vote_own_1
+NEW ir.access: website_forum.website_forum_tag
+DEL ir.model.access: website_forum.access_forum_forum_employee
+DEL ir.model.access: website_forum.access_forum_forum_portal
+DEL ir.model.access: website_forum.access_forum_post_reason_portal
+DEL ir.model.access: website_forum.access_forum_post_reason_user
+DEL ir.model.access: website_forum.access_forum_post_vote_portal
+DEL ir.model.access: website_forum.access_forum_post_vote_user
+DEL ir.model.access: website_forum.access_forum_tag_portal
+# NOTHING TO DO: ir.model.access and ir.rule are merged into ir.access, handled in base
+
+NEW ir.model.constraint: website_forum.constraint_forum_tag_forum_id_posts_count_idx
+# NOTHING TO DO
+
+DEL ir.rule: website_forum.website_forum_connected (noupdate)
+DEL ir.rule: website_forum.website_forum_connected_post (noupdate)
+DEL ir.rule: website_forum.website_forum_connected_tag (noupdate)
+DEL ir.rule: website_forum.website_forum_private (noupdate)
+DEL ir.rule: website_forum.website_forum_private_post (noupdate)
+DEL ir.rule: website_forum.website_forum_private_tag (noupdate)
+DEL ir.rule: website_forum.website_forum_public (noupdate)
+DEL ir.rule: website_forum.website_forum_public_post (noupdate)
+DEL ir.rule: website_forum.website_forum_public_tag (noupdate)
+# NOTHING TO DO: ir.model.access and ir.rule are merged into ir.access, handled in base
+
+NEW ir.ui.view: website_forum.follow_button
+NEW ir.ui.view: website_forum.forum_post_link (noupdate)
+DEL ir.ui.view: website_forum.follow
+NEW mail.message.subtype: website_forum.mt_ask_validation (noupdate)
+NEW mail.message.subtype: website_forum.mt_comment_new (noupdate)
+# NOTHING TO DO
