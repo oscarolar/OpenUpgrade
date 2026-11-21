@@ -1,0 +1,21 @@
+---Models in module 'l10n_my_edi_pos'---
+---Fields in module 'l10n_my_edi_pos'---
+l10n_my_edi_pos / pos.order                / l10n_my_edi_state (selection) : NEW selection_keys: ['cancelled', 'in_progress', 'invalid', 'rejected', 'valid'], isfunction: function, stored
+
+# NOTHING TO DO: computed by the ORM
+
+---XML records in module 'l10n_my_edi_pos'---
+NEW ir.ui.view: l10n_my_edi_pos.myinvois_document_form_view
+NEW ir.ui.view: l10n_my_edi_pos.myinvois_document_pos_search_view
+NEW ir.ui.view: l10n_my_edi_pos.portal_address_form_fields_my
+NEW ir.ui.view: l10n_my_edi_pos.ticket_validation_screen
+NEW ir.ui.view: l10n_my_edi_pos.view_partner_form_pos_ui_inherit_l10n_my_edi_pos
+NEW ir.ui.view: l10n_my_edi_pos.view_pos_order_filter
+NEW ir.ui.view: l10n_my_edi_pos.view_pos_order_tree
+NEW ir.ui.view: l10n_my_edi_pos.view_pos_order_tree_consolidated
+
+# NOTHING TO DO
+
+DEL res.partner: l10n_my_edi_pos.general_public [renamed to l10n_my_edi module]
+
+# DONE: pre-migration of l10n_my_edi: xmlid renamed from l10n_my_edi_pos

@@ -1,0 +1,10 @@
+---Models in module 'payment_demo'---
+---Fields in module 'payment_demo'---
+payment_demo / payment.transaction      / capture_manually (boolean)    : module is now 'payment' ('payment_demo')
+
+# NOTHING TO DO: the ORM moves the field to its new module
+
+---XML records in module 'payment_demo'---
+NEW payment.method: payment_demo.payment_method_unknown [renamed from payment module] (noupdate)
+
+# DONE: in the pre-migration of payment (one method per provider, xmlid in the provider module)

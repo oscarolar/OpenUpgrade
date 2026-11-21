@@ -1,0 +1,21 @@
+---Models in module 'payment_qfpay'---
+---Fields in module 'payment_qfpay'---
+payment_qfpay / payment.provider         / code (False)                  : NEW selection_keys: ['adyen', 'aps', 'asiapay', 'authorize', 'buckaroo', 'custom', 'demo', 'dpo', 'ecpay', 'flutterwave', 'iyzico', 'mercado_pago', 'mollie', 'none', 'nuvei', 'paymob', 'paypal', 'payu', 'qfpay'], mode: modify
+payment_qfpay / payment.provider         / qfpay_app_code (char)         : NEW
+payment_qfpay / payment.provider         / qfpay_app_key (char)          : NEW
+
+# NOTHING TO DO
+
+---XML records in module 'payment_qfpay'---
+NEW ir.ui.view: payment_qfpay.payment_provider_form
+NEW payment.method: payment_qfpay.payment_method_alipay (noupdate)
+NEW payment.method: payment_qfpay.payment_method_alipay_hk (noupdate)
+NEW payment.method: payment_qfpay.payment_method_card (noupdate)
+NEW payment.method: payment_qfpay.payment_method_fps (noupdate)
+NEW payment.method: payment_qfpay.payment_method_mastercard (noupdate)
+NEW payment.method: payment_qfpay.payment_method_payme (noupdate)
+NEW payment.method: payment_qfpay.payment_method_unionpay (noupdate)
+NEW payment.method: payment_qfpay.payment_method_visa (noupdate)
+NEW payment.method: payment_qfpay.payment_method_wechat_pay (noupdate)
+
+# NOTHING TO DO

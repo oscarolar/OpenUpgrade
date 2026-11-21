@@ -1,0 +1,69 @@
+---Models in module 'payment_worldline'---
+---Fields in module 'payment_worldline'---
+payment_worldline / payment.provider         / code (False)                  : selection_keys added: [qfpay] (most likely nothing to do)
+
+# NOTHING TO DO
+
+---XML records in module 'payment_worldline'---
+DEL ir.ui.view: payment_worldline.redirect_form
+
+# NOTHING TO DO: removed by the ORM
+
+NEW payment.method: payment_worldline.payment_method_alipay_plus [renamed from payment module] (noupdate)
+
+# DONE: in the pre-migration of payment (one method per provider, xmlid in the provider module)
+
+NEW payment.method: payment_worldline.payment_method_amex (noupdate)
+NEW payment.method: payment_worldline.payment_method_bancontact (noupdate)
+NEW payment.method: payment_worldline.payment_method_bizum (noupdate)
+NEW payment.method: payment_worldline.payment_method_card (noupdate)
+NEW payment.method: payment_worldline.payment_method_cartes_bancaires (noupdate)
+
+# NOTHING TO DO
+
+NEW payment.method: payment_worldline.payment_method_cirrus [renamed from payment module] (noupdate)
+NEW payment.method: payment_worldline.payment_method_cofidis [renamed from payment module] (noupdate)
+
+# DONE: in the pre-migration of payment (one method per provider, xmlid in the provider module)
+
+NEW payment.method: payment_worldline.payment_method_dankort (noupdate)
+NEW payment.method: payment_worldline.payment_method_diners (noupdate)
+NEW payment.method: payment_worldline.payment_method_discover (noupdate)
+NEW payment.method: payment_worldline.payment_method_eps (noupdate)
+
+# NOTHING TO DO
+
+NEW payment.method: payment_worldline.payment_method_floa_bank [renamed from payment module] (noupdate)
+
+# DONE: in the pre-migration of payment (one method per provider, xmlid in the provider module)
+
+NEW payment.method: payment_worldline.payment_method_ideal (noupdate)
+NEW payment.method: payment_worldline.payment_method_ideal_brand (noupdate)
+NEW payment.method: payment_worldline.payment_method_jcb (noupdate)
+NEW payment.method: payment_worldline.payment_method_klarna (noupdate)
+NEW payment.method: payment_worldline.payment_method_maestro (noupdate)
+NEW payment.method: payment_worldline.payment_method_mastercard (noupdate)
+NEW payment.method: payment_worldline.payment_method_mbway (noupdate)
+NEW payment.method: payment_worldline.payment_method_meeza (noupdate)
+NEW payment.method: payment_worldline.payment_method_multibanco (noupdate)
+NEW payment.method: payment_worldline.payment_method_naps (noupdate)
+NEW payment.method: payment_worldline.payment_method_omannet (noupdate)
+NEW payment.method: payment_worldline.payment_method_p24 (noupdate)
+NEW payment.method: payment_worldline.payment_method_paypal (noupdate)
+
+# NOTHING TO DO
+
+NEW payment.method: payment_worldline.payment_method_post_finance [renamed from payment module] (noupdate)
+
+# DONE: in the pre-migration of payment (one method per provider, xmlid in the provider module)
+
+NEW payment.method: payment_worldline.payment_method_rupay (noupdate)
+NEW payment.method: payment_worldline.payment_method_troy (noupdate)
+NEW payment.method: payment_worldline.payment_method_twint (noupdate)
+NEW payment.method: payment_worldline.payment_method_unionpay (noupdate)
+NEW payment.method: payment_worldline.payment_method_visa (noupdate)
+NEW payment.method: payment_worldline.payment_method_wechat_pay (noupdate)
+NEW payment.method: payment_worldline.payment_method_wero (noupdate)
+NEW payment.method: payment_worldline.payment_method_wero_brand (noupdate)
+
+# NOTHING TO DO
