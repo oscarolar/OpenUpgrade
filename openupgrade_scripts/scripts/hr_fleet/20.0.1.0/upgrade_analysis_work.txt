@@ -20,4 +20,5 @@ DEL ir.ui.view: hr_fleet.view_employee_filter
 # NOTHING TO DO
 
 DEL mail.activity.plan.template: hr_fleet.offboarding_fleet (noupdate)
-# NOTHING TO DO: the record is kept, see responsible_type
+# DONE: post-migration: deleted when its summary is still 'Take Back Fleet', otherwise
+# kept and logged as a warning to be reviewed
