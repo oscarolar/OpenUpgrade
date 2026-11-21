@@ -10,6 +10,9 @@ _employee_type_xmlids = {
 }
 
 _employee_type_names = {
+    "employee": "Employee",
+    "student": "Student",
+    "trainee": "Intern",
     "worker": "Worker",
     "contractor": "Contractor",
     "freelance": "Freelancer",
@@ -27,8 +30,30 @@ _obsolete_noupdate_xmlids = [
 def hr_version_employee_type_id(env):
     """
     Fill hr.version#employee_type_id from the removed selection employee_type for
-    versions without contract type, creating the types that don't exist in v20
+    versions without contract type, creating the types that don't exist in v20.
+    The contract type wins when both are set, those versions are reported
     """
+    env.cr.execute(
+        """
+        SELECT employee_type, count(*)
+        FROM hr_version
+        WHERE employee_type_id IS NOT NULL
+        AND employee_type IS NOT NULL AND employee_type != 'employee'
+        GROUP BY employee_type
+        ORDER BY employee_type
+        """
+    )
+    for employee_type, count in env.cr.fetchall():
+        openupgrade.message(
+            env.cr,
+            "hr",
+            "hr_version",
+            "employee_type_id",
+            "%s versions keep their contract type as employee type, their former "
+            "employee type '%s' stays only in the column employee_type",
+            count,
+            employee_type,
+        )
     env.cr.execute(
         """
         SELECT DISTINCT employee_type
@@ -37,18 +62,14 @@ def hr_version_employee_type_id(env):
         """
     )
     for (employee_type,) in env.cr.fetchall():
-        if employee_type in _employee_type_xmlids:
-            type_record = env.ref(
-                _employee_type_xmlids[employee_type], raise_if_not_found=False
-            )
-        elif employee_type in _employee_type_names:
-            type_record = env["hr.employee.type"].create(
-                {"name": _employee_type_names[employee_type]}
-            )
-        else:
+        if employee_type not in _employee_type_names:
             continue
-        if not type_record:
-            continue
+        type_record = env.ref(
+            _employee_type_xmlids.get(employee_type, "hr.no_such_type"),
+            raise_if_not_found=False,
+        ) or env["hr.employee.type"].create(
+            {"name": _employee_type_names[employee_type]}
+        )
         openupgrade.logged_query(
             env.cr,
             """
@@ -62,7 +83,8 @@ def hr_version_employee_type_id(env):
 
 def hr_version_fixed_term(env):
     """
-    Versions with a contract end date are fixed term contracts
+    Versions with a contract end date are fixed term contracts, unless the end date
+    is the departure date that the departure wizard wrote on the contract
     """
     openupgrade.logged_query(
         env.cr,
@@ -70,6 +92,7 @@ def hr_version_fixed_term(env):
         UPDATE hr_version
         SET fixed_term = TRUE
         WHERE contract_date_end IS NOT NULL
+        AND contract_date_end IS DISTINCT FROM departure_date
         """,
     )
 
@@ -98,10 +121,35 @@ def hr_employee_from_version(env):
 
 def hr_employee_departure(env):
     """
-    Create hr.employee.departure records from the departure fields of the versions
-    of archived employees. They are created as already applied, the cron must not
-    archive anything because of the migration
+    Create hr.employee.departure records from the departure fields of the versions.
+    The ones of archived employees are created as already applied, the cron must not
+    archive anything because of the migration. Active employees only get a planned
+    departure when the date is in the future, the others are reported
     """
+    env.cr.execute(
+        """
+        SELECT DISTINCT hr_employee.id, hr_employee.name
+        FROM hr_version
+        JOIN hr_employee ON hr_employee.id = hr_version.employee_id
+        WHERE hr_version.departure_reason_id IS NOT NULL
+        AND hr_employee.active
+        AND COALESCE(hr_version.departure_date, CURRENT_DATE) <= CURRENT_DATE
+        ORDER BY hr_employee.id
+        """
+    )
+    for employee_id, name in env.cr.fetchall():
+        openupgrade.message(
+            env.cr,
+            "hr",
+            "hr_employee_departure",
+            "employee_id",
+            "The active employee %s (id %s) has a departure reason with a date that "
+            "is not in the future: no departure is created, the values stay in the "
+            "columns departure_reason_id, departure_date and departure_description "
+            "of hr_version",
+            name,
+            employee_id,
+        )
     openupgrade.logged_query(
         env.cr,
         """
@@ -118,13 +166,15 @@ def hr_employee_departure(env):
             COALESCE(hr_version.departure_date, hr_version.write_date::date),
             COALESCE(hr_version.departure_date, hr_version.write_date::date)
                 + interval '1 day',
-            COALESCE(hr_version.departure_date, hr_version.write_date::date),
+            CASE WHEN NOT hr_employee.active THEN
+                COALESCE(hr_version.departure_date, hr_version.write_date::date)
+            END,
             hr_version.write_uid, hr_version.write_date,
             hr_version.write_uid, hr_version.write_date
         FROM hr_version
         JOIN hr_employee ON hr_employee.id = hr_version.employee_id
         WHERE hr_version.departure_reason_id IS NOT NULL
-        AND NOT hr_employee.active
+        AND (NOT hr_employee.active OR hr_version.departure_date > CURRENT_DATE)
         ORDER BY hr_version.employee_id, hr_version.date_version DESC
         """,
     )
@@ -143,7 +193,8 @@ def hr_employee_departure(env):
 def hr_job_recruiter_id(env):
     """
     hr.job#user_id is replaced by #recruiter_id, pointing to the employee of the
-    user, preferably the one of the company of the job
+    user in the company of the job. Jobs whose user has no employee there are left
+    without recruiter and reported
     """
     openupgrade.logged_query(
         env.cr,
@@ -153,15 +204,35 @@ def hr_job_recruiter_id(env):
             SELECT hr_employee.id
             FROM hr_employee
             WHERE hr_employee.user_id = hr_job.user_id
-            ORDER BY
-                hr_employee.company_id = hr_job.company_id DESC,
-                hr_employee.active DESC,
-                hr_employee.id
+            AND hr_employee.company_id = hr_job.company_id
+            ORDER BY hr_employee.active DESC, hr_employee.id
             LIMIT 1
         )
         WHERE user_id IS NOT NULL
         """,
     )
+    env.cr.execute(
+        """
+        SELECT hr_job.id, hr_job.name->>'en_US', res_users.login
+        FROM hr_job
+        JOIN res_users ON res_users.id = hr_job.user_id
+        WHERE hr_job.recruiter_id IS NULL
+        ORDER BY hr_job.id
+        """
+    )
+    for job_id, name, login in env.cr.fetchall():
+        openupgrade.message(
+            env.cr,
+            "hr",
+            "hr_job",
+            "recruiter_id",
+            "The job %s (id %s) is left without recruiter: its user %s has no "
+            "employee in the company of the job. The user stays in the column "
+            "user_id",
+            name,
+            job_id,
+            login,
+        )
 
 
 def delete_unreferenced_records(env, xmlids):

@@ -1,7 +1,13 @@
 # Copyright 2026 Vauxoo
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 
+import logging
+
+import psycopg2
 from openupgradelib import openupgrade
+from psycopg2 import sql
+
+_logger = logging.getLogger(__name__)
 
 _renamed_models = [
     ("hr.contract.type", "hr.employee.type"),
@@ -165,39 +171,297 @@ def mail_activity_plan_template_responsible_type(env):
     )
 
 
-def hr_job_company_id(env):
+def _hr_job_references(env):
     """
-    hr.job#company_id is required now: use the company of the department, else the
-    company where most employees have the job, else the main company
+    Return the foreign keys pointing to hr_job as (table, column, has_id,
+    has_company_id)
     """
+    env.cr.execute(
+        """
+        SELECT
+            pg_class.relname,
+            pg_attribute.attname,
+            EXISTS (
+                SELECT 1 FROM pg_attribute id_attribute
+                WHERE id_attribute.attrelid = pg_class.oid
+                AND id_attribute.attname = 'id'
+                AND NOT id_attribute.attisdropped
+            ),
+            EXISTS (
+                SELECT 1 FROM pg_attribute company_attribute
+                WHERE company_attribute.attrelid = pg_class.oid
+                AND company_attribute.attname = 'company_id'
+                AND NOT company_attribute.attisdropped
+            )
+        FROM pg_constraint
+        JOIN pg_class ON pg_class.oid = pg_constraint.conrelid
+        JOIN pg_attribute
+            ON pg_attribute.attrelid = pg_constraint.conrelid
+            AND pg_attribute.attnum = pg_constraint.conkey[1]
+        WHERE pg_constraint.contype = 'f'
+        AND pg_constraint.confrelid = 'hr_job'::regclass
+        AND pg_class.relname != 'hr_job'
+        ORDER BY pg_class.relname, pg_attribute.attname
+        """
+    )
+    return env.cr.fetchall()
+
+
+def _table_columns(env, table):
+    env.cr.execute(
+        """
+        SELECT column_name
+        FROM information_schema.columns
+        WHERE table_name = %s AND column_name != 'id'
+        ORDER BY ordinal_position
+        """,
+        (table,),
+    )
+    return [row[0] for row in env.cr.fetchall()]
+
+
+def _hr_job_copy_relations(env, references, job_id, target_id):
+    """
+    Add the many2many relations of a job to another one
+    """
+    for table, column, has_id, _has_company in references:
+        if has_id:
+            continue
+        others = [name for name in _table_columns(env, table) if name != column]
+        if not others:
+            continue
+        other_columns = sql.SQL(", ").join(map(sql.Identifier, others))
+        openupgrade.logged_query(
+            env.cr,
+            sql.SQL(
+                """
+                INSERT INTO {table} ({column}, {others})
+                SELECT %s, {others} FROM {table} WHERE {column} = %s
+                ON CONFLICT DO NOTHING
+                """
+            ).format(
+                table=sql.Identifier(table),
+                column=sql.Identifier(column),
+                others=other_columns,
+            ),
+            (target_id, job_id),
+        )
+
+
+def _hr_job_clone(env, references, job_id, company_id):
+    """
+    Copy a job without department into a company, with its own mail alias and
+    the same many2many relations
+    """
+    columns = _table_columns(env, "hr_job")
+    values = [
+        sql.Literal(company_id)
+        if name == "company_id"
+        else sql.SQL("NULL")
+        if name == "department_id"
+        else sql.Identifier(name)
+        for name in columns
+    ]
+    env.cr.execute(
+        sql.SQL(
+            "INSERT INTO hr_job ({columns}) SELECT {values} FROM hr_job "
+            "WHERE id = %s RETURNING id"
+        ).format(
+            columns=sql.SQL(", ").join(map(sql.Identifier, columns)),
+            values=sql.SQL(", ").join(values),
+        ),
+        (job_id,),
+    )
+    clone_id = env.cr.fetchone()[0]
+    if "alias_id" in columns:
+        alias_columns = _table_columns(env, "mail_alias")
+        alias_values = [
+            sql.SQL("NULL")
+            if name in ("alias_name", "alias_full_name")
+            else sql.Literal(clone_id)
+            if name == "alias_parent_thread_id"
+            else sql.Literal(str({"job_id": clone_id, "company_id": company_id}))
+            if name == "alias_defaults"
+            else sql.Identifier(name)
+            for name in alias_columns
+        ]
+        env.cr.execute(
+            sql.SQL(
+                "INSERT INTO mail_alias ({columns}) SELECT {values} "
+                "FROM mail_alias WHERE id = "
+                "(SELECT alias_id FROM hr_job WHERE id = %s) RETURNING id"
+            ).format(
+                columns=sql.SQL(", ").join(map(sql.Identifier, alias_columns)),
+                values=sql.SQL(", ").join(alias_values),
+            ),
+            (job_id,),
+        )
+        row = env.cr.fetchone()
+        env.cr.execute(
+            "UPDATE hr_job SET alias_id = %s WHERE id = %s",
+            (row and row[0], clone_id),
+        )
+    _hr_job_copy_relations(env, references, job_id, clone_id)
+    return clone_id
+
+
+def _hr_job_repoint(env, references, job_id, target_id, company_id=None):
+    """
+    Point the many2one fields from a job to another one, only for the records of
+    a company if given, else for all the records left
+    """
+    for table, column, has_id, has_company in references:
+        if not has_id or (company_id and not has_company):
+            continue
+        query = sql.SQL("UPDATE {table} SET {column} = %s WHERE {column} = %s").format(
+            table=sql.Identifier(table), column=sql.Identifier(column)
+        )
+        params = [target_id, job_id]
+        if company_id:
+            query += sql.SQL(" AND company_id = %s")
+            params.append(company_id)
+            openupgrade.logged_query(env.cr, query, tuple(params))
+            continue
+        try:
+            with env.cr.savepoint():
+                openupgrade.logged_query(env.cr, query, tuple(params))
+        except psycopg2.IntegrityError:
+            _logger.info(
+                "Rows of %s pointing to the job %s are duplicates in the job %s",
+                table,
+                job_id,
+                target_id,
+            )
+
+
+def _hr_job_merge(env, references, job_id, target_id):
+    """
+    Move everything left on a job to another one and delete it
+    """
+    _hr_job_copy_relations(env, references, job_id, target_id)
+    _hr_job_repoint(env, references, job_id, target_id)
+    for table, model_column in (
+        ("mail_message", "model"),
+        ("ir_attachment", "res_model"),
+        ("mail_activity", "res_model"),
+    ):
+        openupgrade.logged_query(
+            env.cr,
+            sql.SQL(
+                "UPDATE {table} SET res_id = %s "
+                "WHERE {model_column} = 'hr.job' AND res_id = %s"
+            ).format(
+                table=sql.Identifier(table),
+                model_column=sql.Identifier(model_column),
+            ),
+            (target_id, job_id),
+        )
     openupgrade.logged_query(
         env.cr,
-        """
-        UPDATE hr_job
-        SET company_id = COALESCE(
-            (
-                SELECT hr_department.company_id
-                FROM hr_department
-                WHERE hr_department.id = hr_job.department_id
-            ),
-            (
-                SELECT hr_version.company_id
-                FROM hr_version
-                WHERE hr_version.job_id = hr_job.id
-                AND hr_version.company_id IS NOT NULL
-                GROUP BY hr_version.company_id
-                ORDER BY count(*) DESC, hr_version.company_id
-                LIMIT 1
-            ),
-            (
-                SELECT id FROM res_company
-                ORDER BY parent_id IS NOT NULL, id
-                LIMIT 1
-            )
-        )
-        WHERE company_id IS NULL
-        """,
+        "DELETE FROM mail_followers WHERE res_model = 'hr.job' AND res_id = %s",
+        (job_id,),
     )
+    alias_id = None
+    if "alias_id" in _table_columns(env, "hr_job"):
+        env.cr.execute("SELECT alias_id FROM hr_job WHERE id = %s", (job_id,))
+        alias_id = env.cr.fetchone()[0]
+    openupgrade.logged_query(env.cr, "DELETE FROM hr_job WHERE id = %s", (job_id,))
+    if alias_id:
+        openupgrade.logged_query(
+            env.cr, "DELETE FROM mail_alias WHERE id = %s", (alias_id,)
+        )
+    openupgrade.logged_query(
+        env.cr,
+        "DELETE FROM ir_model_data WHERE model = 'hr.job' AND res_id = %s",
+        (job_id,),
+    )
+
+
+def hr_job_company_id(env):
+    """
+    hr.job#company_id is required now. A job without company goes to the company
+    of its department, else to the company that uses it most, else to the main
+    company, merging it into the job with the same name and department there.
+    The other companies that use it get their own copy without department, so
+    that no version or applicant points to a job of another company
+    """
+    references = _hr_job_references(env)
+    usage_queries = [
+        sql.SQL(
+            "SELECT {column} AS job_id, company_id FROM {table} "
+            "WHERE company_id IS NOT NULL"
+        ).format(table=sql.Identifier(table), column=sql.Identifier(column))
+        for table, column, has_id, has_company in references
+        if has_id and has_company
+    ]
+    env.cr.execute(
+        "SELECT id FROM res_company ORDER BY parent_id IS NOT NULL, id LIMIT 1"
+    )
+    main_company_id = env.cr.fetchone()[0]
+    env.cr.execute(
+        """
+        SELECT hr_job.id, hr_job.department_id, hr_department.company_id
+        FROM hr_job
+        LEFT JOIN hr_department ON hr_department.id = hr_job.department_id
+        WHERE hr_job.company_id IS NULL
+        ORDER BY hr_job.id
+        """
+    )
+    for job_id, department_id, department_company_id in env.cr.fetchall():
+        company_ids = []
+        if usage_queries:
+            env.cr.execute(
+                sql.SQL(
+                    "SELECT company_id FROM ({usage}) job_usage WHERE job_id = %s "
+                    "GROUP BY company_id ORDER BY count(*) DESC, company_id"
+                ).format(usage=sql.SQL(" UNION ALL ").join(usage_queries)),
+                (job_id,),
+            )
+            company_ids = [row[0] for row in env.cr.fetchall()]
+        primary_id = department_company_id or (
+            company_ids[0] if company_ids else main_company_id
+        )
+        for company_id in company_ids:
+            if company_id == primary_id:
+                continue
+            env.cr.execute(
+                """
+                SELECT hr_job.id
+                FROM hr_job, hr_job job
+                WHERE job.id = %s AND hr_job.name = job.name
+                AND hr_job.company_id = %s AND hr_job.department_id IS NULL
+                ORDER BY hr_job.id
+                LIMIT 1
+                """,
+                (job_id, company_id),
+            )
+            row = env.cr.fetchone()
+            if row:
+                target_id = row[0]
+                _hr_job_copy_relations(env, references, job_id, target_id)
+            else:
+                target_id = _hr_job_clone(env, references, job_id, company_id)
+            _hr_job_repoint(env, references, job_id, target_id, company_id)
+        env.cr.execute(
+            """
+            SELECT hr_job.id
+            FROM hr_job, hr_job job
+            WHERE job.id = %s AND hr_job.name = job.name
+            AND hr_job.company_id = %s AND hr_job.department_id = %s
+            ORDER BY hr_job.id
+            LIMIT 1
+            """,
+            (job_id, primary_id, department_id),
+        )
+        row = env.cr.fetchone()
+        if row:
+            _hr_job_merge(env, references, job_id, row[0])
+        else:
+            openupgrade.logged_query(
+                env.cr,
+                "UPDATE hr_job SET company_id = %s WHERE id = %s",
+                (primary_id, job_id),
+            )
 
 
 @openupgrade.migrate()

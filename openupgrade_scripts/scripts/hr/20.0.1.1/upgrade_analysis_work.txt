@@ -50,13 +50,13 @@ hr           / hr.employee              / phone_sanitized (char)        : NEW is
 # NOTHING TO DO: computed by the ORM
 
 hr           / hr.employee              / private_car_plate (char)      : DEL
-# NOTHING TO DO: removed without replacement, the columns stay in the database
+# NOTHING TO DO: removed without replacement. The values stay in the columns private_car_plate and study_school of hr_employee, which have no field anymore
 
 hr           / hr.employee              / resource_calendar_id (many2one): now required
 # NOTHING TO DO: related to the version, see hr.version
 
 hr           / hr.employee              / study_school (char)           : DEL
-# NOTHING TO DO: removed without replacement, the columns stay in the database
+# NOTHING TO DO: removed without replacement. The values stay in the columns private_car_plate and study_school of hr_employee, which have no field anymore
 
 hr           / hr.employee              / tz (selection)                : now required
 # NOTHING TO DO: related to the version, see hr.version
@@ -79,7 +79,7 @@ hr           / hr.employee.type         / employee_ids (one2many)       : NEW re
 # NOTHING TO DO: new functionality
 
 hr           / hr.job                   / company_id (many2one)         : now required
-# DONE: pre-migration: filled with the company of the department, else the company where most employees have the job, else the main company
+# DONE: pre-migration: a job without company goes to the company of its department, else to the company that uses it most, else to the main company, merged into the job with the same name and department there if any (unique constraint). Every other company with versions or applicants on the job gets its own copy without department
 
 hr           / hr.job                   / contract_type_id (many2one)   : DEL relation: hr.contract.type
 hr           / hr.job                   / employee_type_id (many2one)   : NEW relation: hr.employee.type
@@ -87,7 +87,7 @@ hr           / hr.job                   / employee_type_id (many2one)   : NEW re
 
 hr           / hr.job                   / recruiter_id (many2one)       : NEW relation: hr.employee, hasdefault: default
 hr           / hr.job                   / user_id (many2one)            : DEL relation: res.users
-# DONE: post-migration: recruiter_id is the employee of user_id, preferably the one of the company of the job
+# DONE: post-migration: recruiter_id is the employee of user_id in the company of the job; jobs whose user has no employee there are left empty and reported, user_id stays in its column
 
 hr           / hr.job                   / website_message_ids (one2many): DEL relation: mail.message
 # NOTHING TO DO
@@ -96,7 +96,7 @@ hr           / hr.version               / additional_note (text)        : DEL
 # DONE: post-migration: moved to hr.employee
 
 hr           / hr.version               / contract_type_id (many2one)   : DEL relation: hr.contract.type
-# DONE: pre-migration: renamed contract_type_id to employee_type_id. post-migration: versions without contract type take the type from the removed selection (employee, student, trainee -> intern; a type is created for worker, contractor and freelance when used)
+# DONE: pre-migration: renamed contract_type_id to employee_type_id. post-migration: versions without contract type take the type from the removed selection (employee, student, trainee -> intern; a type is created for worker, contractor and freelance when used, or when the xmlid is gone). Versions with both keep the contract type, they are counted and reported and the selection stays in the column employee_type
 
 hr           / hr.version               / departure_date (date)         : not stored anymore
 hr           / hr.version               / departure_date (date)         : now related
@@ -105,14 +105,14 @@ hr           / hr.version               / departure_description (html)  : now re
 hr           / hr.version               / departure_id (many2one)       : NEW relation: hr.employee.departure
 hr           / hr.version               / departure_reason_id (many2one): not stored anymore
 hr           / hr.version               / departure_reason_id (many2one): now related
-# DONE: post-migration: moved to hr.employee.departure for archived employees. The departure fields of active employees are not migrated, their columns stay in the database
+# DONE: post-migration: moved to hr.employee.departure, as applied for archived employees and as planned for active employees with a departure date in the future. Active employees with a past departure date are only reported, their values stay in the columns of hr_version
 
 hr           / hr.version               / employee_type (selection)     : DEL required, selection_keys: ['contractor', 'employee', 'freelance', 'student', 'trainee', 'worker']
 hr           / hr.version               / employee_type_id (many2one)   : NEW relation: hr.employee.type
-# DONE: pre-migration: renamed contract_type_id to employee_type_id. post-migration: versions without contract type take the type from the removed selection (employee, student, trainee -> intern; a type is created for worker, contractor and freelance when used)
+# DONE: pre-migration: renamed contract_type_id to employee_type_id. post-migration: versions without contract type take the type from the removed selection (employee, student, trainee -> intern; a type is created for worker, contractor and freelance when used, or when the xmlid is gone). Versions with both keep the contract type, they are counted and reported and the selection stays in the column employee_type
 
 hr           / hr.version               / fixed_term (boolean)          : NEW
-# DONE: post-migration: set for versions with a contract end date
+# DONE: post-migration: set for versions with a contract end date, unless it is the departure date written by the departure wizard
 
 hr           / hr.version               / is_flexible (boolean)         : DEL
 hr           / hr.version               / is_fully_flexible (boolean)   : DEL
@@ -125,7 +125,7 @@ hr           / hr.version               / sex (selection)               : select
 # DONE: pre-migration: emptied for the removed value 'other'
 
 hr           / hr.version               / ssnid (char)                  : DEL
-# NOTHING TO DO: removed without replacement, the column stays in the database
+# NOTHING TO DO: removed without replacement. The values stay in the column ssnid of hr_version, which has no field anymore
 
 hr           / hr.version               / tz (selection)                : is now stored
 hr           / hr.version               / tz (selection)                : not related anymore

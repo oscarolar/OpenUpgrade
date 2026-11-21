@@ -58,6 +58,73 @@ departed.write(
     {
         "departure_reason_id": env.ref("hr.departure_fired").id,
         "departure_date": "2025-06-30",
+        "contract_date_start": "2025-01-01",
+        "contract_date_end": "2025-06-30",
+    }
+)
+env["hr.employee"].create(
+    {
+        "name": "OpenUpgrade v20 leaving",
+        "company_id": company.id,
+        "departure_reason_id": env.ref("hr.departure_resigned").id,
+        "departure_date": "2099-01-01",
+    }
+)
+env["hr.employee"].create(
+    {
+        "name": "OpenUpgrade v20 stayed",
+        "company_id": company.id,
+        "departure_reason_id": env.ref("hr.departure_resigned").id,
+        "departure_date": "2020-01-01",
+    }
+)
+company2 = env["res.company"].create({"name": "OpenUpgrade v20 company 2"})
+department = env["hr.department"].create(
+    {"name": "OpenUpgrade v20 department", "company_id": company.id}
+)
+env["hr.job"].create(
+    {
+        "name": "OpenUpgrade v20 duplicated job",
+        "company_id": company.id,
+        "department_id": department.id,
+    }
+)
+duplicated_job = env["hr.job"].create(
+    {
+        "name": "OpenUpgrade v20 duplicated job",
+        "company_id": False,
+        "department_id": department.id,
+    }
+)
+env["hr.employee"].create(
+    {
+        "name": "OpenUpgrade v20 duplicated job",
+        "company_id": company.id,
+        "job_id": duplicated_job.id,
+    }
+)
+shared_job = env["hr.job"].create(
+    {"name": "OpenUpgrade v20 shared job", "company_id": False}
+)
+env["hr.employee"].create(
+    {
+        "name": "OpenUpgrade v20 shared job 1",
+        "company_id": company.id,
+        "job_id": shared_job.id,
+    }
+)
+env["hr.employee"].create(
+    {
+        "name": "OpenUpgrade v20 shared job 2",
+        "company_id": company2.id,
+        "job_id": shared_job.id,
+    }
+)
+env["hr.job"].create(
+    {
+        "name": "OpenUpgrade v20 job of company 2",
+        "company_id": company2.id,
+        "user_id": user.id,
     }
 )
 env["hr.job"].create(
