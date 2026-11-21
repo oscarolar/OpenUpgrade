@@ -1,0 +1,8 @@
+---Models in module 'hr_presence'---
+---Fields in module 'hr_presence'---
+hr_presence  / hr.employee              / hr_presence_state_display (selection): DEL selection_keys: ['absent', 'out_of_working_hour', 'present']
+# NOTHING TO DO: computed field without data to keep
+
+---XML records in module 'hr_presence'---
+DEL ir.actions.server: hr_presence.action_hr_employee_presence_log
+# NOTHING TO DO
