@@ -73,6 +73,24 @@ def mailing_mailing_is_template(env):
                 (favorite_date, template.id),
             )
             template.invalidate_recordset(["create_date"])
+        env.cr.execute(
+            "UPDATE mailing_mailing SET favorite=False WHERE id=%s", (mailing_id,)
+        )
+
+
+def link_tracker_utm_reference(env):
+    """
+    Links of a mailing are created with utm_reference now, which is part of the
+    fields identifying a link. Fill it so they are reused and not duplicated
+    """
+    openupgrade.logged_query(
+        env.cr,
+        """
+        UPDATE link_tracker
+        SET utm_reference='mailing.mailing,' || mass_mailing_id
+        WHERE mass_mailing_id IS NOT NULL AND utm_reference IS NULL
+        """,
+    )
 
 
 @openupgrade.migrate()
@@ -87,3 +105,4 @@ def migrate(env, version):
     )
     mailing_contact_last_datetimes(env)
     mailing_mailing_is_template(env)
+    link_tracker_utm_reference(env)
