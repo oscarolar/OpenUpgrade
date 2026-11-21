@@ -25,6 +25,7 @@ env["product.pricelist.item"].create(
         },
     ]
 )
+env.flush_all()
 env.cr.execute(
     """
     UPDATE product_pricelist_item SET price_discount=7
