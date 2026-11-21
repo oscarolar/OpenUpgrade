@@ -1,0 +1,29 @@
+---Models in module 'l10n_it_edi'---
+---Fields in module 'l10n_it_edi'---
+l10n_it_edi  / account.move             / l10n_it_convention_code (char): NEW
+
+# NOTHING TO DO
+
+l10n_it_edi  / account.move             / l10n_it_edi_header (html)     : DEL
+l10n_it_edi  / account.move             / l10n_it_edi_state (selection) : selection_keys removed: [requires_user_signature]
+
+# TODO: pending review
+
+l10n_it_edi  / account.move             / l10n_it_invoice_cause (text)  : NEW
+l10n_it_edi  / account_edi_proxy_client.user / proxy_type (False)            : selection_keys added: [pdp] (most likely nothing to do)
+l10n_it_edi  / l10n_it.document.type    / move_types (json)             : NEW
+
+# NOTHING TO DO
+
+l10n_it_edi  / l10n_it.document.type    / type (selection)              : DEL selection_keys: ['purchase', 'sale']
+
+# TODO: pending review
+
+l10n_it_edi  / res.partner              / invoice_edi_format (False)    : selection_keys added: [ubl_21_fr, ubl_gr], removed: [oioubl_201, pint_sg, ubl_tr]
+
+# NOTHING TO DO
+
+---XML records in module 'l10n_it_edi'---
+NEW ir.ui.view: l10n_it_edi.document_tax_totals_inherit_stamp_duty
+
+# NOTHING TO DO

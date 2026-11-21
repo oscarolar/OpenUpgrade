@@ -1,0 +1,11 @@
+---Models in module 'l10n_fr_pos_cert'---
+---Fields in module 'l10n_fr_pos_cert'---
+---XML records in module 'l10n_fr_pos_cert'---
+ir.access: l10n_fr_pos_cert.account_sale_closing_multi_company (noupdate switched)
+
+# NOTHING TO DO: ir.rule and ir.model.access become ir.access in base
+
+NEW ir.ui.view: l10n_fr_pos_cert.pos_order_receipt
+NEW ir.ui.view: l10n_fr_pos_cert.pos_orderline_receipt_information
+
+# NOTHING TO DO
