@@ -46,32 +46,43 @@ def project_project_allowed_internal_user_ids(env):
     )
 
 
-def project_collaborator_followers(env):
+def project_external_followers(env):
     """
-    Create a project.collaborator with view access for the external followers of a
-    shared project, as portal access to it does not come from following it anymore
+    Portal users only see the projects they collaborate on, not the ones they
+    follow anymore. External followers are not made collaborators, as that would
+    let them read all the tasks of the project: they keep the tasks they follow
+    and the ones losing the project are reported
     """
-    openupgrade.logged_query(
-        env.cr,
+    env.cr.execute(
         """
-        INSERT INTO project_collaborator
-            (project_id, partner_id, access_mode,
-             create_uid, write_uid, create_date, write_date)
-        SELECT DISTINCT
-            project_project.id, mail_followers.partner_id, 'view',
-            1, 1, now() AT TIME ZONE 'UTC', now() AT TIME ZONE 'UTC'
+        SELECT
+            project_project.id,
+            project_project.name->>'en_US',
+            string_agg(
+                res_partner.name || ' (id ' || res_partner.id || ')', ', '
+                ORDER BY res_partner.id
+            )
         FROM
             project_project
         JOIN
             mail_followers
             ON mail_followers.res_model='project.project'
             AND mail_followers.res_id=project_project.id
+        JOIN
+            res_partner
+            ON res_partner.id=mail_followers.partner_id
         WHERE
             project_project.privacy_visibility IN ('invited_users', 'portal')
         AND
             project_project.is_template IS NOT TRUE
         AND
-            mail_followers.partner_id IS NOT NULL
+            EXISTS (
+                SELECT 1 FROM res_users
+                WHERE
+                    res_users.partner_id=mail_followers.partner_id
+                AND
+                    res_users.share
+            )
         AND
             NOT EXISTS (
                 SELECT 1 FROM res_users
@@ -88,8 +99,25 @@ def project_collaborator_followers(env):
                 AND
                     project_collaborator.partner_id=mail_followers.partner_id
             )
-        """,
+        GROUP BY
+            project_project.id
+        ORDER BY
+            project_project.id
+        """
     )
+    for project_id, name, partners in env.cr.fetchall():
+        openupgrade.message(
+            env.cr,
+            "project",
+            "project_project",
+            "collaborator_ids",
+            "Project %s (id %s): these portal followers don't see the project "
+            "in the portal anymore, only the tasks they follow. Share the "
+            "project with them to give them access to all its tasks: %s",
+            name,
+            project_id,
+            partners,
+        )
 
 
 def project_sharing_portal_rules(env):
@@ -106,5 +134,5 @@ def project_sharing_portal_rules(env):
 def migrate(env, version):
     openupgrade.load_data(env, "project", "20.0.1.4/noupdate_changes.xml")
     project_project_allowed_internal_user_ids(env)
-    project_collaborator_followers(env)
+    project_external_followers(env)
     project_sharing_portal_rules(env)

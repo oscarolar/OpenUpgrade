@@ -5,7 +5,7 @@ new model project.task.stage.report [sql_view]
 ---Fields in module 'project'---
 project      / project.collaborator     / access_mode (selection)       : NEW required, selection_keys: ['advanced_edit', 'edit', 'view'], hasdefault: default
 project      / project.collaborator     / limited_access (boolean)      : DEL
-# DONE: pre-migration: access_mode filled from limited_access (limited -> edit, not limited -> advanced_edit). In 20 every collaborator reads all the tasks of the project, there is no equivalent of the limited access
+# DONE: pre-migration: collaborators without limited access get advanced_edit. In 20 every collaborator reads all the tasks of the project, there is no equivalent of the limited access: those collaborators are moved to the table openupgrade_legacy_20_0_project_collaborator_limited, removed and reported, so they keep only the tasks they follow
 
 project      / project.milestone        / website_message_ids (one2many): DEL relation: mail.message
 # NOTHING TO DO: non stored field of the mixin
@@ -201,4 +201,4 @@ DEL ir.ui.view: project.view_task_template_search_form
 NEW portal.entry: project.portal_projects (noupdate)
 NEW portal.entry: project.portal_tasks (noupdate)
 # NOTHING TO DO: new functionality
-# DONE: post-migration: external followers of shared projects get a project.collaborator with view access, as portal access to a project now requires being a collaborator instead of a follower
+# DONE: post-migration: portal access to a project now requires being a collaborator instead of a follower. External followers are not made collaborators, which would open all the tasks to them: they keep the tasks they follow and are reported per project
