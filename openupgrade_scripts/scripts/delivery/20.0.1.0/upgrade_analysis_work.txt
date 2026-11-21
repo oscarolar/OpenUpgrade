@@ -1,0 +1,32 @@
+---Models in module 'delivery'---
+new model delivery.note.wizard [transient]
+new model delivery.note.wizard.line [transient]
+# NOTHING TO DO: new transient models
+
+---Fields in module 'delivery'---
+delivery     / payment.provider         / custom_mode (False)           : selection_keys added: [pay_on_invoice] (most likely nothing to do)
+# NOTHING TO DO
+
+delivery     / res.partner              / is_pickup_location (boolean)  : DEL
+delivery     / sale.order               / pickup_location_data (json)   : DEL
+# DONE: pre-migration of stock_delivery: sale.order#pickup_location_data is moved to res.partner#pickup_location_data for partners with is_pickup_location
+# NOTHING TO DO here: is_pickup_location is replaced by res.partner#pickup_delivery_method_id in website_sale_stock, to be filled there from the legacy column
+
+---XML records in module 'delivery'---
+NEW ir.access: delivery.access_delivery_note_line_user
+NEW ir.access: delivery.access_delivery_note_user
+ir.access: delivery.delivery_carrier_comp_rule (noupdate switched)
+NEW ir.actions.report: delivery.action_report_delivery_note
+DEL ir.model.access: delivery.access_delivery_carrier_system
+DEL ir.model.access: delivery.access_delivery_price_rule_sale_manager
+# NOTHING TO DO: ir.access conversion is handled in base; the rest is new
+
+NEW ir.sequence: delivery.seq_delivery_note (noupdate)
+NEW ir.ui.view: delivery.delivery_note_form_view
+NEW ir.ui.view: delivery.delivery_note_list_view
+NEW ir.ui.view: delivery.report_delivery_note
+NEW ir.ui.view: delivery.state_header
+NEW ir.ui.view: delivery.view_delivery_carrier_so_list
+NEW mail.template: delivery.mail_template_data_delivery_note (noupdate)
+# NOTHING TO DO: new records
+# DONE: post-migration: noupdate_changes.xml loaded, without is_published, is_live, sequence and payment_method_ids of payment_provider_cod, which are user configuration migrated in payment
