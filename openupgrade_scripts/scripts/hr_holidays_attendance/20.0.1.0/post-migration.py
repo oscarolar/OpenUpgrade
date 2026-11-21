@@ -28,7 +28,6 @@ def hr_leave_allocation_from_overtime(env):
     type_ids = [row[0] for row in env.cr.fetchall()]
     if not type_ids:
         return
-    main_type_id = type_ids[0]
     openupgrade.logged_query(
         env.cr,
         """
@@ -66,34 +65,57 @@ def hr_leave_allocation_from_overtime(env):
             AND state NOT IN ('refuse', 'cancel')
             GROUP BY employee_id, work_entry_type_id
         ),
+        employee AS (
+            SELECT
+                hr_employee.id AS employee_id,
+                (
+                    SELECT hr_work_entry_type.id
+                    FROM hr_work_entry_type
+                    LEFT JOIN res_company
+                        ON res_company.id = hr_employee.company_id
+                    LEFT JOIN res_partner
+                        ON res_partner.id = res_company.partner_id
+                    WHERE hr_work_entry_type.id IN %(type_ids)s
+                    ORDER BY
+                        hr_work_entry_type.country_id IS NOT DISTINCT FROM
+                        res_partner.country_id DESC,
+                        hr_work_entry_type.openupgrade_legacy_20_0_leave_type_copy
+                        IS TRUE,
+                        hr_work_entry_type.id
+                    LIMIT 1
+                ) AS main_type_id
+            FROM hr_employee
+            WHERE hr_employee.id IN (
+                SELECT employee_id FROM overtime
+                UNION
+                SELECT employee_id FROM leave
+            )
+        ),
         allocation AS (
             SELECT
-                employee_id,
+                hr_leave_allocation.employee_id,
                 SUM(number_of_hours) AS hours,
                 SUM(number_of_hours) FILTER (
-                    WHERE work_entry_type_id = %(main_type_id)s
+                    WHERE work_entry_type_id = employee.main_type_id
                     AND state = 'validate'
                 ) AS main_hours
             FROM hr_leave_allocation
+            JOIN employee
+                ON employee.employee_id = hr_leave_allocation.employee_id
             WHERE work_entry_type_id IN (SELECT id FROM deductible_type)
             AND state IN ('confirm', 'validate', 'validate1')
-            GROUP BY employee_id
-        ),
-        employee AS (
-            SELECT employee_id FROM overtime
-            UNION
-            SELECT employee_id FROM leave
+            GROUP BY hr_leave_allocation.employee_id
         )
         SELECT
             employee.employee_id,
-            %(main_type_id)s,
+            employee.main_type_id,
             COALESCE(overtime.hours, 0)
             - COALESCE(allocation.hours, 0)
             - COALESCE(allocation.main_hours, 0)
             - COALESCE((
                 SELECT SUM(leave.hours) FROM leave
                 WHERE leave.employee_id = employee.employee_id
-                AND leave.work_entry_type_id != %(main_type_id)s
+                AND leave.work_entry_type_id != employee.main_type_id
             ), 0),
             LEAST(overtime.date, (
                 SELECT MIN(leave.date) FROM leave
@@ -103,11 +125,12 @@ def hr_leave_allocation_from_overtime(env):
         LEFT JOIN overtime ON overtime.employee_id = employee.employee_id
         LEFT JOIN allocation ON allocation.employee_id = employee.employee_id
         UNION ALL
-        SELECT employee_id, work_entry_type_id, hours, date
+        SELECT leave.employee_id, leave.work_entry_type_id, leave.hours, leave.date
         FROM leave
-        WHERE work_entry_type_id != %(main_type_id)s
+        JOIN employee ON employee.employee_id = leave.employee_id
+        WHERE leave.work_entry_type_id != employee.main_type_id
         """,
-        {"type_ids": tuple(type_ids), "main_type_id": main_type_id},
+        {"type_ids": tuple(type_ids)},
     )
     Allocation = env["hr.leave.allocation"].with_context(
         mail_create_nosubscribe=True, mail_create_nolog=True, tracking_disable=True
