@@ -1,14 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <odoo>
-  <record id="base.default_website" model="website">
-    <field name="rating_email_template_id" ref="website_sale.mail_template_sale_order_rating"/>
-    <field name="salesperson_id" ref="base.user_admin"/>
-    <field name="salesteam_id" ref="sales_team.salesteam_website_sales"/>
-  </record>
-  <record id="ir_cron_send_availability_email" model="ir.cron">
-    <field name="code">model._send_availability_email()</field>
-    <field name="model_id" ref="model_product_product"/>
-    <field name="name">Product: send email regarding products availability</field>
+  <record id="ir_cron_send_abandoned_email" model="ir.cron">
+    <field name="code">model._cron_send_abandoned_cart_email()</field>
   </record>
   <record id="mail_template_sale_cart_recovery" model="mail.template">
     <field name="body_html" type="html">
