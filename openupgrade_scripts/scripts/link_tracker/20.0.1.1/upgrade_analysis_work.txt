@@ -1,7 +1,7 @@
 ---Models in module 'link_tracker'---
 ---Fields in module 'link_tracker'---
 link_tracker / link.tracker             / utm_reference (reference)     : NEW
-# NOTHING TO DO: new field inherited from utm.mixin
+# DONE: post-migration of mass_mailing: filled from mass_mailing_id, as the field is part of the fields identifying a link and mailings set it on their links now
 
 ---XML records in module 'link_tracker'---
 DEL ir.model.access: link_tracker.access_link_tracker_click_public
