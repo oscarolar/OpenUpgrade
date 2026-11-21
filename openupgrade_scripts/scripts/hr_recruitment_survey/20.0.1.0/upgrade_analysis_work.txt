@@ -1,0 +1,43 @@
+---Models in module 'hr_recruitment_survey'---
+new model hr.recruitment.survey.invite [transient]
+# NOTHING TO DO: transient model
+
+---Fields in module 'hr_recruitment_survey'---
+---XML records in module 'hr_recruitment_survey'---
+ir.access: hr_recruitment_survey.survey_invite_recruitment_interviewer (noupdate switched)
+ir.access: hr_recruitment_survey.survey_invite_recruitment_manager (noupdate switched)
+ir.access: hr_recruitment_survey.survey_invite_recruitment_user (noupdate switched)
+ir.access: hr_recruitment_survey.survey_question_answer_rule_recruitment_manager (noupdate switched)
+ir.access: hr_recruitment_survey.survey_question_recruitment_interviewer (noupdate switched)
+ir.access: hr_recruitment_survey.survey_question_rule_recruitment_manager (noupdate switched)
+ir.access: hr_recruitment_survey.survey_survey_recruitment_interviewer (noupdate switched)
+ir.access: hr_recruitment_survey.survey_survey_rule_recruitment_manager (noupdate switched)
+ir.access: hr_recruitment_survey.survey_user_input_line_rule_recruitment_interviewer (noupdate switched)
+ir.access: hr_recruitment_survey.survey_user_input_line_rule_recruitment_manager (noupdate switched)
+ir.access: hr_recruitment_survey.survey_user_input_line_rule_recruitment_user (noupdate switched)
+ir.access: hr_recruitment_survey.survey_user_input_rule_recruitment_interviewer (noupdate switched)
+ir.access: hr_recruitment_survey.survey_user_input_rule_recruitment_manager (noupdate switched)
+ir.access: hr_recruitment_survey.survey_user_input_rule_recruitment_user (noupdate switched)
+# NOTHING TO DO: ir.model.access and ir.rule are replaced by ir.access, module
+# records are recreated by the ORM and manual ones are converted in base
+
+NEW ir.actions.server: hr_recruitment_survey.action_applicant_send_interview
+# NOTHING TO DO
+
+DEL ir.model.access: hr_recruitment_survey.access_survey_invite_recruitment_interviewer
+DEL ir.model.access: hr_recruitment_survey.access_survey_invite_recruitment_user
+DEL ir.model.access: hr_recruitment_survey.access_survey_question_answer_recruitment_manager
+DEL ir.model.access: hr_recruitment_survey.access_survey_question_recruitment_interviewer
+DEL ir.model.access: hr_recruitment_survey.access_survey_question_recruitment_manager
+DEL ir.model.access: hr_recruitment_survey.access_survey_survey_recruitment_interviewer
+DEL ir.model.access: hr_recruitment_survey.access_survey_survey_recruitment_manager
+DEL ir.model.access: hr_recruitment_survey.access_survey_user_input_line_recruitment_interviewer
+DEL ir.model.access: hr_recruitment_survey.access_survey_user_input_line_recruitment_manager
+DEL ir.model.access: hr_recruitment_survey.access_survey_user_input_line_recruitment_user
+DEL ir.model.access: hr_recruitment_survey.access_survey_user_input_recruitment_interviewer
+DEL ir.model.access: hr_recruitment_survey.access_survey_user_input_recruitment_manager
+DEL ir.model.access: hr_recruitment_survey.access_survey_user_input_recruitment_user
+# NOTHING TO DO: ir.model.access is replaced by ir.access, handled in base
+
+NEW ir.ui.view: hr_recruitment_survey.hr_recruitment_survey_invite_view_form
+# NOTHING TO DO
