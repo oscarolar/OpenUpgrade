@@ -1,0 +1,11 @@
+---Models in module 'mysubscription'---
+new model mysubscription.mysubscription [abstract]
+# NOTHING TO DO: new module
+
+---Fields in module 'mysubscription'---
+---XML records in module 'mysubscription'---
+NEW ir.actions.client: mysubscription.action_mysubscription_dashboard
+# NOTHING TO DO: handled by the ORM
+
+NEW ir.config_parameter: mysubscription.mysubscription_database (noupdate)
+# NOTHING TO DO: new module
