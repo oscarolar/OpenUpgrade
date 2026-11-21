@@ -44,6 +44,7 @@ def slide_channel_partner_completion_date(env):
 
 @openupgrade.migrate()
 def migrate(env, version):
-    openupgrade.rename_fields(env, _renamed_fields)
+    if openupgrade.column_exists(env.cr, "slide_slide", "date_published"):
+        openupgrade.rename_fields(env, _renamed_fields)
     openupgrade.add_columns(env, _added_columns)
     slide_channel_partner_completion_date(env)
