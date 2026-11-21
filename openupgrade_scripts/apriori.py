@@ -45,6 +45,7 @@ merged_modules = {
     "l10n_tr_nilvera_base_vat": "l10n_tr_nilvera",
     "l10n_tr_nilvera_einvoice_extended": "l10n_tr_nilvera_einvoice",
     "l10n_uy_pos": "l10n_uy",
+    "mrp_subcontracting_repair": "mrp_subcontracting",
     "pos_restaurant_adyen": "pos_adyen",
     "pos_restaurant_stripe": "pos_stripe",
     "pos_self_order_adyen": "pos_adyen",
