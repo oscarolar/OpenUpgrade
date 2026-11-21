@@ -2,7 +2,7 @@
 ---Fields in module 'resource'---
 resource     / res.company              / tz (selection)                : is now stored
 resource     / res.company              / tz (selection)                : not related anymore
-# DONE: pre-migration: filled with the timezone of the partner, or the one of the company's calendar
+# DONE: pre-migration: filled with the timezone of the company's calendar, else the one of the partner, else UTC. Companies where both differ are reported
 
 resource     / resource.calendar        / calendar_type (selection)     : NEW required, selection_keys: ['fixed', 'undefined', 'variable'], hasdefault: default
 # DONE: pre-migration: undefined for flexible calendars, variable for two weeks calendars, fixed for the rest

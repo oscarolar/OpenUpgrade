@@ -30,14 +30,42 @@ _fully_flexible = """
 
 def res_company_tz(env):
     """
-    Fill res.company#tz, which was related to the partner's timezone, falling back on
-    the timezone of the company's calendar as v19 did when computing work intervals
+    Fill res.company#tz, which was related to the partner's timezone, with the
+    timezone of the company's calendar, the one v19 used when computing work
+    intervals without resource, falling back on the timezone of the partner.
+    Companies where both differ are reported
     """
+    env.cr.execute(
+        """
+        SELECT res_company.id, res_company.name, resource_calendar.tz, res_partner.tz
+        FROM res_company
+        JOIN res_partner ON res_partner.id=res_company.partner_id
+        JOIN resource_calendar
+        ON resource_calendar.id=res_company.resource_calendar_id
+        WHERE resource_calendar.tz IS DISTINCT FROM res_partner.tz
+        AND resource_calendar.tz IS NOT NULL
+        AND res_partner.tz IS NOT NULL
+        ORDER BY res_company.id
+        """
+    )
+    for company_id, name, calendar_tz, partner_tz in env.cr.fetchall():
+        openupgrade.message(
+            env.cr,
+            "resource",
+            "res_company",
+            "tz",
+            "Company %s (id %s) gets the timezone %s of its calendar, the "
+            "timezone of its partner is %s",
+            name,
+            company_id,
+            calendar_tz,
+            partner_tz,
+        )
     openupgrade.logged_query(
         env.cr,
         """
         UPDATE res_company
-        SET tz=COALESCE(res_partner.tz, resource_calendar.tz, 'UTC')
+        SET tz=COALESCE(resource_calendar.tz, res_partner.tz, 'UTC')
         FROM res_company res_company2
         JOIN res_partner
         ON res_partner.id=res_company2.partner_id
