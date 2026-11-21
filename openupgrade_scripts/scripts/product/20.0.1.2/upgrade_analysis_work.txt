@@ -40,16 +40,16 @@ product      / product.pricelist.item   / applied_on (selection)        : now a 
 # DONE: pre-migration: v19 kept category/template/variant consistent with applied_on on create and write; set the template of rules on variants so the compute yields the same value
 
 product      / product.pricelist.item   / compute_price (selection)     : selection_keys added: [discount, markup], removed: [formula, percentage]
-# DONE: pre-migration: 'percentage' and 'formula' mapped to 'discount' or 'markup' (negative discount, or cost based without discount)
+# DONE: pre-migration: to keep what v19 showed to customers, only 'percentage' rules not based on the cost become 'discount' (the only ones sale showed as a discount); every 'formula' and every cost based rule becomes 'markup', which computes the same price. Cost based formulas whose price_discount differed from the negated price_markup v19 applied are aligned and reported
 
 product      / product.pricelist.item   / display_applied_on (selection): DEL required, selection_keys: ['1_product', '2_product_category']
 # NOTHING TO DO: UI helper, applied_on holds the data
 
 product      / product.pricelist.item   / percent_price (float)         : DEL
-# DONE: pre-migration: copied to price_discount for rules of type 'percentage', resetting rounding, extra fee and margins that this type ignored
+# DONE: pre-migration: copied to price_discount for rules of type 'percentage', resetting rounding, extra fee and margins that this type ignored. Rules whose percentage had more than 2 decimals, which price_discount rounds, are reported
 
 product      / product.pricelist.item   / price_markup (float)          : not stored anymore
-# NOTHING TO DO: always was the negated price_discount
+# DONE: pre-migration: v19 applied the negated price_markup for cost based formulas, price_discount is aligned with it where they differed
 
 product      / product.pricelist.item   / uom_id (many2one)             : NEW relation: uom.uom
 # NOTHING TO DO: new feature

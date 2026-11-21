@@ -38,7 +38,62 @@ def product_pricelist_item_compute_price(env):
     'discount' and 'markup', which both apply price_discount with rounding, extra fee
     and margins. percent_price is gone, and rules of type 'percentage' ignored the
     other formula fields.
+
+    To keep what v19 showed to customers, only rules of type 'percentage' become
+    'discount'; formulas and every rule based on the cost become 'markup'.
     """
+    env.cr.execute(
+        """
+        SELECT id FROM product_pricelist_item
+        WHERE compute_price='percentage'
+        AND percent_price IS NOT NULL
+        AND round(percent_price::numeric, 2) != percent_price::numeric
+        ORDER BY id
+        """
+    )
+    rounded_ids = [row[0] for row in env.cr.fetchall()]
+    if rounded_ids:
+        openupgrade.message(
+            env.cr,
+            "product",
+            "product_pricelist_item",
+            "price_discount",
+            "%s pricelist rules had a percentage with more than 2 decimals, which "
+            "price_discount rounds, ids: %s",
+            len(rounded_ids),
+            rounded_ids,
+        )
+    if openupgrade.column_exists(env.cr, "product_pricelist_item", "price_markup"):
+        env.cr.execute(
+            """
+            SELECT id FROM product_pricelist_item
+            WHERE compute_price='formula' AND base='standard_price'
+            AND COALESCE(price_discount, 0) != -COALESCE(price_markup, 0)
+            ORDER BY id
+            """
+        )
+        unsynced_ids = [row[0] for row in env.cr.fetchall()]
+        if unsynced_ids:
+            openupgrade.message(
+                env.cr,
+                "product",
+                "product_pricelist_item",
+                "price_discount",
+                "%s cost based pricelist rules had a price_discount different from "
+                "their negated price_markup, which is what v19 applied; "
+                "price_discount was aligned, ids: %s",
+                len(unsynced_ids),
+                unsynced_ids,
+            )
+            openupgrade.logged_query(
+                env.cr,
+                """
+                UPDATE product_pricelist_item
+                SET price_discount=-COALESCE(price_markup, 0)
+                WHERE id IN %s
+                """,
+                (tuple(unsynced_ids),),
+            )
     openupgrade.logged_query(
         env.cr,
         """
@@ -50,7 +105,7 @@ def product_pricelist_item_compute_price(env):
             price_min_margin=0,
             price_max_margin=0,
             compute_price=CASE
-                WHEN COALESCE(percent_price, 0) < 0 THEN 'markup' ELSE 'discount'
+                WHEN base='standard_price' THEN 'markup' ELSE 'discount'
             END
         WHERE compute_price='percentage'
         """,
@@ -59,11 +114,7 @@ def product_pricelist_item_compute_price(env):
         env.cr,
         """
         UPDATE product_pricelist_item
-        SET compute_price=CASE
-            WHEN COALESCE(price_discount, 0) < 0
-                OR (base='standard_price' AND COALESCE(price_discount, 0) <= 0)
-            THEN 'markup' ELSE 'discount'
-        END
+        SET compute_price='markup'
         WHERE compute_price='formula'
         """,
     )
