@@ -25,6 +25,17 @@ Message.search([("subject", "=", "OpenUpgrade v20 tracking")]) or Message.create
                     "new_value_integer": 1,
                 },
             ),
+            (
+                0,
+                0,
+                {
+                    "field_id": env["ir.model.fields"]
+                    ._get("res.partner", "signup_type")
+                    .id,
+                    "old_value_char": "restricted old",
+                    "new_value_char": "restricted new",
+                },
+            ),
         ],
     }
 )

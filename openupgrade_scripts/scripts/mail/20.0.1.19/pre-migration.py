@@ -66,32 +66,20 @@ def admin_channel_member_xmlid(env):
         )
 
 
-def mail_message_message_type_tracking(env):
+def mail_tracking(env):
     """
-    Set message_type=tracking for mail.message records with mail.tracking.value records
-    If the query hit any records, move the model to mail_tracking and install it
+    If there are tracking values, move their model to mail_tracking and install it.
+    The values are rendered into the messages in end-migration
     """
-    count = openupgrade.logged_query(
-        env.cr,
-        """
-        UPDATE
-            mail_message
-        SET
-            message_type='tracking'
-        FROM (
-            SELECT DISTINCT mail_message_id FROM mail_tracking_value
-        ) mail_message_value_distinct
-        WHERE
-            mail_message.id=mail_message_value_distinct.mail_message_id
-        """,
+    env.cr.execute("SELECT 1 FROM mail_tracking_value LIMIT 1")
+    if not env.cr.rowcount:
+        return
+    openupgrade.update_module_moved_models(
+        env.cr, "mail.tracking.value", "mail", "mail_tracking"
     )
-    if count:
-        openupgrade.update_module_moved_models(
-            env.cr, "mail.tracking.value", "mail", "mail_tracking"
-        )
-        env["ir.module.module"].search(
-            [("name", "=", "mail_tracking"), ("state", "=", "uninstalled")]
-        ).button_install()
+    env["ir.module.module"].search(
+        [("name", "=", "mail_tracking"), ("state", "=", "uninstalled")]
+    ).button_install()
 
 
 @openupgrade.migrate()
@@ -100,4 +88,4 @@ def migrate(env, version):
     openupgrade.rename_tables(env.cr, _renamed_tables)
     openupgrade.add_columns(env, _added_columns)
     admin_channel_member_xmlid(env)
-    mail_message_message_type_tracking(env)
+    mail_tracking(env)

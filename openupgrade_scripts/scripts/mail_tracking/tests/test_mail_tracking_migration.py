@@ -8,13 +8,14 @@ from odoo.addons.openupgrade_framework import openupgrade_test
 class TestMailTrackingMigration(TransactionCase):
     def test_tracking(self):
         """
-        Test that tracking values are kept in mail_tracking and rendered in the body
+        Test that tracking values are kept in mail_tracking and rendered in the body,
+        except the one of a field restricted to a group
         """
         message = self.env["mail.message"].search(
             [("subject", "=", "OpenUpgrade v20 tracking")]
         )
         self.assertEqual(message.message_type, "tracking")
-        self.assertEqual(len(message.tracking_value_ids), 2)
+        self.assertEqual(len(message.tracking_value_ids), 3)
         self.assertEqual(
             message.body,
             "<div>No → <b>Yes</b> <i>(Active)</i><br>"

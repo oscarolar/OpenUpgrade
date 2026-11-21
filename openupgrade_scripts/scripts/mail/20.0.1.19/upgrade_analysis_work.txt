@@ -52,8 +52,9 @@ mail         / ir.actions.server        / log_note_note (html)          : NEW ha
 # NOTHING TO DO
 
 mail         / ir.actions.server        / mail_post_method (selection)  : DEL selection_keys: ['comment', 'email', 'note']
-# DONE: post-migration: mail_post actions always post a comment in v20, the ones that
-# used 'email' or 'note' are logged for review
+# DONE: post-migration: mail_post actions always post a comment that notifies followers
+# in v20, the ones that used 'email' or 'note' become code actions that send the email
+# or log the note like v19 did
 
 mail         / ir.actions.server        / state (False)                 : selection_keys added: [log_note] (most likely nothing to do)
 mail         / ir.actions.server        / subtype_ids (many2many)       : NEW relation: mail.message.subtype, hasdefault: default
@@ -122,9 +123,10 @@ mail         / mail.message             / ended_poll_ids (one2many)     : NEW re
 # NOTHING TO DO
 
 mail         / mail.message             / message_type (selection)      : selection_keys added: [tracking] (most likely nothing to do)
-# DONE: pre-migration: set to 'tracking' for messages with mail.tracking.value records.
-# post-migration: v20 renders tracked changes in the body instead of reading the
-# tracking values, so the values of existing messages are appended to their body
+# DONE: end-migration: v20 renders tracked changes in the body instead of reading the
+# tracking values. In one pass, notifications with mail.tracking.value records get
+# message_type=tracking and the values are appended to the body, except the ones of
+# fields restricted to groups or gone in v20, which only allowed users could see
 
 mail         / mail.message             / partner_cc_ids (many2many)    : NEW relation: res.partner
 # NOTHING TO DO
@@ -161,7 +163,7 @@ mail         / mail.tracking.value      / _order                        : module
 # DONE: pre-migration: moved to mail_tracking with the model
 
 mail         / mail.tracking.value      / currency_id (many2one)        : DEL relation: res.currency
-# DONE: post-migration: used to format monetary values in the body of the tracking
+# DONE: end-migration: used to format monetary values in the body of the tracking
 # messages, the column is kept
 
 mail         / mail.tracking.value      / display_name (char)           : module is now 'mail_tracking' ('mail')
