@@ -69,7 +69,9 @@ hr_work_entry / hr.work.entry.type       / activity_ids (one2many)       : NEW r
 # NOTHING TO DO
 
 hr_work_entry / hr.work.entry.type       / count_as (selection)          : NEW required, selection_keys: ['absence', 'working_time'], hasdefault: default
-# DONE: pre-migration: filled from is_leave (absence when set)
+# DONE: pre-migration: filled from is_leave (absence when set), and absence on the
+# four types that v20 turns into absences without being time off in v19 (AU
+# compensation, defence and parental, and the UAE public holiday)
 
 hr_work_entry / hr.work.entry.type       / description (text)            : NEW translate
 # NOTHING TO DO
@@ -716,7 +718,10 @@ NEW hr.work.entry.type: hr_work_entry.za_work_entry_type_unpaid_leave (noupdate)
 # NOTHING TO DO: new per-country sets of types, created by the ORM
 
 DEL hr.work.entry.type: hr_work_entry.hr_work_entry_type_out_of_contract (noupdate)
-# DONE: pre-migration: renamed to the generic_ xmlid of v20 and set the v20 code where the v19 one was untouched
+# DONE: pre-migration: renamed to the generic_ xmlid of v20, set the v20 code where
+# the v19 one was untouched and no other type of the same country has it (every code
+# changed is logged as a warning), and rate 0 on the unpaid and out of contract types
+# that still have 1
 
 DEL hr.work.entry.type: hr_work_entry.l10n_au_work_entry_type_cash_out (noupdate)
 DEL hr.work.entry.type: hr_work_entry.l10n_au_work_entry_type_other (noupdate)
@@ -745,7 +750,10 @@ DEL hr.work.entry.type: hr_work_entry.work_entry_type_legal_leave (noupdate)
 DEL hr.work.entry.type: hr_work_entry.work_entry_type_overtime (noupdate)
 DEL hr.work.entry.type: hr_work_entry.work_entry_type_sick_leave (noupdate)
 DEL hr.work.entry.type: hr_work_entry.work_entry_type_unpaid_leave (noupdate)
-# DONE: pre-migration: renamed to the generic_ xmlid of v20 and set the v20 code where the v19 one was untouched
+# DONE: pre-migration: renamed to the generic_ xmlid of v20, set the v20 code where
+# the v19 one was untouched and no other type of the same country has it (every code
+# changed is logged as a warning), and rate 0 on the unpaid and out of contract types
+# that still have 1
 
 NEW ir.access: hr_work_entry.access_hr_work_entry_employee_export
 NEW ir.access: hr_work_entry.access_hr_work_entry_export
@@ -800,3 +808,11 @@ DEL ir.ui.view: hr_work_entry.hr_work_entry_view_pivot
 DEL ir.ui.view: hr_work_entry.hr_work_entry_view_search
 DEL ir.ui.view: hr_work_entry.hr_work_entry_view_tree
 # NOTHING TO DO
+
+noupdate_changes.xml
+# DONE: post-migration: loaded without code, name, amount_rate and count_as: the
+# write of code could abort on the code unicity check and count_as would overwrite
+# the value derived from is_leave. In pre-migration the code is set where the type
+# still has the v19 code and no other type of the same country has the new one, and
+# the name and the rate where they still have the v19 value (the name keeps only the
+# English term so that the v20 translations are loaded)
