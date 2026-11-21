@@ -60,7 +60,7 @@ website      / website                  / social_linkedin (char)        : DEL
 website      / website                  / social_tiktok (char)          : DEL
 website      / website                  / social_twitter (char)         : DEL
 website      / website                  / social_youtube (char)         : DEL
-# DONE: post-migration: empty accounts of the company are filled from its first website, and links to the removed controller /website/social/<name> in customized views and mega menus are replaced by the account url of the website
+# DONE: post-migration: empty accounts of the company are filled from its first website, and links to the removed controller /website/social/<name> in customized views, mega menus and html fields accepting snippets (blog posts, event and product descriptions) are replaced by the account url of the website of the record, or of the first website for records without website. With several websites of one company having different accounts only the accounts of the first one are kept in the company, the links already placed in each website keep pointing to its own accounts
 
 website      / website                  / user_id (many2one)            : module is now 'base' ('website')
 # NOTHING TO DO: handled in base

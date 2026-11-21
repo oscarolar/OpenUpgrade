@@ -82,7 +82,8 @@ def website_rewrite_required(env):
 
 @openupgrade.migrate()
 def migrate(env, version):
-    openupgrade.rename_columns(env.cr, _renamed_columns)
+    if not openupgrade.column_exists(env.cr, "website_menu", "manual_url"):
+        openupgrade.rename_columns(env.cr, _renamed_columns)
     ir_ui_view_visibility(env)
     website_menu_manual_url(env)
     website_page_name(env)

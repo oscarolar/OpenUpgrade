@@ -88,11 +88,22 @@ def res_company_social_media(env):
         )
 
 
+_social_link_columns = [
+    ("ir_ui_view", "arch_db"),
+    ("website_menu", "mega_menu_content"),
+    ("blog_post", "content"),
+    ("event_event", "description"),
+    ("product_template", "website_description"),
+    ("product_template", "description_ecommerce"),
+]
+
+
 def website_social_links(env):
     """
     The controller /website/social/<name> redirecting to the account of the website
-    is gone, write the account url of the website in the links of customized views
-    and mega menus
+    is gone, write the account url of the website in the links of customized views,
+    mega menus and the html fields of other modules that accept snippets. Records
+    without website get the accounts of the first website
     """
     columns = ", ".join(f"social_{social}" for social in _social_media)
     env.cr.execute(f"SELECT id, {columns} FROM website ORDER BY sequence, id")
@@ -101,32 +112,42 @@ def website_social_links(env):
         return
     default_website = next(iter(websites.values()))
 
-    for table, column in (
-        ("ir_ui_view", "arch_db"),
-        ("website_menu", "mega_menu_content"),
-    ):
+    for table, column in _social_link_columns:
+        if not openupgrade.column_exists(env.cr, table, column):
+            continue
+        website_column = (
+            "website_id"
+            if openupgrade.column_exists(env.cr, table, "website_id")
+            else "NULL"
+        )
         env.cr.execute(
             f"""
-            SELECT id, website_id, {column}
+            SELECT id, {website_column}, {column}
             FROM {table}
             WHERE {column}::text LIKE '%/website/social/%'
             """
         )
-        for record_id, website_id, translations in env.cr.fetchall():
+        for record_id, website_id, value in env.cr.fetchall():
             website = websites.get(website_id, default_website)
 
             def replace(match, website=website):
                 url = website.get(f"social_{match.group(1)}")
                 return str(escape(url)) if url else match.group(0)
 
-            new_translations = {
-                lang: _social_link_re.sub(replace, value) if value else value
-                for lang, value in translations.items()
-            }
-            if new_translations != translations:
+            if isinstance(value, dict):
+                new_value = {
+                    lang: _social_link_re.sub(replace, term) if term else term
+                    for lang, term in value.items()
+                }
+            else:
+                new_value = _social_link_re.sub(replace, value)
+            if new_value != value:
                 env.cr.execute(
                     f"UPDATE {table} SET {column}=%s WHERE id=%s",
-                    (Json(new_translations), record_id),
+                    (
+                        Json(new_value) if isinstance(value, dict) else new_value,
+                        record_id,
+                    ),
                 )
     env.invalidate_all()
 
