@@ -13,7 +13,7 @@ im_livechat  / discuss.channel          / livechat_looking_for_help_since_dt (da
 # DONE: pre-migration: column created and filled with the last modification date for conversations looking for help
 
 im_livechat  / discuss.channel          / livechat_operator_id (many2one): DEL relation: res.partner
-# NOTHING TO DO: the agents of a conversation are already in livechat_agent_partner_ids
+# DONE: post-migration: conversations without member history (from before v19) get the history of their operator as agent or bot, which fills livechat_agent_partner_ids / livechat_bot_partner_ids
 
 im_livechat  / discuss.channel          / livechat_rating (selection)   : NEW selection_keys: ['1', '3', '5']
 # DONE: post-migration: livechat_rating filled from rating_last_value
@@ -35,7 +35,7 @@ im_livechat  / im_livechat.channel.member.history / rating (float)              
 im_livechat  / im_livechat.channel.member.history / rating (float)                : selection_keys is now '['1', '3', '5']' ('False')
 im_livechat  / im_livechat.channel.member.history / rating (float)                : type is now 'selection' ('float')
 im_livechat  / im_livechat.channel.member.history / rating_id (many2one)          : DEL relation: rating.rating
-# DONE: pre-migration: column created; post-migration: filled from the rating record in rating_id
+# DONE: pre-migration: column created; post-migration: filled from the rating record in rating_id, or from the rating of the conversation for histories without it
 
 im_livechat  / im_livechat.conversation.tag / color (integer)               : DEL
 im_livechat  / im_livechat.conversation.tag / conversation_ids (many2many)  : DEL relation: discuss.channel
