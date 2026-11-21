@@ -1,0 +1,13 @@
+---Models in module 'mrp_account'---
+---Fields in module 'mrp_account'---
+mrp_account  / mrp.bom                  / extra_cost (float)            : NEW hasdefault: default
+# NOTHING TO DO: new
+
+---XML records in module 'mrp_account'---
+NEW ir.ui.view: mrp_account.mo_overview_components
+NEW ir.ui.view: mrp_account.mrp_account_inherits_mrp_bom_form_view
+NEW ir.ui.view: mrp_account.view_production_pivot_inherit_mrp_account
+# NOTHING TO DO: new
+
+DEL ir.ui.view: mrp_account.product_variant_easy_edit_view_bom_inherit
+# NOTHING TO DO: removed by the ORM
