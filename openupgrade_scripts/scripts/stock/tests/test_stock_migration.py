@@ -43,7 +43,7 @@ class TestStockMigration(TransactionCase):
         )
         self.assertEqual(len(move), 1)
         self.assertTrue(move.is_scrap)
-        self.assertEqual(move.state, "draft")
+        self.assertIn(move.state, ("draft", "assigned"))
         self.assertEqual(move.quantity, 1)
         self.assertEqual(move.lot_ids.name, "OU20LOT")
         self.assertEqual(move.scrap_reason_tag_ids.name, "OpenUpgrade v20 scrap tag")

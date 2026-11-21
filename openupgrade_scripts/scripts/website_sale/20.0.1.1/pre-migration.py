@@ -48,6 +48,44 @@ _renamed_view_keys = [
 _merged_view_modules = ["website_sale_wishlist", "website_sale_comparison"]
 
 
+def ir_model_data_merged_views(env):
+    """
+    Several of the modules merged into website_sale had views with the same xmlid
+    name, and the merge keeps the name for the first one it finds. When that one
+    is an extension of the view that got the suffix, the base view is the one that
+    lives on in website_sale, so swap their names.
+    """
+    env.cr.execute(
+        r"""
+        SELECT extension.id, extension.name, base.id, base.name
+        FROM ir_model_data base
+        JOIN ir_model_data extension
+            ON extension.module=base.module AND extension.model=base.model
+            AND extension.name=regexp_replace(base.name, '_openupgrade_\d+$', '')
+        JOIN ir_ui_view ON ir_ui_view.id=extension.res_id
+        WHERE base.module='website_sale' AND base.model='ir.ui.view'
+        AND base.name ~ '_openupgrade_\d+$'
+        AND ir_ui_view.inherit_id=base.res_id
+        """
+    )
+    for extension_id, extension_name, base_id, base_name in env.cr.fetchall():
+        openupgrade.logged_query(
+            env.cr,
+            "UPDATE ir_model_data SET name=%s WHERE id=%s",
+            (base_name + "_", base_id),
+        )
+        openupgrade.logged_query(
+            env.cr,
+            "UPDATE ir_model_data SET name=%s WHERE id=%s",
+            (base_name, extension_id),
+        )
+        openupgrade.logged_query(
+            env.cr,
+            "UPDATE ir_model_data SET name=%s WHERE id=%s",
+            (extension_name, base_id),
+        )
+
+
 def ir_ui_view_key(env):
     """
     Point the key of the qweb views (including the website specific copies) that
@@ -255,6 +293,7 @@ def migrate(env, version):
         ["ir_cron_send_abandoned_email", "ir_cron_send_availability_email"],
         True,
     )
+    ir_model_data_merged_views(env)
     ir_ui_view_key(env)
     product_document_attached_on_sale(env)
     product_image_attribute_value_ids(env)
