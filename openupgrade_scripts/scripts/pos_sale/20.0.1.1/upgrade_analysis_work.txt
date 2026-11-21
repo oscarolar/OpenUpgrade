@@ -1,0 +1,24 @@
+---Models in module 'pos_sale'---
+---Fields in module 'pos_sale'---
+pos_sale     / pos.config               / default_product_id (many2one) : NEW relation: product.product, required, hasdefault: default
+pos_sale     / pos.config               / down_payment_product_id (many2one): now required
+# NOTHING TO DO: filled by the init_storage hook of the field
+
+pos_sale     / sale.order               / amount_unpaid (float)         : module is now 'sale' ('pos_sale')
+# NOTHING TO DO: same field, moved to sale
+
+---XML records in module 'pos_sale'---
+ir.access: pos_sale.pos_sale_rule_pos_channel_pos_manager (noupdate switched)
+NEW ir.access: pos_sale.rule_pos_sale_order
+NEW ir.access: pos_sale.rule_pos_sale_order_line
+DEL ir.model.access: pos_sale.access_crm_team_pos_manager
+# NOTHING TO DO: ir.model.access and ir.rule are converted to ir.access by base
+
+NEW ir.ui.view: pos_sale.pos_orderline_receipt_information
+# NOTHING TO DO: new
+
+DEL ir.ui.view: pos_sale.message_body
+# NOTHING TO DO: removed by the ORM
+
+NEW product.product: pos_sale.default_sol_product (noupdate)
+# NOTHING TO DO: filled by the init_storage hook of the field

@@ -1,0 +1,8 @@
+---Models in module 'event_sms'---
+---Fields in module 'event_sms'---
+---XML records in module 'event_sms'---
+ir.access: event_sms.ir_rule_sms_template_event_manager (noupdate switched)
+# NOTHING TO DO: ir.model.access/ir.rule were merged into ir.access, handled by base
+
+# DONE: post-migration: load noupdate_changes.xml (the reminder template now uses
+#   contact_address_inline instead of address_inline)

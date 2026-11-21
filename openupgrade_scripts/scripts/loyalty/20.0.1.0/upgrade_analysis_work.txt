@@ -1,0 +1,53 @@
+---Models in module 'loyalty'---
+---Fields in module 'loyalty'---
+loyalty      / loyalty.card             / points (float)                : not stored anymore
+loyalty      / loyalty.card             / points (float)                : now a function
+# DONE: post-migration: points are now computed from loyalty.history, a history line is added for cards whose former stored balance differs from the sum of their history lines, then debts are settled with the standard method
+
+loyalty      / loyalty.card             / program_id (many2one)         : now required
+# TODO: cards without program make the NOT NULL constraint fail (logged, not blocking). There is no program to assign them to; decide whether to delete them
+
+loyalty      / loyalty.card             / website_message_ids (one2many): DEL relation: mail.message
+# NOTHING TO DO: non stored one2many, the messages are untouched
+
+loyalty      / loyalty.history          / _order                        : _order is now 'points_changed_date desc, id desc' ('id desc')
+# NOTHING TO DO
+
+loyalty      / loyalty.history          / expiration_date (date)        : NEW
+# NOTHING TO DO: new feature, existing points do not expire
+
+loyalty      / loyalty.history          / linked_loyalty_history_id (many2one): NEW relation: loyalty.history
+# DONE: post-migration: filled by loyalty.history#_settle_outstanding_debt for the existing consumption lines of loyalty programs
+
+loyalty      / loyalty.history          / points_changed_date (datetime): NEW required
+# DONE: pre-migration: column created and filled with create_date
+
+loyalty      / loyalty.program          / expire_after (integer)        : NEW
+loyalty      / loyalty.program          / once_per_user (boolean)       : NEW
+loyalty      / loyalty.program          / partner_ids (many2many)       : NEW relation: res.partner
+# NOTHING TO DO: new feature
+
+---XML records in module 'loyalty'---
+ir.access: loyalty.loyalty_history_company_rule (noupdate switched)
+ir.access: loyalty.sale_loyalty_card_company_rule (noupdate switched)
+ir.access: loyalty.sale_loyalty_program_company_rule (noupdate switched)
+ir.access: loyalty.sale_loyalty_reward_company_rule (noupdate switched)
+ir.access: loyalty.sale_loyalty_rule_company_rule (noupdate switched)
+DEL ir.model.access: loyalty.access_loyalty_card
+DEL ir.model.access: loyalty.access_loyalty_card_update_balance_user
+DEL ir.model.access: loyalty.access_loyalty_generate_wizard
+DEL ir.model.access: loyalty.access_loyalty_history
+DEL ir.model.access: loyalty.access_loyalty_mail
+DEL ir.model.access: loyalty.access_loyalty_program
+DEL ir.model.access: loyalty.access_loyalty_reward
+DEL ir.model.access: loyalty.access_loyalty_rule
+# NOTHING TO DO: standard ir.access records are created from the module data, custom ir.model.access and ir.rule records are converted in base
+
+NEW ir.model.constraint: loyalty.constraint_loyalty_history_issued_and_used_positive
+# DONE: pre-migration: negative amounts moved to the opposite column
+
+NEW ir.model.constraint: loyalty.constraint_loyalty_history_issued_or_used
+# DONE: pre-migration: lines both awarding and consuming points are split in two lines
+
+NEW ir.model.constraint: loyalty.constraint_loyalty_program_check_expire_after
+# NOTHING TO DO: new feature

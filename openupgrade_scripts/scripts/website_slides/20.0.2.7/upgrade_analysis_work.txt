@@ -1,0 +1,119 @@
+---Models in module 'website_slides'---
+---Fields in module 'website_slides'---
+website_slides / digest.digest            / kpi_nbr_of_certified_attendees (boolean): NEW
+website_slides / digest.digest            / kpi_nbr_of_new_attendees (boolean): NEW
+# NOTHING TO DO: new KPIs, enabled on the default digest by noupdate_changes.xml (post-migration)
+
+website_slides / slide.channel            / publish_on (datetime)         : NEW
+website_slides / slide.channel            / published_date (datetime)     : NEW
+# NOTHING TO DO: new fields of website.published.mixin, published_date is only stamped on future publications
+
+website_slides / slide.channel            / website_message_ids (one2many): DEL relation: mail.message
+# NOTHING TO DO: non-stored field removed from mail.thread
+
+website_slides / slide.channel.partner    / completion_date (datetime)    : NEW isfunction: function, stored
+# DONE: pre-migration: column added and filled for finished attendees with the date of their last completed content (write_date of the membership as fallback), to avoid the compute stamping the migration date
+
+website_slides / slide.channel.tag.group  / publish_on (datetime)         : NEW
+website_slides / slide.channel.tag.group  / published_date (datetime)     : NEW
+# NOTHING TO DO: new fields of website.published.mixin, published_date is only stamped on future publications
+
+website_slides / slide.slide              / date_published (datetime)     : DEL
+# DONE: pre-migration: renamed to published_date
+
+website_slides / slide.slide              / publish_on (datetime)         : NEW
+# NOTHING TO DO: new field of website.published.mixin
+
+website_slides / slide.slide              / published_date (datetime)     : NEW
+# DONE: pre-migration: renamed from date_published
+
+website_slides / slide.slide              / website_message_ids (one2many): DEL relation: mail.message
+# NOTHING TO DO: non-stored field removed from mail.thread
+
+website_slides / website.track            / slide_channel_id (many2one)   : NEW relation: slide.channel
+# NOTHING TO DO: new functionality
+
+---XML records in module 'website_slides'---
+ir.access: website_slides.rule_slide_channel_global (noupdate switched)
+ir.access: website_slides.rule_slide_channel_manager (noupdate switched)
+ir.access: website_slides.rule_slide_channel_officer_cw (noupdate switched)
+ir.access: website_slides.rule_slide_channel_officer_r (noupdate switched)
+ir.access: website_slides.rule_slide_channel_partner_manager (noupdate switched)
+ir.access: website_slides.rule_slide_channel_partner_officer (noupdate switched)
+ir.access: website_slides.rule_slide_channel_tag_public (noupdate switched)
+ir.access: website_slides.rule_slide_channel_visibility_public_user (noupdate switched)
+ir.access: website_slides.rule_slide_channel_visibility_signed_in_user (noupdate switched)
+NEW ir.access: website_slides.rule_slide_channel_visibility_signed_in_user_1
+ir.access: website_slides.rule_slide_slide_global (noupdate switched)
+ir.access: website_slides.rule_slide_slide_manager (noupdate switched)
+ir.access: website_slides.rule_slide_slide_officer_cw (noupdate switched)
+ir.access: website_slides.rule_slide_slide_officer_r (noupdate switched)
+ir.access: website_slides.rule_slide_slide_partner_manager (noupdate switched)
+ir.access: website_slides.rule_slide_slide_partner_officer (noupdate switched)
+ir.access: website_slides.rule_slide_slide_public_user (noupdate switched)
+ir.access: website_slides.rule_slide_slide_resource_downloadable (noupdate switched)
+NEW ir.access: website_slides.rule_slide_slide_resource_downloadable_1
+ir.access: website_slides.rule_slide_slide_resource_downloadable_manager (noupdate switched)
+ir.access: website_slides.rule_slide_slide_resource_officer_crud (noupdate switched)
+ir.access: website_slides.rule_slide_slide_resource_officer_read (noupdate switched)
+ir.access: website_slides.rule_slide_slide_signed_in_user (noupdate switched)
+NEW ir.access: website_slides.rule_slide_slide_signed_in_user_1
+# NOTHING TO DO: ir.model.access and ir.rule were merged into ir.access, handled by base
+
+NEW ir.actions.act_window: website_slides.slide_channel_partner_action_report_certified
+NEW ir.actions.act_window: website_slides.slide_channel_partner_action_send_mail
+NEW ir.actions.act_window: website_slides.website_slides_visitor_slide_channel_action
+NEW ir.filters: website_slides.dynamic_snippet_latest_courses_filter
+# NOTHING TO DO
+
+DEL ir.model.access: website_slides.access_slide_answer_all
+DEL ir.model.access: website_slides.access_slide_channel_employee
+DEL ir.model.access: website_slides.access_slide_channel_manager
+DEL ir.model.access: website_slides.access_slide_channel_officer
+DEL ir.model.access: website_slides.access_slide_channel_partners_all
+DEL ir.model.access: website_slides.access_slide_channel_portal
+DEL ir.model.access: website_slides.access_slide_channel_public
+DEL ir.model.access: website_slides.access_slide_channel_tag_group_employee
+DEL ir.model.access: website_slides.access_slide_channel_tag_group_portal
+DEL ir.model.access: website_slides.access_slide_channel_tag_portal
+DEL ir.model.access: website_slides.access_slide_channel_tag_public
+DEL ir.model.access: website_slides.access_slide_embed_portal
+DEL ir.model.access: website_slides.access_slide_question_employee
+DEL ir.model.access: website_slides.access_slide_question_portal
+DEL ir.model.access: website_slides.access_slide_slide_employee
+DEL ir.model.access: website_slides.access_slide_slide_manager
+DEL ir.model.access: website_slides.access_slide_slide_officer
+DEL ir.model.access: website_slides.access_slide_slide_partner_all
+DEL ir.model.access: website_slides.access_slide_slide_portal
+DEL ir.model.access: website_slides.access_slide_slide_public
+DEL ir.model.access: website_slides.access_slide_slide_resource_all
+DEL ir.model.access: website_slides.access_slide_slide_resource_internal
+DEL ir.model.access: website_slides.access_slide_slide_resource_portal
+DEL ir.model.access: website_slides.access_slide_slide_resource_public
+DEL ir.model.access: website_slides.access_slide_slide_resource_publisher
+DEL ir.model.access: website_slides.access_slide_tag_employee
+DEL ir.model.access: website_slides.access_slide_tag_portal
+# NOTHING TO DO: ir.model.access and ir.rule were merged into ir.access, handled by base
+
+NEW ir.ui.view: website_slides.digest_digest_view_form
+NEW ir.ui.view: website_slides.dynamic_filter_template_slide_channel_card
+NEW ir.ui.view: website_slides.website_slides_visitor_page_view_search
+NEW ir.ui.view: website_slides.website_slides_visitor_page_view_tree
+NEW ir.ui.view: website_slides.website_slides_visitor_track_view_tree
+NEW ir.ui.view: website_slides.website_slides_visitor_view_form
+NEW ir.ui.view: website_slides.website_slides_visitor_view_tree
+# NOTHING TO DO
+
+DEL ir.ui.view: website_slides.mail_notification_channel_invite (noupdate)
+# DONE: post-migration: deleted, the invitation link is now part of the body of mail_template_slide_channel_enroll and mail_template_slide_channel_invite (loaded from noupdate_changes.xml)
+
+DEL ir.ui.view: website_slides.slide_share_link
+DEL ir.ui.view: website_slides.slide_share_modal
+DEL ir.ui.view: website_slides.slide_share_modal_body
+DEL ir.ui.view: website_slides.slide_share_modal_header
+DEL ir.ui.view: website_slides.slide_share_social
+DEL ir.ui.view: website_slides.slide_social_email
+DEL ir.ui.view: website_slides.slide_social_embed
+NEW portal.entry: website_slides.portal_slides_client (noupdate)
+NEW website.snippet.filter: website_slides.dynamic_filter_latest_courses
+# NOTHING TO DO

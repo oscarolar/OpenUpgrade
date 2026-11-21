@@ -1,0 +1,5 @@
+---Models in module 'crm_sms'---
+---Fields in module 'crm_sms'---
+---XML records in module 'crm_sms'---
+ir.access: crm_sms.ir_rule_sms_template_sale_manager (noupdate switched)
+# NOTHING TO DO: ir.model.access and ir.rule are converted to ir.access by base

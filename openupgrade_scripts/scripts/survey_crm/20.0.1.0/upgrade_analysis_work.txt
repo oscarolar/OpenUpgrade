@@ -1,0 +1,10 @@
+---Models in module 'survey_crm'---
+---Fields in module 'survey_crm'---
+survey_crm   / crm.lead                 / origin_survey_id (many2one)   : DEL relation: survey.survey
+# DONE: post-migration: moved to crm.lead#utm_reference ('survey.survey,<id>'), which the lead counter and the lead action of the survey use now
+
+survey_crm   / crm.team                 / origin_survey_ids (one2many)  : DEL relation: survey.survey
+survey_crm   / survey.survey            / lead_ids (one2many)           : DEL relation: crm.lead
+# NOTHING TO DO: non-stored inverses of crm.lead#origin_survey_id
+
+---XML records in module 'survey_crm'---

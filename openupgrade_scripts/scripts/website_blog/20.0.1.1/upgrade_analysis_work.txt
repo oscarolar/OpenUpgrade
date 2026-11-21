@@ -1,0 +1,104 @@
+---Models in module 'website_blog'---
+---Fields in module 'website_blog'---
+website_blog / blog.blog                / website_message_ids (one2many): DEL relation: mail.message
+# NOTHING TO DO: non-stored field removed from mail.thread
+
+website_blog / blog.post                / breadcrumb_visible (boolean)  : NEW hasdefault: default
+# NOTHING TO DO: the ORM fills the default (True)
+
+website_blog / blog.post                / post_date (datetime)          : DEL
+# DONE: post-migration: copied to published_date for published posts without it (post_date fell back on create_date), as v20 displays and sorts on published_date
+
+website_blog / blog.post                / publish_on (datetime)         : NEW
+# DONE: post-migration: posts published with a post_date in the future (the v19 way of scheduling) are unpublished and scheduled with publish_on=post_date, as v20 does not filter published posts by date anymore
+
+website_blog / blog.post                / recommended_next_post_id (many2one): NEW relation: blog.post
+# NOTHING TO DO: new functionality
+
+website_blog / blog.post                / website_message_ids (one2many): DEL relation: mail.message
+# NOTHING TO DO: non-stored field removed from mail.thread
+
+website_blog / res.partner              / blog_post_ids (one2many)      : NEW relation: blog.post
+website_blog / website.track            / blog_post_id (many2one)       : NEW relation: blog.post
+# NOTHING TO DO: new functionality
+
+---XML records in module 'website_blog'---
+NEW ir.access: website_blog.blog_blog_manager
+NEW ir.access: website_blog.blog_post_manager
+NEW ir.access: website_blog.blog_tag_category_manager
+NEW ir.access: website_blog.blog_tag_manager
+ir.access: website_blog.website_blog_post_public (noupdate switched)
+ir.access: website_blog.website_blog_public (noupdate switched)
+# NOTHING TO DO: ir.model.access and ir.rule were merged into ir.access, handled by base
+
+NEW ir.actions.act_window: website_blog.website_blog_visitor_blog_post_action
+# NOTHING TO DO
+
+DEL ir.model.access: website_blog.blog_blog
+DEL ir.model.access: website_blog.blog_blog_portal
+DEL ir.model.access: website_blog.blog_blog_public
+DEL ir.model.access: website_blog.blog_post
+DEL ir.model.access: website_blog.blog_post_portal
+DEL ir.model.access: website_blog.blog_post_public
+DEL ir.model.access: website_blog.blog_tag_category
+DEL ir.model.access: website_blog.blog_tag_category_employee
+DEL ir.model.access: website_blog.blog_tag_category_portal
+DEL ir.model.access: website_blog.blog_tag_edition
+DEL ir.model.access: website_blog.blog_tag_employee
+DEL ir.model.access: website_blog.blog_tag_portal
+# NOTHING TO DO: ir.model.access and ir.rule were merged into ir.access, handled by base
+
+NEW ir.ui.view: website_blog.blog_post_card
+NEW ir.ui.view: website_blog.blog_post_comment_count
+NEW ir.ui.view: website_blog.blog_post_content_footer_archive
+NEW ir.ui.view: website_blog.blog_post_content_footer_share_links
+NEW ir.ui.view: website_blog.blog_post_content_mobile_toc
+NEW ir.ui.view: website_blog.blog_post_list_card
+NEW ir.ui.view: website_blog.blog_post_minimal_list_card
+NEW ir.ui.view: website_blog.blog_post_next_compact
+NEW ir.ui.view: website_blog.blog_post_next_full_cover
+NEW ir.ui.view: website_blog.blog_post_regular_cover_share_links
+NEW ir.ui.view: website_blog.blog_post_split_cover_share_links
+NEW ir.ui.view: website_blog.blog_post_split_sticky_card
+NEW ir.ui.view: website_blog.opt_blog_bordered_grid_view
+NEW ir.ui.view: website_blog.opt_blog_compact_list_view
+NEW ir.ui.view: website_blog.opt_blog_fullwidth
+NEW ir.ui.view: website_blog.opt_blog_grid_columns_2
+NEW ir.ui.view: website_blog.opt_blog_grid_columns_3
+NEW ir.ui.view: website_blog.opt_blog_grid_columns_4
+NEW ir.ui.view: website_blog.opt_blog_large_list_view
+NEW ir.ui.view: website_blog.opt_blog_page_title
+NEW ir.ui.view: website_blog.opt_blog_post_footer_share_links_display
+NEW ir.ui.view: website_blog.opt_blog_post_footer_tags_display
+NEW ir.ui.view: website_blog.opt_blog_post_full_container
+NEW ir.ui.view: website_blog.opt_blog_post_full_width_cover
+NEW ir.ui.view: website_blog.opt_blog_post_header_author_avatar_display
+NEW ir.ui.view: website_blog.opt_blog_post_header_share_links_display
+NEW ir.ui.view: website_blog.opt_blog_post_header_tags_display
+NEW ir.ui.view: website_blog.opt_blog_post_large_container
+NEW ir.ui.view: website_blog.opt_blog_post_split_cover
+NEW ir.ui.view: website_blog.opt_blog_post_toc_display
+NEW ir.ui.view: website_blog.opt_blog_promoted_post
+NEW ir.ui.view: website_blog.opt_blog_simple_list_view
+NEW ir.ui.view: website_blog.opt_blog_split_grid_view
+NEW ir.ui.view: website_blog.opt_posts_loop_show_date
+NEW ir.ui.view: website_blog.opt_posts_loop_show_filter
+NEW ir.ui.view: website_blog.opt_posts_loop_show_tags
+NEW ir.ui.view: website_blog.opt_sidebar_blog_index_about_us
+NEW ir.ui.view: website_blog.post_published_info
+NEW ir.ui.view: website_blog.post_tags
+NEW ir.ui.view: website_blog.post_unpublished_badge
+NEW ir.ui.view: website_blog.robots
+NEW ir.ui.view: website_blog.s_blog_posts_carousel
+NEW ir.ui.view: website_blog.s_blog_posts_carousel_preview_card
+NEW ir.ui.view: website_blog.s_dynamic_snippet_blog_posts_carousel_preview_data
+NEW ir.ui.view: website_blog.website_blog_visitor_page_view_search
+NEW ir.ui.view: website_blog.website_blog_visitor_page_view_tree
+NEW ir.ui.view: website_blog.website_blog_visitor_track_view_tree
+NEW ir.ui.view: website_blog.website_blog_visitor_view_form
+NEW ir.ui.view: website_blog.website_blog_visitor_view_tree
+# NOTHING TO DO
+
+NEW res.groups: website_blog.group_website_blog_manager (noupdate)
+NEW res.groups.privilege: website_blog.res_groups_privilege_blog (noupdate)
+# DONE: post-migration: users of website.group_website_designer, the group with write access on blogs in v19, are added to the new group that carries those permissions in v20
