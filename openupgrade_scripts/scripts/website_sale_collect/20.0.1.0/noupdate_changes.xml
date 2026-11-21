@@ -2,6 +2,5 @@
 <odoo>
   <record id="payment_provider_on_site" model="payment.provider">
     <field name="redirect_form_view_id" ref="payment.generic_redirect_form"/>
-    <field name="sequence">40</field>
   </record>
 </odoo>
