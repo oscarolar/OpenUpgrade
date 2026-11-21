@@ -1,0 +1,14 @@
+---Models in module 'stock_landed_costs'---
+---Fields in module 'stock_landed_costs'---
+stock_landed_costs / product.template         / landed_cost_on_product_ids (many2many): NEW relation: product.product
+# NOTHING TO DO: new functionality
+
+stock_landed_costs / stock.landed.cost        / website_message_ids (one2many): DEL relation: mail.message
+# NOTHING TO DO: not stored
+
+stock_landed_costs / stock.landed.cost.lines  / apply_on_product_ids (many2many): NEW relation: product.product, hasdefault: compute
+# NOTHING TO DO: new functionality, empty means all products as before
+
+---XML records in module 'stock_landed_costs'---
+ir.access: stock_landed_costs.stock_landed_cost_rule (noupdate switched)
+# NOTHING TO DO: ir.access conversion is handled in base
