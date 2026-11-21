@@ -1,0 +1,12 @@
+---Models in module 'website_customer'---
+---Fields in module 'website_customer'---
+website_customer / res.partner.tag          / publish_on (datetime)         : NEW
+website_customer / res.partner.tag          / published_date (datetime)     : NEW
+# NOTHING TO DO: new fields of website.published.mixin, v19 has no equivalent date and published_date is only set on future publications
+
+---XML records in module 'website_customer'---
+ir.access: website_customer.website_customer_res_partner_tag_public (noupdate switched)
+DEL ir.model.access: website_customer.res_partner_industry_portal
+DEL ir.model.access: website_customer.res_partner_tag_sale_manager_portal
+DEL ir.model.access: website_customer.res_partner_tag_sale_manager_public
+# NOTHING TO DO: ir.model.access and ir.rule are converted to ir.access by base

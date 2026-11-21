@@ -1,0 +1,7 @@
+---Models in module 'website_profile'---
+---Fields in module 'website_profile'---
+website_profile / gamification.badge       / publish_on (datetime)         : NEW
+website_profile / gamification.badge       / published_date (datetime)     : NEW
+# NOTHING TO DO: new fields of website.published.mixin, published_date is only stamped on future publications
+
+---XML records in module 'website_profile'---

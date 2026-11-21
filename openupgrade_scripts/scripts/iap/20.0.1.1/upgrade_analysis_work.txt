@@ -1,0 +1,34 @@
+---Models in module 'iap'---
+new model iap.service.pack
+# NOTHING TO DO: new feature, filled when the account information is fetched from IAP
+
+---Fields in module 'iap'---
+iap          / iap.account              / balance (char)                : not stored anymore
+iap          / iap.account              / balance (char)                : now a function
+iap          / iap.account              / balance_amount (float)        : NEW
+# DONE: post-migration: numeric part of the former balance moved to balance_amount
+
+iap          / iap.service              / name (char)                   : now translatable
+# NOTHING TO DO: column converted to jsonb by the ORM
+
+iap          / iap.service              / pack_ids (one2many)           : NEW relation: iap.service.pack
+iap          / iap.service              / price_description (char)      : NEW translate
+iap          / iap.service.pack         / credit (float)                : NEW required
+iap          / iap.service.pack         / iap_service_pack_identifier (integer): NEW required
+iap          / iap.service.pack         / name (char)                   : NEW required
+iap          / iap.service.pack         / price (float)                 : NEW required
+iap          / iap.service.pack         / service_id (many2one)         : NEW relation: iap.service, required
+# NOTHING TO DO: new feature, filled when the account information is fetched from IAP
+
+---XML records in module 'iap'---
+NEW ir.access: iap.access_iap_service_pack
+ir.access: iap.user_iap_account (noupdate switched)
+NEW ir.access: iap.user_iap_account_1
+DEL ir.model.access: iap.access_client_iap_account_manager
+DEL ir.model.access: iap.access_client_iap_account_user
+# NOTHING TO DO: standard ir.access records are created from the module data, custom ir.model.access and ir.rule records are converted in base
+
+NEW ir.model.constraint: iap.constraint_iap_service_pack_unique_iap_service_pack_identifier
+NEW ir.ui.view: iap.iap_service_pack_view_tree
+NEW ir.ui.view: iap.view_iap_users_tree
+# NOTHING TO DO: handled by the ORM

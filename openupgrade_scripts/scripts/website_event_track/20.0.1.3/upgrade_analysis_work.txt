@@ -1,0 +1,43 @@
+---Models in module 'website_event_track'---
+---Fields in module 'website_event_track'---
+website_event_track / event.event              / location_display_background (binary): NEW attachment: True
+# NOTHING TO DO: new feature
+
+website_event_track / event.event              / location_display_upcoming_track_count (selection): NEW required, selection_keys: ['2', '3', '4', '5'], hasdefault: default
+# NOTHING TO DO: new feature, the ORM fills the default ('3') on existing events
+
+website_event_track / event.track              / publish_on (datetime)         : NEW
+website_event_track / event.track              / published_date (datetime)     : NEW
+# NOTHING TO DO: new fields of website.published.mixin, published_date is only stamped
+#   on future publications and 19.0 has no equivalent date on this model
+
+website_event_track / event.track              / website_message_ids (one2many): DEL relation: mail.message
+# NOTHING TO DO: non stored one2many, the model does not inherit it anymore
+
+---XML records in module 'website_event_track'---
+ir.access: website_event_track.event_track_public (noupdate switched)
+ir.access: website_event_track.ir_rule_event_track_tag_public (noupdate switched)
+# NOTHING TO DO: ir.model.access/ir.rule were merged into ir.access, handled by base
+
+DEL ir.asset: website_event_track.s_searchbar_000_xml
+# NOTHING TO DO
+
+DEL ir.model.access: website_event_track.access_event_track_portal
+DEL ir.model.access: website_event_track.access_event_track_public
+DEL ir.model.access: website_event_track.access_event_track_stage_employee
+DEL ir.model.access: website_event_track.access_event_track_stage_portal
+DEL ir.model.access: website_event_track.access_event_track_tag_portal
+DEL ir.model.access: website_event_track.access_event_track_tag_public
+DEL ir.model.access: website_event_track.access_event_track_visitor
+# NOTHING TO DO: ir.model.access/ir.rule were merged into ir.access, handled by base
+
+NEW ir.ui.view: website_event_track.event_track_location_display
+NEW ir.ui.view: website_event_track.event_track_location_display_content
+NEW ir.ui.view: website_event_track.event_track_location_display_empty_state
+NEW ir.ui.view: website_event_track.event_track_location_display_no_cookies_bar
+NEW ir.ui.view: website_event_track.event_track_location_display_speaker
+NEW ir.ui.view: website_event_track.event_track_location_display_track
+NEW ir.ui.view: website_event_track.website_event_track_favorite_submenu
+# NOTHING TO DO
+
+# DONE: post-migration: load noupdate_changes.xml (track mail templates)

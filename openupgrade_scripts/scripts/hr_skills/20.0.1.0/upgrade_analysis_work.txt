@@ -1,0 +1,57 @@
+---Models in module 'hr_skills'---
+obsolete model hr.employee.certification.report [abstract]
+# DONE: pre-migration: SQL view dropped
+
+---Fields in module 'hr_skills'---
+hr_skills    / hr.employee.skill        / _order                        : _order is now 'skill_type_id, skill_level_id desc' ('skill_type_id, skill_level_id')
+# NOTHING TO DO
+
+hr_skills    / hr.employee.skill        / certificate_file (binary)     : NEW attachment: True
+hr_skills    / hr.job.skill             / certificate_file (binary)     : NEW attachment: True
+# NOTHING TO DO: new functionality, stored as attachment
+
+hr_skills    / hr.resume.line           / certificate_filename (char)   : DEL
+# NOTHING TO DO: the name of the uploaded file is not kept anymore,
+# certificate_file itself is untouched
+
+---XML records in module 'hr_skills'---
+ir.access: hr_skills.hr_employee_skill_history_report_hr_user (noupdate switched)
+ir.access: hr_skills.hr_employee_skill_history_report_manager (noupdate switched)
+ir.access: hr_skills.hr_employee_skill_report_hr_user (noupdate switched)
+ir.access: hr_skills.hr_employee_skill_report_manager (noupdate switched)
+ir.access: hr_skills.hr_employee_skill_report_multicompany (noupdate switched)
+ir.access: hr_skills.hr_resume_rule_employee (noupdate switched)
+ir.access: hr_skills.hr_resume_rule_employee_hr_user (noupdate switched)
+ir.access: hr_skills.hr_skill_rule_employee (noupdate switched)
+ir.access: hr_skills.hr_skill_rule_employee_update (noupdate switched)
+ir.access: hr_skills.hr_skill_rule_hr_user (noupdate switched)
+ir.access: hr_skills.hr_skills_rule_employee_update (noupdate switched)
+# NOTHING TO DO: ir.model.access and ir.rule are replaced by ir.access, module
+# records are recreated by the ORM and manual ones are converted in base
+
+DEL ir.actions.act_window: hr_skills.hr_employee_certification_report_action
+NEW ir.actions.server: hr_skills.action_server_hr_employee_skill_certification
+# NOTHING TO DO
+
+DEL ir.model.access: hr_skills.access_hr_employee_certification_report_user
+DEL ir.model.access: hr_skills.access_hr_employee_skill
+DEL ir.model.access: hr_skills.access_hr_employee_skill_employee
+DEL ir.model.access: hr_skills.access_hr_employee_skill_history_report
+DEL ir.model.access: hr_skills.access_hr_employee_skill_history_report_manager
+DEL ir.model.access: hr_skills.access_hr_employee_skill_report_manager
+DEL ir.model.access: hr_skills.access_hr_employee_skill_report_user
+DEL ir.model.access: hr_skills.access_hr_resume_line
+DEL ir.model.access: hr_skills.access_hr_resume_line_employee
+# NOTHING TO DO: ir.model.access is replaced by ir.access, handled in base
+
+DEL ir.ui.menu: hr_skills.hr_employee_certification_report_menu
+DEL ir.ui.menu: hr_skills.hr_employee_skill_report_menu
+DEL ir.ui.view: hr_skills.hr_employee_certification_report_view_list
+DEL ir.ui.view: hr_skills.hr_employee_certification_report_view_pivot
+DEL ir.ui.view: hr_skills.hr_employee_certification_report_view_search
+# NOTHING TO DO: removed by the ORM
+
+DEL mail.activity.type: hr_skills.mail_activity_data_upload_certification (noupdate)
+# DONE: post-migration: its activities and messages are moved to
+# mail.mail_activity_data_upload_document, the type v20 schedules certification
+# activities with, and the record is deleted

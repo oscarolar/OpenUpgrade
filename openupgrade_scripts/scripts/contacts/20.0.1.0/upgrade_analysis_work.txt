@@ -1,0 +1,12 @@
+---Models in module 'contacts'---
+---Fields in module 'contacts'---
+---XML records in module 'contacts'---
+NEW ir.ui.menu: contacts.menu_res_city [renamed from base_address_extended module]
+# DONE: pre-migration: xmlid renamed from base_address_extended.menu_res_city
+
+DEL ir.ui.menu: contacts.menu_action_res_bank_form
+DEL ir.ui.menu: contacts.menu_config_bank_accounts
+# NOTHING TO DO: res.bank is merged into res.partner.bank in base, menus removed by the ORM
+
+NEW ir.ui.view: contacts.res_partner_view_hierarchy
+# NOTHING TO DO: handled by the ORM

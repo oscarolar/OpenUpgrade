@@ -1,0 +1,15 @@
+---Models in module 'website_event_exhibitor'---
+---Fields in module 'website_event_exhibitor'---
+website_event_exhibitor / event.sponsor            / publish_on (datetime)         : NEW
+website_event_exhibitor / event.sponsor            / published_date (datetime)     : NEW
+# NOTHING TO DO: new fields of website.published.mixin, published_date is only stamped
+#   on future publications and 19.0 has no equivalent date on this model
+
+website_event_exhibitor / event.sponsor            / website_message_ids (one2many): DEL relation: mail.message
+# NOTHING TO DO: non stored one2many, the model does not inherit it anymore
+
+---XML records in module 'website_event_exhibitor'---
+ir.access: website_event_exhibitor.event_sponsor_rule_share (noupdate switched)
+DEL ir.model.access: website_event_exhibitor.access_event_sponsor_public_portal
+DEL ir.model.access: website_event_exhibitor.access_event_sponsor_public_public
+# NOTHING TO DO: ir.model.access/ir.rule were merged into ir.access, handled by base

@@ -1,0 +1,100 @@
+---Models in module 'resource'---
+---Fields in module 'resource'---
+resource     / res.company              / tz (selection)                : is now stored
+resource     / res.company              / tz (selection)                : not related anymore
+# DONE: pre-migration: filled with the timezone of the partner, or the one of the company's calendar
+
+resource     / resource.calendar        / calendar_type (selection)     : NEW required, selection_keys: ['fixed', 'undefined', 'variable'], hasdefault: default
+# DONE: pre-migration: undefined for flexible calendars, variable for two weeks calendars, fixed for the rest
+
+resource     / resource.calendar        / days_per_week (float)         : NEW hasdefault: compute
+# DONE: post-migration: the ORM computes it for fixed calendars, filled for variable and undefined ones
+
+resource     / resource.calendar        / duration_based (boolean)      : DEL
+# DONE: pre-migration: the attendances of duration based calendars lose their hours, see resource.calendar.attendance#duration_based
+
+resource     / resource.calendar        / flexible_hours (boolean)      : DEL
+# DONE: pre-migration: used to fill calendar_type
+
+resource     / resource.calendar        / reference_calendar_id (many2one): NEW relation: resource.calendar
+# NOTHING TO DO: new functionality
+
+resource     / resource.calendar        / schedule_type (selection)     : DEL required, selection_keys: ['flexible', 'fully_fixed']
+resource     / resource.calendar        / two_weeks_calendar (boolean)  : DEL
+# DONE: pre-migration: used to fill calendar_type
+
+resource     / resource.calendar        / tz (selection)                : DEL required, selection_keys: function
+# NOTHING TO DO: the timezone now comes from the resource or the company. The column is kept, hr uses it to fill hr.version#tz
+
+resource     / resource.calendar        / work_time_rate (float)        : is now stored
+# NOTHING TO DO: computed by the ORM
+
+resource     / resource.calendar.attendance / _order                        : _order is now 'sequence, date, dayofweek, hour_from' ('sequence, week_type, dayofweek, hour_from')
+# NOTHING TO DO
+
+resource     / resource.calendar.attendance / date (date)                   : NEW
+# DONE: pre-migration: set for the attendances of two weeks calendars
+
+resource     / resource.calendar.attendance / day_period (selection)        : now a function
+resource     / resource.calendar.attendance / day_period (selection)        : selection_keys removed: [lunch]
+# DONE: pre-migration: breaks are deleted, in v20 a break is the gap between two attendances
+
+resource     / resource.calendar.attendance / display_type (selection)      : DEL selection_keys: ['line_section']
+# DONE: pre-migration: sections are deleted
+
+resource     / resource.calendar.attendance / duration_based (boolean)      : is now stored
+resource     / resource.calendar.attendance / duration_based (boolean)      : not related anymore
+resource     / resource.calendar.attendance / duration_based (boolean)      : now a function
+# DONE: pre-migration: precomputed, after emptying the hours of the attendances of duration based calendars
+
+resource     / resource.calendar.attendance / duration_days (float)         : DEL
+# NOTHING TO DO
+
+resource     / resource.calendar.attendance / duration_hours (float)        : not a function anymore
+# DONE: pre-migration: recomputed from the hours where not duration based, attendances without duration are deleted because of the new constraint check_duration_hours
+
+resource     / resource.calendar.attendance / name (char)                   : DEL required
+# NOTHING TO DO
+
+resource     / resource.calendar.attendance / recurrency (boolean)          : NEW
+resource     / resource.calendar.attendance / recurrency_count (integer)    : NEW hasdefault: default
+resource     / resource.calendar.attendance / recurrency_end_type (selection): NEW selection_keys: ['date', 'forever', 'times'], hasdefault: default
+resource     / resource.calendar.attendance / recurrency_excluded_occurences (json): NEW
+resource     / resource.calendar.attendance / recurrency_interval (integer) : NEW hasdefault: default
+resource     / resource.calendar.attendance / recurrency_type (selection)   : NEW selection_keys: ['days', 'weeks'], hasdefault: default
+resource     / resource.calendar.attendance / recurrency_until (date)       : NEW hasdefault: compute
+# DONE: pre-migration: attendances of two weeks calendars recur every two weeks forever, the rest get the defaults
+
+resource     / resource.calendar.attendance / week_type (selection)         : DEL selection_keys: ['0', '1']
+# DONE: pre-migration: used to set the date of the first occurrence
+
+resource     / resource.calendar.leaves / count_as (selection)          : NEW selection_keys: ['absence', 'working_time'], hasdefault: default
+resource     / resource.calendar.leaves / time_type (selection)         : DEL selection_keys: ['leave', 'other']
+# DONE: pre-migration: time_type renamed to count_as, mapping leave to absence and other to working_time
+
+resource     / resource.resource        / calendar_id (many2one)        : now required
+# DONE: pre-migration: resources without calendar (fully flexible in v19) get an undefined calendar without hours of their company, created if missing
+
+resource     / resource.resource        / color (integer)               : previously in module resource_mail
+# NOTHING TO DO
+
+---XML records in module 'resource'---
+ir.access: resource.resource_calendar_leaves_rule_group_admin_modify (noupdate switched)
+ir.access: resource.resource_calendar_leaves_rule_group_user_create (noupdate switched)
+ir.access: resource.resource_calendar_leaves_rule_group_user_modify (noupdate switched)
+ir.access: resource.resource_calendar_leaves_rule_multi_company (noupdate switched)
+ir.access: resource.resource_resource_multi_company (noupdate switched)
+# NOTHING TO DO: base renames the xmlids of v19 ir.model.access and ir.rule records, the ir.access records are created anew
+
+NEW ir.actions.act_window: resource.action_resource_material_from_calendar
+NEW ir.cron: resource.ir_cron_calendar_clean_up
+DEL ir.model.access: resource.access_resource_calendar_leaves
+DEL ir.model.access: resource.access_resource_calendar_leaves_user
+DEL ir.model.access: resource.access_resource_resource
+NEW ir.model.constraint: resource.constraint_resource_calendar_attendance_check_count
+NEW ir.model.constraint: resource.constraint_resource_calendar_attendance_check_duration_hours
+NEW ir.model.constraint: resource.constraint_resource_calendar_attendance_check_interval
+NEW ir.model.constraint: resource.constraint_resource_calendar_attendance_check_recurrency_until
+NEW ir.ui.view: resource.view_resource_calendar_attendance_calendar
+NEW ir.ui.view: resource.view_resource_calendar_multi_create_form
+# NOTHING TO DO

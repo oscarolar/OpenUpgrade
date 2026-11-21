@@ -1,0 +1,421 @@
+---Models in module 'hr_holidays'---
+obsolete model hr.leave.type (merged to hr.work.entry.type)
+# DONE: pre-migration: every leave type gets a time type, recorded in hr_work_entry_type.openupgrade_legacy_20_0_leave_type_id; post-migration: configuration copied from the leave type. A leave type takes the work entry type it was linked to (or the one with the same code in its country) unless another leave type took it, otherwise a new time type with code LT<id> is created. The country is the one of the leave type, or the one shared by all the companies, when v20 has time types for it; company_id has no counterpart. Time types not coming from a leave type are set as not selectable in Time Off
+
+new model hr.leave.display.name.mixin [abstract]
+new model hr.leave.employee.report [sql_view]
+new model hr.time.rule.allocation.log
+new model load.public.holiday.wizard [transient]
+new model load.public.holiday.wizard.line [transient]
+# NOTHING TO DO
+
+---Fields in module 'hr_holidays'---
+hr_holidays  / hr.employee              / hr_icon_display (False)       : selection_keys added: [presence_home, presence_office, presence_other], removed: [presence_archive]
+hr_holidays  / hr.employee              / leave_ids (one2many)          : NEW relation: hr.leave
+# NOTHING TO DO
+
+hr_holidays  / hr.leave                 / duration_display (char)       : not stored anymore
+# NOTHING TO DO: computed on the fly
+
+hr_holidays  / hr.leave                 / holiday_status_id (many2one)  : DEL relation: hr.leave.type, required
+# DONE: pre-migration: renamed to work_entry_type_id and pointed to the time type of the leave type
+
+hr_holidays  / hr.leave                 / is_time_rule_trimmed (boolean): NEW hasdefault: default
+hr_holidays  / hr.leave                 / output_leave_ids (one2many)   : NEW relation: hr.leave
+# NOTHING TO DO
+
+hr_holidays  / hr.leave                 / request_duration (selection)  : NEW selection_keys: ['am', 'full', 'pm', 'specific'], hasdefault: default
+# DONE: post-migration: specific for hourly requests, am/pm for requests of a single half day, full otherwise
+
+hr_holidays  / hr.leave                 / request_unit_half (boolean)   : DEL
+hr_holidays  / hr.leave                 / request_unit_hours (boolean)  : DEL
+# DONE: post-migration: used to fill request_duration
+
+hr_holidays  / hr.leave                 / source_leave_id (many2one)    : NEW relation: hr.leave
+hr_holidays  / hr.leave                 / time_rule_id (many2one)       : NEW relation: hr.time.rule
+hr_holidays  / hr.leave                 / website_message_ids (one2many): DEL relation: mail.message
+# NOTHING TO DO
+
+hr_holidays  / hr.leave                 / work_entry_type_id (many2one) : NEW relation: hr.work.entry.type, required
+# DONE: pre-migration: renamed from holiday_status_id
+
+hr_holidays  / hr.leave.accrual.level   / action_with_unused_accruals (selection): not a function anymore
+# NOTHING TO DO: still stored, now editable
+
+hr_holidays  / hr.leave.accrual.level   / max_carriedover_duration (integer): NEW
+# DONE: pre-migration: renamed from postpone_max_days
+
+hr_holidays  / hr.leave.accrual.level   / postpone_max_days (integer)   : DEL
+# DONE: pre-migration: renamed to max_carriedover_duration
+
+hr_holidays  / hr.leave.accrual.plan    / time_off_type_id (many2one)   : DEL relation: hr.leave.type
+# DONE: pre-migration: renamed to work_entry_type_id and pointed to the time type of the leave type
+
+hr_holidays  / hr.leave.accrual.plan    / work_entry_type_id (many2one) : NEW relation: hr.work.entry.type
+# DONE: pre-migration: renamed from time_off_type_id
+
+hr_holidays  / hr.leave.allocation      / accrual_plan_id (many2one)    : not a function anymore
+# DONE: post-migration: emptied on regular allocations, the plan alone tells accrual allocations apart
+
+hr_holidays  / hr.leave.allocation      / actual_lastcall (date)        : DEL
+# DONE: post-migration: moved to lastcall, which is now the date of the last accrual event
+
+hr_holidays  / hr.leave.allocation      / allocation_type (selection)   : DEL required, selection_keys: ['accrual', 'regular']
+# DONE: post-migration: used to empty accrual_plan_id on regular allocations
+
+hr_holidays  / hr.leave.allocation      / already_accrued (boolean)     : DEL
+# NOTHING TO DO: state of the v19 accrual engine without counterpart, v20 accrues at the start of the period when nextcall reaches it
+
+hr_holidays  / hr.leave.allocation      / expiring_carryover_days (float): DEL
+# DONE: pre-migration: renamed to previous_carryover_number_of_days; post-migration: carried_over_days_expiration_date emptied when there are no days to expire
+
+hr_holidays  / hr.leave.allocation      / holiday_status_id (many2one)  : DEL relation: hr.leave.type, required
+# DONE: pre-migration: renamed to work_entry_type_id and pointed to the time type of the leave type
+
+hr_holidays  / hr.leave.allocation      / last_accrual (date)           : NEW
+# DONE: post-migration: filled with the v19 lastcall, the date of the last accrual
+
+hr_holidays  / hr.leave.allocation      / last_executed_carryover_date (date): DEL
+# NOTHING TO DO: state of the v19 accrual engine without counterpart, v20 accrues at the start of the period when nextcall reaches it
+
+hr_holidays  / hr.leave.allocation      / number_of_hours (float)       : NEW isfunction: function, stored
+# DONE: pre-migration: renamed from number_of_hours_display
+
+hr_holidays  / hr.leave.allocation      / number_of_hours_display (float): DEL
+# DONE: pre-migration: renamed to number_of_hours
+
+hr_holidays  / hr.leave.allocation      / previous_carryover_number_of_days (float): NEW
+# DONE: pre-migration: renamed from expiring_carryover_days
+
+hr_holidays  / hr.leave.allocation      / website_message_ids (one2many): DEL relation: mail.message
+# NOTHING TO DO
+
+hr_holidays  / hr.leave.allocation      / work_entry_type_id (many2one) : NEW relation: hr.work.entry.type, required, hasdefault: compute
+# DONE: pre-migration: renamed from holiday_status_id
+
+hr_holidays  / hr.leave.allocation      / yearly_accrued_amount (float) : DEL
+# DONE: pre-migration: renamed to yearly_accrued_days
+
+hr_holidays  / hr.leave.allocation      / yearly_accrued_days (float)   : NEW
+# DONE: pre-migration: renamed from yearly_accrued_amount
+
+hr_holidays  / hr.leave.type            / accruals_ids (one2many)       : DEL relation: hr.leave.accrual.plan
+# NOTHING TO DO: removed without replacement
+
+hr_holidays  / hr.leave.type            / active (boolean)              : DEL
+hr_holidays  / hr.leave.type            / color (integer)               : DEL
+# DONE: copied to the time type of the leave type (pre-migration for new time types, post-migration for all)
+
+hr_holidays  / hr.leave.type            / company_id (many2one)         : DEL relation: res.company
+# NOTHING TO DO: time types have no company in v20, only a country
+
+hr_holidays  / hr.leave.type            / country_id (many2one)         : not a function anymore
+hr_holidays  / hr.leave.type            / country_id (many2one)         : not stored anymore
+hr_holidays  / hr.leave.type            / country_id (many2one)         : relation is now 'False' ('res.country') [nothing to do]
+hr_holidays  / hr.leave.type            / country_id (many2one)         : type is now 'False' ('many2one')
+# DONE: copied to the time type of the leave type (pre-migration for new time types, post-migration for all)
+
+hr_holidays  / hr.leave.type            / icon_id (many2one)            : DEL relation: ir.attachment
+# NOTHING TO DO: removed without replacement
+
+hr_holidays  / hr.leave.type            / name (char)                   : DEL required
+# DONE: copied to the time type of the leave type (pre-migration for new time types, post-migration for all)
+
+hr_holidays  / hr.leave.type            / responsible_ids (many2many)   : DEL relation: res.users
+# NOTHING TO DO: removed without replacement
+
+hr_holidays  / hr.leave.type            / sequence (integer)            : DEL
+# DONE: copied to the time type of the leave type (pre-migration for new time types, post-migration for all)
+
+hr_holidays  / hr.leave.type            / time_type (selection)         : DEL selection_keys: ['leave', 'other']
+# DONE: post-migration: mapped to count_as (other -> working_time, leave -> absence)
+
+hr_holidays  / hr.time.rule             / allocation_type_id (many2one) : NEW relation: hr.work.entry.type
+hr_holidays  / hr.time.rule             / leave_compensation_rate (float): NEW hasdefault: default
+hr_holidays  / hr.time.rule.allocation.log / allocation_id (many2one)      : NEW relation: hr.leave.allocation, required
+hr_holidays  / hr.time.rule.allocation.log / days (float)                  : NEW required
+hr_holidays  / hr.time.rule.allocation.log / res_id (many2one_reference)   : NEW relation: res_model, required
+hr_holidays  / hr.time.rule.allocation.log / res_model (char)              : NEW required
+hr_holidays  / hr.version               / allocation_from_working_schedule_id (many2one): NEW relation: hr.leave.allocation
+# NOTHING TO DO
+
+hr_holidays  / hr.work.entry.type       / count_days_as (selection)     : NEW selection_keys: ['calendar', 'working'], hasdefault: default
+# DONE: post-migration: working for the time types coming from a leave type, as v19 counted
+
+hr_holidays  / hr.work.entry.type       / time_off_selectable (boolean) : NEW hasdefault: default
+# DONE: post-migration: set for the time types coming from an active leave type only
+
+hr_holidays  / hr.work.entry.type       / unit_of_measure (selection)   : NEW required, selection_keys: ['day', 'hour'], hasdefault: default
+# DONE: post-migration: hour when the leave type was requested in hours, day otherwise
+
+hr_holidays  / res.users                / leave_date_to (date)          : not related anymore
+hr_holidays  / res.users                / leave_date_to (date)          : now a function
+hr_holidays  / resource.calendar        / leave_accrual_plan_id (many2one): NEW relation: hr.leave.accrual.plan
+# NOTHING TO DO
+
+hr_work_entry_holidays / hr.leave.type            / work_entry_type_id (many2one) : DEL relation: hr.work.entry.type
+# DONE: pre-migration: used to choose the time type of the leave type
+
+hr_work_entry_holidays / hr.work.entry            / leave_id (many2one)           : DEL relation: hr.leave
+# NOTHING TO DO: hr.work.entry is not in the community code of v20
+
+hr_work_entry_holidays / hr.work.entry.type       / leave_type_ids (one2many)     : DEL relation: hr.leave.type
+# NOTHING TO DO
+
+---XML records in module 'hr_holidays'---
+DEL hr.leave.type: hr_holidays.holiday_status_eto (noupdate)
+DEL hr.leave.type: hr_holidays.holiday_status_extra_hours (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_ae_leave_type_sick_leave_0 (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_ae_leave_type_sick_leave_0 (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_ae_leave_type_sick_leave_50 (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_ae_leave_type_sick_leave_50 (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_be_leave_type_credit_time (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_be_leave_type_credit_time (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_be_leave_type_european (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_be_leave_type_european (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_be_leave_type_extra_legal (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_be_leave_type_extra_legal (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_be_leave_type_maternity (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_be_leave_type_maternity (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_be_leave_type_recovery (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_be_leave_type_recovery (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_be_leave_type_sick_leave_without_certificate (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_be_leave_type_sick_leave_without_certificate (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_be_leave_type_small_unemployment (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_be_leave_type_small_unemployment (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_be_leave_type_small_unemployment_birth (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_be_leave_type_small_unemployment_birth (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_be_leave_type_strike (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_be_leave_type_strike (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_be_leave_type_training (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_be_leave_type_training (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_be_leave_type_unpredictable (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_be_leave_type_unpredictable (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_be_leave_type_work_accident (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_be_leave_type_work_accident (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_ch_swissdec_accident_lt (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_ch_swissdec_accident_lt (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_ch_swissdec_illness_lt (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_ch_swissdec_illness_lt (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_ch_swissdec_interruption_of_work_lt (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_ch_swissdec_interruption_of_work_lt (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_ch_swissdec_maternity_lt (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_ch_swissdec_maternity_lt (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_ch_swissdec_military_lt (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_ch_swissdec_military_lt (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_ch_swissdec_unpaid_lt (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_ch_swissdec_unpaid_lt (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_eg_leave_type_death (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_eg_leave_type_hajj (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_eg_leave_type_marriage (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_eg_leave_type_maternity (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_eg_leave_type_paid_sick_time_off (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_eg_leave_type_paid_sick_time_off (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_eg_leave_type_sick_leave_75 (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_eg_leave_type_sick_leave_75 (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_eg_leave_type_sick_leave_unpaid (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_eg_leave_type_sick_leave_unpaid (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_hk_leave_type_annual_leave (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_hk_leave_type_annual_leave (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_hk_leave_type_compassionate_leave (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_hk_leave_type_compassionate_leave (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_hk_leave_type_compensation_leave (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_hk_leave_type_compensation_leave (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_hk_leave_type_examination_leave (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_hk_leave_type_examination_leave (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_hk_leave_type_marriage_leave (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_hk_leave_type_marriage_leave (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_hk_leave_type_maternity_leave (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_hk_leave_type_maternity_leave (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_hk_leave_type_maternity_leave_80 (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_hk_leave_type_maternity_leave_80 (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_hk_leave_type_paternity_leave (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_hk_leave_type_paternity_leave (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_hk_leave_type_paternity_leave_80 (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_hk_leave_type_paternity_leave_80 (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_hk_leave_type_sick_leave (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_hk_leave_type_sick_leave (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_hk_leave_type_sick_leave_80 (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_hk_leave_type_sick_leave_80 (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_hk_leave_type_unpaid_leave (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_hk_leave_type_unpaid_leave (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_id_leave_type_annual_leave (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_id_leave_type_annual_leave (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_id_leave_type_bereavement_leave (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_id_leave_type_bereavement_leave (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_id_leave_type_marriage_leave (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_id_leave_type_marriage_leave (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_id_leave_type_maternity_leave (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_id_leave_type_maternity_leave (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_id_leave_type_paternity_leave (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_id_leave_type_paternity_leave (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_id_leave_type_sick_leave (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_id_leave_type_sick_leave (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_id_leave_type_unpaid_leave (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_id_leave_type_unpaid_leave (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_jo_leave_type_maternity (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_jo_leave_type_paternity (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_jo_leave_type_pilgrimage (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_jo_leave_type_study (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_jo_leave_type_unpaid_sick (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_jo_leave_type_unpaid_sick (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_lu_leave_type_situational_unemployment (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_lu_leave_type_situational_unemployment (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_mx_leave_type_disability_due_to_illness_imss (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_mx_leave_type_disability_due_to_illness_imss (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_mx_leave_type_maternity_imss (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_mx_leave_type_maternity_imss (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_mx_leave_type_work_risk_imss (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_mx_leave_type_work_risk_imss (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_pl_leave_type_sick_leave (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_pl_leave_type_sick_leave (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_sa_leave_type_emergency (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_sa_leave_type_emergency (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_sa_leave_type_hajj (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_sa_leave_type_iddah (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_sa_leave_type_marriage (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_sa_leave_type_maternity (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_sa_leave_type_maternity (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_sa_leave_type_paternity (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_sa_leave_type_sick_leave_0 (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_sa_leave_type_sick_leave_0 (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_sa_leave_type_sick_leave_100 (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_sa_leave_type_sick_leave_100 (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_sa_leave_type_sick_leave_75 (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_sa_leave_type_sick_leave_75 (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_sa_leave_type_study (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_sk_leave_type_maternity (noupdate)
+DEL hr.leave.type: hr_holidays.l10n_sk_leave_type_maternity (noupdate)
+DEL hr.leave.type: hr_holidays.leave_type_compensatory_days (noupdate)
+DEL hr.leave.type: hr_holidays.leave_type_compensatory_days (noupdate)
+DEL hr.leave.type: hr_holidays.leave_type_paid_time_off (noupdate)
+DEL hr.leave.type: hr_holidays.leave_type_paid_time_off (noupdate)
+DEL hr.leave.type: hr_holidays.leave_type_sick_time_off (noupdate)
+DEL hr.leave.type: hr_holidays.leave_type_sick_time_off (noupdate)
+DEL hr.leave.type: hr_holidays.leave_type_unpaid (noupdate)
+DEL hr.leave.type: hr_holidays.leave_type_unpaid (noupdate)
+# DONE: pre-migration: the xmlid points to the time type of the leave type
+
+NEW ir.access: hr_holidays.access_hr_leave_employee_report_user
+# NOTHING TO DO: handled in base
+
+NEW ir.access: hr_holidays.access_hr_time_rule_allocation_log_manager
+NEW ir.access: hr_holidays.access_hr_time_rule_allocation_log_user
+NEW ir.access: hr_holidays.access_hr_time_rule_manager
+NEW ir.access: hr_holidays.access_hr_time_rule_user
+# NOTHING TO DO
+
+NEW ir.access: hr_holidays.access_load_public_holiday_wizard
+NEW ir.access: hr_holidays.access_load_public_holiday_wizard_line
+NEW ir.access: hr_holidays.calendar_event_rule_employee
+ir.access: hr_holidays.hr_leav_allocation_rule_employee_unlink (noupdate switched)
+ir.access: hr_holidays.hr_leave_accrual_plan_rule_multi_company (noupdate switched)
+ir.access: hr_holidays.hr_leave_allocation_rule_employee (noupdate switched)
+ir.access: hr_holidays.hr_leave_allocation_rule_employee_update (noupdate switched)
+ir.access: hr_holidays.hr_leave_allocation_rule_manager (noupdate switched)
+ir.access: hr_holidays.hr_leave_allocation_rule_multicompany (noupdate switched)
+ir.access: hr_holidays.hr_leave_allocation_rule_officer_read (noupdate switched)
+ir.access: hr_holidays.hr_leave_allocation_rule_officer_update (noupdate switched)
+ir.access: hr_holidays.hr_leave_allocation_rule_responsible_update (noupdate switched)
+ir.access: hr_holidays.hr_leave_mandatory_day_rule_multi_company (noupdate switched)
+ir.access: hr_holidays.hr_leave_report_calendar_rule_multi_company (noupdate switched)
+ir.access: hr_holidays.hr_leave_report_rule_group_holiday_user (noupdate switched)
+ir.access: hr_holidays.hr_leave_report_rule_group_user (noupdate switched)
+ir.access: hr_holidays.hr_leave_report_rule_multi_company (noupdate switched)
+ir.access: hr_holidays.hr_leave_rule_employee (noupdate switched)
+ir.access: hr_holidays.hr_leave_rule_employee_unlink (noupdate switched)
+ir.access: hr_holidays.hr_leave_rule_employee_update (noupdate switched)
+ir.access: hr_holidays.hr_leave_rule_multicompany (noupdate switched)
+ir.access: hr_holidays.hr_leave_rule_responsible_read (noupdate switched)
+ir.access: hr_holidays.hr_leave_rule_responsible_update (noupdate switched)
+ir.access: hr_holidays.hr_leave_rule_user_read (noupdate switched)
+ir.access: hr_holidays.resource_leaves_base_user (noupdate switched)
+ir.access: hr_holidays.resource_leaves_holidays_user (noupdate switched)
+# NOTHING TO DO: handled in base
+
+NEW ir.actions.act_window: hr_holidays.action_hr_leave_employee_report
+NEW ir.actions.act_window: hr_holidays.open_view_work_entry_type
+DEL ir.actions.act_window: hr_holidays.action_hr_available_holidays_report
+DEL ir.actions.act_window: hr_holidays.open_view_holiday_status
+DEL ir.actions.act_window.view: hr_holidays.action_window_leave_graph
+DEL ir.actions.act_window.view: hr_holidays.action_window_leave_list
+DEL ir.actions.act_window.view: hr_holidays.action_window_leave_pivot
+DEL ir.attachment: hr_holidays.icon_1
+DEL ir.attachment: hr_holidays.icon_14
+DEL ir.attachment: hr_holidays.icon_17
+DEL ir.attachment: hr_holidays.icon_19
+DEL ir.attachment: hr_holidays.icon_21
+DEL ir.attachment: hr_holidays.icon_26
+DEL ir.attachment: hr_holidays.icon_28
+DEL ir.attachment: hr_holidays.icon_4
+NEW ir.cron: hr_holidays.hr_leave_day_time_rules_cron
+NEW ir.cron: hr_holidays.hr_leave_week_time_rules_cron
+NEW ir.cron: hr_holidays.ir_cron_generate_public_holidays
+# NOTHING TO DO
+
+DEL ir.model.access: hr_holidays.access_calendar_event_hr_user
+DEL ir.model.access: hr_holidays.access_hr_holidays_employee_allocation
+DEL ir.model.access: hr_holidays.access_hr_holidays_employee_request
+DEL ir.model.access: hr_holidays.access_hr_holidays_manager_allocation
+DEL ir.model.access: hr_holidays.access_hr_holidays_manager_request
+DEL ir.model.access: hr_holidays.access_hr_holidays_status_user
+DEL ir.model.access: hr_holidays.access_hr_holidays_user_allocation
+DEL ir.model.access: hr_holidays.access_hr_holidays_user_request
+DEL ir.model.access: hr_holidays.access_hr_leave_report
+DEL ir.model.access: hr_holidays.access_resource_calendar_leaves_user
+# NOTHING TO DO: handled in base
+
+NEW ir.model.constraint: hr_holidays.constraint_hr_leave_accrual_level_valid_max_carriedover_duration_value
+NEW ir.model.constraint: hr_holidays.constraint_hr_work_entry_type_check_negative
+# NOTHING TO DO
+
+DEL ir.model.constraint: hr_holidays.constraint_hr_leave_accrual_level_valid_postpone_max_days_value
+DEL ir.model.constraint: hr_holidays.constraint_hr_leave_allocation_duration_check
+# DONE: pre-migration: deleted safely
+
+DEL ir.model.constraint: hr_holidays.constraint_hr_leave_type_check_negative
+# NOTHING TO DO
+
+DEL ir.rule: hr_holidays.hr_holidays_status_rule_multi_company (noupdate)
+DEL ir.rule: hr_holidays.hr_leave_rule_manager (noupdate)
+DEL ir.rule: hr_holidays.hr_leave_rule_officer_update (noupdate)
+# NOTHING TO DO: handled in base
+
+NEW ir.ui.menu: hr_holidays.menu_hr_holidays_time_rules
+DEL ir.ui.menu: hr_holidays.hr_leave_menu_my
+NEW ir.ui.view: hr_holidays.hr_leave_employee_report_filter
+NEW ir.ui.view: hr_holidays.hr_leave_employee_report_view_graph
+NEW ir.ui.view: hr_holidays.hr_leave_employee_report_view_pivot
+NEW ir.ui.view: hr_holidays.hr_leave_employee_view_dashboard_month
+NEW ir.ui.view: hr_holidays.hr_leave_employee_view_dashboard_week
+NEW ir.ui.view: hr_holidays.hr_leave_report_calendar_view_form_with_footer
+NEW ir.ui.view: hr_holidays.hr_leave_view_calendar_manager
+NEW ir.ui.view: hr_holidays.hr_leave_view_form_dashboard_new_time_off_custom
+NEW ir.ui.view: hr_holidays.hr_time_rule_view_form_inherit_hr_holidays
+NEW ir.ui.view: hr_holidays.hr_time_rule_view_list_inherit_hr_holidays
+NEW ir.ui.view: hr_holidays.hr_time_rule_view_search_inherit_hr_holidays
+NEW ir.ui.view: hr_holidays.hr_work_entry_type_view_form
+NEW ir.ui.view: hr_holidays.hr_work_entry_type_view_kanban
+NEW ir.ui.view: hr_holidays.load_public_holiday_wizard_view_form
+NEW ir.ui.view: hr_holidays.resource_calendar_view_form_holidays
+NEW ir.ui.view: hr_holidays.view_work_entry_type_normal_tree
+DEL ir.ui.view: hr_holidays.edit_holiday_status_form
+DEL ir.ui.view: hr_holidays.hr_holiday_status_view_kanban
+DEL ir.ui.view: hr_holidays.hr_leave_view_calendar
+DEL ir.ui.view: hr_holidays.view_holiday_graph
+DEL ir.ui.view: hr_holidays.view_holiday_list
+DEL ir.ui.view: hr_holidays.view_holiday_pivot
+DEL ir.ui.view: hr_holidays.view_holiday_status_normal_tree
+DEL ir.ui.view: hr_holidays.view_holidays_status_filter
+# NOTHING TO DO
+
+DEL ir.ui.view: hr_work_entry_holidays.view_holiday_status_normal_tree
+DEL ir.ui.view: hr_work_entry_holidays.work_entry_type_leave_form_inherit
+# NOTHING TO DO: xmlids moved by the module merge in base, obsolete ones are removed by the ORM
+
+NEW mail.template: hr_holidays.mail_template_allocation_confirmed (noupdate)
+NEW mail.template: hr_holidays.new_timeoff_request_template (noupdate)
+# NOTHING TO DO
+
+NEW res.groups: hr_holidays.group_hr_holidays_employee
+# DONE: post-migration: internal users added, the group holds the access base.group_user had

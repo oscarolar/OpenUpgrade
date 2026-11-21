@@ -1,0 +1,13 @@
+---Models in module 'hr_gamification'---
+---Fields in module 'hr_gamification'---
+---XML records in module 'hr_gamification'---
+ir.access: hr_gamification.goal_gamification_hr_user_visibility (noupdate switched)
+ir.access: hr_gamification.hr_gamification_badge_base_user_not_owned_access (noupdate switched)
+ir.access: hr_gamification.hr_gamification_badge_base_user_owned_access (noupdate switched)
+ir.access: hr_gamification.hr_gamification_badge_group_hr_user_access (noupdate switched)
+# NOTHING TO DO: ir.model.access and ir.rule are replaced by ir.access, module
+# records are recreated by the ORM and manual ones are converted in base
+
+DEL ir.model.access: hr_gamification.badge_base_user
+DEL ir.model.access: hr_gamification.badge_user_officer
+# NOTHING TO DO: ir.model.access is replaced by ir.access, handled in base

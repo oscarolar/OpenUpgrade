@@ -1,0 +1,5 @@
+---Models in module 'auth_timeout'---
+---Fields in module 'auth_timeout'---
+---XML records in module 'auth_timeout'---
+DEL ir.ui.view: auth_timeout.check_identity
+# NOTHING TO DO: template superseded by the new web.check_identity, removed by the ORM

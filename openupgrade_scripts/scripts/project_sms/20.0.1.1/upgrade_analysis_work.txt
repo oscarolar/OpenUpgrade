@@ -1,0 +1,5 @@
+---Models in module 'project_sms'---
+---Fields in module 'project_sms'---
+---XML records in module 'project_sms'---
+ir.access: project_sms.ir_rule_sms_template_project_manager (noupdate switched)
+# NOTHING TO DO: ir.access records are created from the module data, the previous ir.rule is handled in base

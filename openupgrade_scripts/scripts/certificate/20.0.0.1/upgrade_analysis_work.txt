@@ -1,0 +1,9 @@
+---Models in module 'certificate'---
+---Fields in module 'certificate'---
+certificate  / certificate.certificate  / scope (selection)             : selection_keys added: [ca] (most likely nothing to do)
+# NOTHING TO DO: new selection value
+
+---XML records in module 'certificate'---
+ir.access: certificate.certificate_rule_company (noupdate switched)
+ir.access: certificate.key_rule_company (noupdate switched)
+# NOTHING TO DO: standard ir.access records are created from the module data, custom ir.model.access and ir.rule records are converted in base

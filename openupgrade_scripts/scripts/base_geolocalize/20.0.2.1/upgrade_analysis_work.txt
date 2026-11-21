@@ -1,0 +1,8 @@
+---Models in module 'base_geolocalize'---
+---Fields in module 'base_geolocalize'---
+base_geolocalize / res.partner              / should_be_geolocalized (boolean): NEW hasdefault: default
+# NOTHING TO DO: stored computed field with default=False, the ORM does not compute it on existing partners so they are not geolocalized again
+
+---XML records in module 'base_geolocalize'---
+NEW ir.cron: base_geolocalize.ir_cron_geolocalize_required_partners
+# NOTHING TO DO: handled by the ORM

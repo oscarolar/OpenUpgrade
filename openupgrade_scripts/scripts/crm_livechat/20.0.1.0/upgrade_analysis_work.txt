@@ -1,0 +1,12 @@
+---Models in module 'crm_livechat'---
+---Fields in module 'crm_livechat'---
+crm_livechat / chatbot.script.step      / step_type (False)             : selection_keys removed: [create_lead_and_forward]
+# DONE: pre-migration: create_lead_and_forward mapped to create_lead; post-migration: a forward_operator step is added after those steps
+
+---XML records in module 'crm_livechat'---
+ir.access: crm_livechat.ir_rule_discuss_channel_crm_lead (noupdate switched)
+ir.access: crm_livechat.ir_rule_discuss_channel_member_crm_lead (noupdate switched)
+# NOTHING TO DO: ir.model.access and ir.rule are merged into ir.access, handled in base
+
+DEL utm.source: crm_livechat.utm_source_livechat [renamed to utm module] (noupdate)
+# DONE: pre-migration of utm: xmlid renamed

@@ -1,0 +1,8 @@
+---Models in module 'base_install_request'---
+---Fields in module 'base_install_request'---
+---XML records in module 'base_install_request'---
+NEW ir.ui.view: base_install_request.mail_installation_request_template
+# NOTHING TO DO: handled by the ORM
+
+DEL mail.template: base_install_request.mail_template_base_install_request (noupdate)
+# DONE: post-migration: obsolete noupdate mail template deleted, the request is now rendered with the qweb template mail_installation_request_template

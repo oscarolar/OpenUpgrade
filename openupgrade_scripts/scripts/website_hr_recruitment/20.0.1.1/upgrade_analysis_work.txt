@@ -1,0 +1,38 @@
+---Models in module 'website_hr_recruitment'---
+---Fields in module 'website_hr_recruitment'---
+website_hr_recruitment / hr.job                   / description (False)           : NEW mode: modify, hasdefault: default
+# NOTHING TO DO: the new default only applies to new records
+
+website_hr_recruitment / hr.job                   / publish_on (datetime)         : NEW
+# NOTHING TO DO: new field of website.published.mixin
+
+website_hr_recruitment / hr.job                   / published_date (date)         : not a function anymore
+website_hr_recruitment / hr.job                   / published_date (date)         : type is now 'datetime' ('date')
+# NOTHING TO DO: the stored values are kept and the ORM casts the column from date to
+#   timestamp (midnight UTC of the 19.0 publication date)
+
+website_hr_recruitment / hr.job                   / website_rating (html)         : NEW hasdefault: default, translate
+# DONE: pre-migration: create the column empty so existing jobs do not get the default
+#   rating block: in 19.0 the ratings are part of website_description, which is kept as
+#   is
+
+---XML records in module 'website_hr_recruitment'---
+ir.access: website_hr_recruitment.hr_department_public (noupdate switched)
+ir.access: website_hr_recruitment.hr_job_public (noupdate switched)
+# NOTHING TO DO: ir.model.access/ir.rule were merged into ir.access, handled by base
+
+NEW ir.filters: website_hr_recruitment.dynamic_snippet_latest_job_positions_filter
+# NOTHING TO DO: new data
+
+DEL ir.model.access: website_hr_recruitment.access_hr_department_public
+DEL ir.model.access: website_hr_recruitment.access_hr_job_public_portal
+DEL ir.model.access: website_hr_recruitment.access_hr_job_public_public
+DEL ir.rule: website_hr_recruitment.hr_job_officer (noupdate)
+DEL ir.rule: website_hr_recruitment.hr_job_portal (noupdate)
+# NOTHING TO DO: ir.model.access/ir.rule were merged into ir.access, handled by base
+
+NEW ir.ui.view: website_hr_recruitment.default_website_rating
+NEW ir.ui.view: website_hr_recruitment.dynamic_filter_template_hr_job_card
+NEW ir.ui.view: website_hr_recruitment.job_card
+NEW website.snippet.filter: website_hr_recruitment.dynamic_filter_latest_job_positions
+# NOTHING TO DO: new data

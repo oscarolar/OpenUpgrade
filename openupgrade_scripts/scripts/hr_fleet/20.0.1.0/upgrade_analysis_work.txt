@@ -1,0 +1,23 @@
+---Models in module 'hr_fleet'---
+---Fields in module 'hr_fleet'---
+hr_fleet     / fleet.vehicle            / mobility_card (char)          : DEL
+hr_fleet     / hr.employee              / mobility_card (char)          : DEL
+# NOTHING TO DO: removed feature, the columns are kept
+
+hr_fleet     / mail.activity.plan.template / responsible_type (False)      : DEL selection_keys: ['coach', 'employee', 'fleet_manager', 'manager', 'on_demand', 'other'], mode: modify
+# DONE: pre-migration: templates with the removed key 'fleet_manager' are set to 'on_demand', the default its ondelete policy pointed to
+
+---XML records in module 'hr_fleet'---
+ir.access: hr_fleet.hr_fleet_rule_vehicle_visibility_hr_officier (noupdate switched)
+# NOTHING TO DO: ir.access records are created from the module data, the previous ir.model.access and ir.rule are handled in base
+
+DEL ir.model.access: hr_fleet.hr_fleet_vehicle_access_right_hr_officer
+# NOTHING TO DO: handled in base
+
+NEW ir.ui.view: hr_fleet.hr_employee_public_view_form
+DEL ir.ui.view: hr_fleet.hr_departure_wizard_view_form
+DEL ir.ui.view: hr_fleet.view_employee_filter
+# NOTHING TO DO
+
+DEL mail.activity.plan.template: hr_fleet.offboarding_fleet (noupdate)
+# NOTHING TO DO: the record is kept, see responsible_type
