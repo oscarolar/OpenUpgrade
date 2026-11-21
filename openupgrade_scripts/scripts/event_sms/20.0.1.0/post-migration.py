@@ -19,7 +19,7 @@ def event_address_inline(env):
                 'event_id.address_inline',
                 'event_id.contact_address_inline'
             )::jsonb
-            WHERE {column}::text LIKE '%event_id.address_inline%'
+            WHERE {column}::text LIKE '%%event_id.address_inline%%'
             """,
         )
 
