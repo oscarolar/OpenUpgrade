@@ -189,7 +189,22 @@ def hr_leave_type_references(env):
     time type of every leave type
     """
     for table, column in _leave_type_references:
-        openupgrade.lift_constraints(env.cr, table, column)
+        env.cr.execute(
+            """
+            SELECT c.conname
+            FROM pg_constraint c
+            JOIN pg_attribute a
+                ON a.attrelid = c.conrelid AND a.attnum = ANY(c.conkey)
+            WHERE c.contype = 'f'
+                AND c.conrelid = %s::regclass
+                AND a.attname = %s
+            """,
+            (table, column),
+        )
+        for (constraint,) in env.cr.fetchall():
+            openupgrade.logged_query(
+                env.cr, f'ALTER TABLE {table} DROP CONSTRAINT "{constraint}"'
+            )
         openupgrade.logged_query(
             env.cr,
             f"""
