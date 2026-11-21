@@ -1,41 +1,46 @@
 ---Models in module 'base'---
-obsolete model ir.model.access
-# DONE: used to fill ir.access in post-migration
+obsolete model ir.model.access (merged to ir.access)
+# DONE: end-migration: custom records are converted to ir.access (inactive ones as
+# inactive ir.access). Records provided by modules are recreated as ir.access from
+# module data, their old xmlids get a suffix in pre-migration and the table is kept
 
-obsolete model ir.rule
-# DONE: used to fill ir.access in post-migration
+obsolete model ir.rule (merged to ir.access)
+# DONE: end-migration: custom records are converted to ir.access (inactive ones and
+# the ones without matching model access as inactive ir.access).
+# Rules provided by modules were noupdate in v19: pre-migration stores the ones that
+# differ from the v19 definition (ir_rule_19.csv), end-migration replaces the standard
+# ir.access by a custom copy with the changed domain when it has the same role, and
+# creates an inactive ir.access for review otherwise
 
-obsolete model res.bank
-# DONE: used to fill res.partner.bank columns
+obsolete model res.bank (merged to res.partner.bank)
+# DONE: post-migration: name, bic, street, street2, zip, city, state and country are
+# copied to the res.partner.bank records pointing to the bank. email, phone and active
+# have no equivalent, the table is kept
 
 new model clearing.label
-# NOTHING TO DO: new functinality
+# NOTHING TO DO: new functionality
 
 new model ir.access
-# DONE: manual ir.model.access, ir.rule records are preserved
+# DONE: see ir.model.access and ir.rule above
 
 new model ir.profile.query
-# NOTHING TO DO: new functinality
+# NOTHING TO DO: new functionality
 
 new model res.session [sql_view]
 # NOTHING TO DO
 
 model website (moved from website)
 # NOTHING TO DO
-
 ---Fields in module 'base'---
 base         / clearing.label           / country_id (many2one)         : NEW relation: res.country
 base         / clearing.label           / name (char)                   : NEW required
 # NOTHING TO DO
 
-base         / ir.access                / active (boolean)              : NEW hasdefault: default
 base         / ir.access                / domain (char)                 : NEW
-base         / ir.access                / group_id (many2one)           : NEW relation: res.groups
-base         / ir.access                / model_id (many2one)           : NEW relation: ir.model, required
-base         / ir.access                / name (char)                   : NEW required
 base         / ir.access                / note (html)                   : NEW
 base         / ir.access                / operation (selection)         : NEW required, selection_keys: ['c', 'cd', 'cr', 'crd', 'cru', 'crud', 'cu', 'cud', 'd', 'r', 'rd', 'ru', 'rud', 'u', 'ud']
-# DONE: manual ir.model.access, ir.rule records are preserved
+# DONE: end-migration: filled from perm_* and domain_force of custom and customized
+# ir.model.access, ir.rule records
 
 base         / ir.actions.act_url       / explanation (text)            : NEW
 base         / ir.actions.act_window    / explanation (text)            : NEW
@@ -79,15 +84,12 @@ base         / ir.model                 / explanation (text)            : NEW
 base         / ir.model                 / rule_ids (one2many)           : DEL relation: ir.rule
 # NOTHING TO DO
 
-base         / ir.model.access          / active (boolean)              : DEL
-base         / ir.model.access          / group_id (many2one)           : DEL relation: res.groups
-base         / ir.model.access          / model_id (many2one)           : DEL relation: ir.model, required
-base         / ir.model.access          / name (char)                   : DEL required
+base         / ir.model.access          / _order                        : _order is now 'model_id, group_id, id' ('model_id,group_id,name,id')
 base         / ir.model.access          / perm_create (boolean)         : DEL
 base         / ir.model.access          / perm_read (boolean)           : DEL
 base         / ir.model.access          / perm_unlink (boolean)         : DEL
 base         / ir.model.access          / perm_write (boolean)          : DEL
-# DONE: manual records are preserved
+# DONE: end-migration: converted to ir.access#operation for custom records
 
 base         / ir.model.fields          / index (boolean)               : selection_keys is now '['btree', 'btree_not_null', 'trigram']' ('False')
 base         / ir.model.fields          / index (boolean)               : type is now 'selection' ('boolean')
@@ -115,35 +117,32 @@ base         / ir.rule                  / perm_create (boolean)         : DEL
 base         / ir.rule                  / perm_read (boolean)           : DEL
 base         / ir.rule                  / perm_unlink (boolean)         : DEL
 base         / ir.rule                  / perm_write (boolean)          : DEL
-# DONE: manual records are preserved
+# DONE: end-migration: converted to ir.access (group_id, operation, domain) for custom
+# records and for records provided by modules that were changed in v19
 
 base         / ir.ui.view               / notes (html)                  : NEW
 base         / ir.ui.view               / technical_usage (selection)   : NEW selection_keys: []
 base         / ir.ui.view               / type (selection)              : selection_keys added: [card] (most likely nothing to do)
 # NOTHING TO DO
 
-base         / res.bank                 / active (boolean)              : DEL
+base         / res.bank                 / _order                        : _order is now 'sequence, id' ('name, id')
 # NOTHING TO DO
 
 base         / res.bank                 / bic (char)                    : DEL
-base         / res.bank                 / city (char)                   : DEL
 base         / res.bank                 / country (many2one)            : DEL relation: res.country
-# DONE: used to set corresponding res.partner.bank fields in post-migration
+# DONE: post-migration: used to set res.partner.bank#bank_bic, country_id
 
 base         / res.bank                 / email (char)                  : DEL
-# NOTHING TO DO
+# NOTHING TO DO: no equivalent in res.partner.bank, the table is kept
 
 base         / res.bank                 / name (char)                   : DEL required
 # DONE: used to set res.partner.bank#bank_name in post-migration
 
 base         / res.bank                 / phone (char)                  : DEL
-# NOTHING TO DO
+# NOTHING TO DO: no equivalent in res.partner.bank, the table is kept
 
 base         / res.bank                 / state (many2one)              : DEL relation: res.country.state
-base         / res.bank                 / street (char)                 : DEL
-base         / res.bank                 / street2 (char)                : DEL
-base         / res.bank                 / zip (char)                    : DEL
-# DONE: used to set corresponding res.partner.bank fields in post-migration
+# DONE: post-migration: used to set res.partner.bank#state_id
 
 base         / res.company              / font (selection)              : selection_keys added: [Noto_Sans_Mono], removed: [Fira_Mono]
 # DONE: mapped Fira_Mono to Noto_Sans_Mono
@@ -151,13 +150,16 @@ base         / res.company              / font (selection)              : select
 base         / res.company              / layout_background (selection) : DEL required, selection_keys: ['Blank', 'Custom', 'Demo logo']
 base         / res.company              / layout_background_image (binary): DEL attachment: True
 base         / res.company              / report_tables_id (selection)  : NEW selection_keys: ['bold', 'boxed', 'bubble', 'column', 'compact', 'light', 'striped'], hasdefault: default
-# NOTHING TO DO
+# NOTHING TO DO: layout_background has no equivalent in v20. report_tables_id is filled
+# by the pre-migration of web for the report layouts that are gone
 
 base         / res.country              / zip_applicability (selection) : NEW required, selection_keys: ['not_applicable', 'optional', 'required'], hasdefault: default
-# NOTHING TO DO: rely on data set in noupdate_changes.xml
+# DONE: post-migration: set by noupdate_changes.xml for the countries of the module
+# data, countries where zip_required was not set and that are still 'required' after
+# that get 'optional'
 
 base         / res.country              / zip_required (boolean)        : DEL
-# NOTHING TO DO
+# DONE: post-migration: used to set zip_applicability
 
 base         / res.device.log           / browser (char)                : DEL
 # DONE: renamed to user_agent
@@ -174,7 +176,7 @@ base         / res.device.log           / platform (char)               : DEL
 # NOTHING TO DO
 
 base         / res.device.log           / user_agent (char)             : NEW required
-# DONE: renamed from user_agent
+# DONE: renamed from browser in pre-migration
 
 base         / res.device.log           / user_id (many2one)            : now required
 base         / res.device.log           / user_id (many2one)            : relation is now 'False' ('res.users') [nothing to do]
@@ -190,51 +192,51 @@ base         / res.partner              / additional_identifiers (json) : NEW
 base         / res.partner              / commercial_company_name (char): not a function anymore
 base         / res.partner              / commercial_company_name (char): now related
 base         / res.partner              / company_name (char)           : DEL
-# NOTHING TO DO
+# NOTHING TO DO: new fields or relations handled by the ORM. company_name has no
+# equivalent in v20 (parent_name acts in its place), the column is kept
 
 base         / res.partner              / company_registry (char)       : DEL
 # DONE: set as OTHER in additional_identifiers in post-migration
 
 base         / res.partner              / contact_address_inline (char) : previously in module mail
 base         / res.partner              / is_company (boolean)          : now a function
-# NOTHING TO DO
-
-base         / res.partner              / tz (selection)                : selection_keys removed: [Africa/Asmera, America/Argentina/ComodRivadavia, America/Buenos_Aires, America/Catamarca, America/Cordoba, America/Fort_Wayne, America/Godthab, America/Indianapolis, America/Jujuy, America/Knox_IN, America/Louisville, America/Mendoza, America/Rosario, Antarctica/South_Pole, Asia/Ashkhabad, Asia/Calcutta, Asia/Choibalsan, Asia/Chungking, Asia/Dacca, Asia/Katmandu, Asia/Macao, Asia/Rangoon, Asia/Saigon, Asia/Thimbu, Asia/Ujung_Pandang, Asia/Ulan_Bator, Atlantic/Faeroe, Australia/ACT, Australia/LHI, Australia/NSW, Australia/North, Australia/Queensland, Australia/South, Australia/Tasmania, Australia/Victoria, Australia/West, Brazil/Acre, Brazil/DeNoronha, Brazil/East, Brazil/West, CET, CST6CDT, Canada/Atlantic, Canada/Central, Canada/Eastern, Canada/Mountain, Canada/Newfoundland, Canada/Pacific, Canada/Saskatchewan, Canada/Yukon, Chile/Continental, Chile/EasterIsland, Cuba, EET, EST, EST5EDT, Egypt, Eire, Europe/Kiev, Europe/Uzhgorod, Europe/Zaporozhye, GB, GB-Eire, GMT+0, GMT-0, GMT0, Greenwich, HST, Hongkong, Iceland, Iran, Israel, Jamaica, Japan, Kwajalein, Libya, MET, MST, MST7MDT, Mexico/BajaNorte, Mexico/BajaSur, Mexico/General, NZ, NZ-CHAT, Navajo, PRC, PST8PDT, Pacific/Enderbury, Pacific/Ponape, Pacific/Truk, Poland, Portugal, ROC, ROK, Singapore, Turkey, UCT, US/Alaska, US/Aleutian, US/Arizona, US/Central, US/East-Indiana, US/Eastern, US/Hawaii, US/Indiana-Starke, US/Michigan, US/Mountain, US/Pacific, US/Samoa, Universal, W-SU, WET, Zulu]
-# WORK IN PROGRESS: this is the difference between zoneinfo.available_timezones()
-# restricted by babel.dates.get_timezone for v20 and pytz.all_timezones for v19
-# Partially mapped in pre-migration, users with local knowledge are invited to
-# add mappings
+# NOTHING TO DO: stored values are kept, v20 recomputes them when vat or the
+# commercial partner change
 
 base         / res.partner.bank         / acc_holder_name (char)        : DEL
 base         / res.partner.bank         / acc_number (char)             : DEL required
-# DONE: renamed in pre-migration
+# DONE: renamed to holder_name, account_number in pre-migration
 
 base         / res.partner.bank         / account_number (char)         : NEW required
-# DONE: renamed to holder_name in pre-migration
+# DONE: renamed from acc_number in pre-migration
+
+base         / res.partner.bank         / active (boolean)              : DEL
+# NOTHING TO DO: this is res.bank#active, res.partner.bank#active is unchanged
 
 base         / res.partner.bank         / bank_bic (char)               : is now stored
 base         / res.partner.bank         / bank_bic (char)               : not related anymore
-# DONE: set from res.bank#bic in post-migration
+# DONE: post-migration: set from res.bank#bic
 
 base         / res.partner.bank         / bank_id (many2one)            : DEL relation: res.bank
-# NOTHING TO DO
+# DONE: post-migration: used to fetch the res.bank values, the column is kept
 
 base         / res.partner.bank         / bank_name (char)              : is now stored
 base         / res.partner.bank         / bank_name (char)              : not related anymore
-base         / res.partner.bank         / city (char)                   : NEW
-# DONE: set from corresponding res.bank fields in post-migration
+# DONE: post-migration: set from res.bank#name
 
 base         / res.partner.bank         / clearing_label_id (many2one)  : NEW relation: clearing.label, required, hasdefault: compute
-# NOTHING TO DO: will be computed by ORM
+# DONE: post-migration: computed by the ORM, recomputed for accounts that get their
+# country from res.bank
 
 base         / res.partner.bank         / company_id (many2one)         : not related anymore
 # NOTHING TO DO: was stored before
 
 base         / res.partner.bank         / country_id (many2one)         : NEW relation: res.country, hasdefault: compute
-# DONE: set from res.bank#country_id in post-migration
+# DONE: post-migration: set from res.bank#country when the bank has one, computed by
+# the ORM from the partner otherwise
 
 base         / res.partner.bank         / currency_id (many2one)        : DEL relation: res.currency
-# NOTHING TO DO
+# NOTHING TO DO: no equivalent in v20, the column is kept
 
 base         / res.partner.bank         / holder_name (char)            : NEW hasdefault: compute
 # DONE: renamed from acc_holder_name in pre-migration
@@ -244,10 +246,7 @@ base         / res.partner.bank         / sanitized_account_number (char): NEW i
 # DONE: renamed in pre-migration
 
 base         / res.partner.bank         / state_id (many2one)           : NEW relation: res.country.state
-base         / res.partner.bank         / street (char)                 : NEW
-base         / res.partner.bank         / street2 (char)                : NEW
-base         / res.partner.bank         / zip (char)                    : NEW
-# DONE: set from corresponding res.bank fields in post-migration
+# DONE: post-migration: set from res.bank#state
 
 base         / res.users                / contact_address_inline (char) : previously in module mail
 # NOTHING TO DO
@@ -266,9 +265,20 @@ base         / website                  / sequence (integer)            : previo
 base         / website                  / user_id (many2one)            : previously in module website
 # NOTHING TO DO
 
+base_vat     / res.company              / vat_check_vies (boolean)      : module is now 'account' ('base_vat')
+# NOTHING TO DO: base_vat is merged into base, the column is kept and the xmlid of the
+# field is handled by the ORM
+
+base_vat     / res.country              / has_foreign_fiscal_position (boolean): module is now 'l10n_eu_account_vies' ('base_vat')
+base_vat     / res.partner              / perform_vies_validation (boolean): module is now 'l10n_eu_account_vies' ('base_vat')
+base_vat     / res.partner              / vies_valid (boolean)          : module is now 'l10n_eu_account_vies' ('base_vat')
+base_vat     / res.users                / perform_vies_validation (boolean): module is now 'l10n_eu_account_vies' ('base_vat')
+base_vat     / res.users                / vies_valid (boolean)          : module is now 'l10n_eu_account_vies' ('base_vat')
+# DONE: post-migration: l10n_eu_account_vies is installed if some company has
+# vat_check_vies set, the columns are kept
+
 website      / website                  / domain_punycode (char)        : is now stored
 # NOTHING TO DO: computed by ORM
-
 ---XML records in module 'base'---
 NEW clearing.label: base.clearing_label_ae
 NEW clearing.label: base.clearing_label_all
@@ -283,228 +293,97 @@ NEW clearing.label: base.clearing_label_pe
 NEW clearing.label: base.clearing_label_sa
 NEW clearing.label: base.clearing_label_uk
 NEW clearing.label: base.clearing_label_us
-NEW ir.access: base.access_base_enable_profiling_wizard
-NEW ir.access: base.access_base_language_export
-NEW ir.access: base.access_base_language_import
-NEW ir.access: base.access_base_language_install
-NEW ir.access: base.access_base_module_uninstall
-NEW ir.access: base.access_base_module_update
-NEW ir.access: base.access_base_module_upgrade
-NEW ir.access: base.access_base_partner_merge_automatic_wizard
-NEW ir.access: base.access_base_partner_merge_line
-NEW ir.access: base.access_change_password_own
-NEW ir.access: base.access_change_password_user
-NEW ir.access: base.access_change_password_wizard
+# NOTHING TO DO: new functionality
+
 NEW ir.access: base.access_clearing_label_group_everyone
-NEW ir.access: base.access_decimal_precision_config
 NEW ir.access: base.access_ir_access_group_erp_manager
-NEW ir.access: base.access_ir_actions_act_url_group_system
-NEW ir.access: base.access_ir_actions_act_window_close_group_system
-NEW ir.access: base.access_ir_actions_act_window_system
-NEW ir.access: base.access_ir_actions_act_window_view_group_system
-NEW ir.access: base.access_ir_actions_client
-NEW ir.access: base.access_ir_actions_group_system
-NEW ir.access: base.access_ir_actions_report_group_system
-NEW ir.access: base.access_ir_actions_server_group_system
-NEW ir.access: base.access_ir_actions_server_history_group_system
-NEW ir.access: base.access_ir_actions_todo_group_system
-NEW ir.access: base.access_ir_asset_group_system
-NEW ir.access: base.access_ir_config_parameter_system
-NEW ir.access: base.access_ir_cron_group_cron
-NEW ir.access: base.access_ir_cron_progress_group_cron
-NEW ir.access: base.access_ir_cron_trigger_group_cron
-NEW ir.access: base.access_ir_default_group_user
-NEW ir.access: base.access_ir_demo
-NEW ir.access: base.access_ir_demo_failure
-NEW ir.access: base.access_ir_demo_failure_wizard
-NEW ir.access: base.access_ir_embedded_actions_group_user
-NEW ir.access: base.access_ir_exports_group_system
-NEW ir.access: base.access_ir_exports_line_group_system
-NEW ir.access: base.access_ir_logging
-NEW ir.access: base.access_ir_mail_server
-NEW ir.access: base.access_ir_model_constraint_group_erp_manager
-NEW ir.access: base.access_ir_model_data_group_erp_manager
-NEW ir.access: base.access_ir_model_fields_group_erp_manager
-NEW ir.access: base.access_ir_model_fields_selection_group_erp_manager
-NEW ir.access: base.access_ir_model_group_erp_manager
-NEW ir.access: base.access_ir_model_relation_group_erp_manager
-NEW ir.access: base.access_ir_module_category_group_user
-NEW ir.access: base.access_ir_module_module_dependency_group_system
-NEW ir.access: base.access_ir_module_module_exclusion_group_system
-NEW ir.access: base.access_ir_module_module_group_user
-NEW ir.access: base.access_ir_profile
 NEW ir.access: base.access_ir_profile_query
-NEW ir.access: base.access_ir_sequence_date_range_group_system
-NEW ir.access: base.access_ir_sequence_date_range_group_user
-NEW ir.access: base.access_ir_sequence_group_system
-NEW ir.access: base.access_ir_sequence_group_user
-NEW ir.access: base.access_ir_ui_menu_group_system
-NEW ir.access: base.access_ir_ui_menu_group_user
-NEW ir.access: base.access_ir_ui_view_custom_group_user
-NEW ir.access: base.access_report_layout
-NEW ir.access: base.access_res_config
-NEW ir.access: base.access_res_config_settings
 NEW ir.access: base.access_res_country_group_all
-NEW ir.access: base.access_res_country_group_group_user
-NEW ir.access: base.access_res_country_group_system
-NEW ir.access: base.access_res_country_public
-NEW ir.access: base.access_res_country_state_group_user
-NEW ir.access: base.access_res_country_state_public
-NEW ir.access: base.access_res_currency_group_system
-NEW ir.access: base.access_res_currency_public
-NEW ir.access: base.access_res_currency_rate_group_system
-NEW ir.access: base.access_res_currency_rate_public
-NEW ir.access: base.access_res_groups_group_erp_manager
-NEW ir.access: base.access_res_groups_group_user
-NEW ir.access: base.access_res_groups_privilege_group_erp_manager
-NEW ir.access: base.access_res_groups_privilege_group_user
-NEW ir.access: base.access_res_lang_group_system
-NEW ir.access: base.access_res_lang_public
-NEW ir.access: base.access_res_partner_category_group_partner_manager
-NEW ir.access: base.access_res_partner_category_group_user
-NEW ir.access: base.access_res_partner_group_partner_manager
-NEW ir.access: base.access_res_partner_industry_group_system
-NEW ir.access: base.access_res_partner_industry_group_user
-NEW ir.access: base.access_res_users_apikeys_description_employee
-NEW ir.access: base.access_res_users_apikeys_description_portal
-NEW ir.access: base.access_res_users_apikeys_show_employee
-NEW ir.access: base.access_res_users_deletion_group_erp_manager
-NEW ir.access: base.access_res_users_identitycheck_employee
-NEW ir.access: base.access_res_users_identitycheck_portal
-NEW ir.access: base.access_res_users_log_system
-NEW ir.access: base.access_res_users_public
-NEW ir.access: base.access_reset_view_arch_wizard
-NEW ir.access: base.access_server_action_history_wizard
-NEW ir.access: base.access_website_public_public
+NEW ir.access: base.access_website_public_public [renamed from website module]
 NEW ir.access: base.access_website_system
-NEW ir.access: base.access_wizard_ir_model_menu_create
-NEW ir.access: base.api_key_admin
-NEW ir.access: base.api_key_user
+ir.access: base.api_key_admin (noupdate switched)
+ir.access: base.api_key_user (noupdate switched)
 NEW ir.access: base.api_key_user_1
-NEW ir.access: base.change_password_own_rule
-NEW ir.access: base.change_password_rule
-NEW ir.access: base.embedded_action_admin_delete_rule
-NEW ir.access: base.embedded_action_user_delete_rule
+ir.access: base.change_password_own_rule (noupdate switched)
+ir.access: base.change_password_rule (noupdate switched)
+ir.access: base.embedded_action_admin_delete_rule (noupdate switched)
+ir.access: base.embedded_action_user_delete_rule (noupdate switched)
 NEW ir.access: base.ir_attachment_access_read_rule
 NEW ir.access: base.ir_attachment_public_rule
 NEW ir.access: base.ir_attachment_res_access_write
-NEW ir.access: base.ir_default_system_rule
-NEW ir.access: base.ir_default_user_rule
-NEW ir.access: base.ir_filters_admin_all_rights_rule
-NEW ir.access: base.ir_filters_employee_rule
-NEW ir.access: base.ir_filters_portal_public_rule
-NEW ir.access: base.ir_ui_view_custom_personal
+ir.access: base.ir_default_system_rule (noupdate switched)
+ir.access: base.ir_default_user_rule (noupdate switched)
+ir.access: base.ir_filters_admin_all_rights_rule (noupdate switched)
+ir.access: base.ir_filters_employee_rule (noupdate switched)
+ir.access: base.ir_filters_portal_public_rule (noupdate switched)
+ir.access: base.ir_ui_view_custom_personal (noupdate switched)
 NEW ir.access: base.ir_ui_view_rule_system
-NEW ir.access: base.paperformat_access_employee
-NEW ir.access: base.paperformat_access_portal
-NEW ir.access: base.properties_base_definition_rule_admin
-NEW ir.access: base.res_company_rule_erp_manager
-NEW ir.access: base.res_company_rule_public
-NEW ir.access: base.res_currency_rate_rule
-NEW ir.access: base.res_partner_bank_rule
+ir.access: base.properties_base_definition_rule_admin (noupdate switched)
+ir.access: base.res_company_rule_erp_manager (noupdate switched)
+ir.access: base.res_company_rule_public (noupdate switched)
+ir.access: base.res_currency_rate_rule (noupdate switched)
+ir.access: base.res_partner_bank_rule (noupdate switched)
 NEW ir.access: base.res_partner_bank_rule_user
 NEW ir.access: base.res_partner_bank_rule_user_1
-NEW ir.access: base.res_partner_portal_public_rule
-NEW ir.access: base.res_partner_rule
+ir.access: base.res_partner_portal_public_rule (noupdate switched)
+ir.access: base.res_partner_rule (noupdate switched)
 NEW ir.access: base.res_partner_rule_edit_all
 NEW ir.access: base.res_partner_rule_user
 NEW ir.access: base.res_partner_rule_write_self
-NEW ir.access: base.res_users_identity_check
-NEW ir.access: base.res_users_log_rule
-NEW ir.access: base.res_users_rule
+ir.access: base.res_users_identity_check (noupdate switched)
+ir.access: base.res_users_log_rule (noupdate switched)
+ir.access: base.res_users_rule (noupdate switched)
 NEW ir.access: base.res_users_rule_edit_all
-NEW ir.access: base.res_users_rule_portal
+ir.access: base.res_users_rule_portal (noupdate switched)
 NEW ir.access: base.res_users_rule_read_all
 NEW ir.access: base.res_users_rule_write_self
-NEW ir.access: base.res_users_settings_rule_admin
-NEW ir.access: base.res_users_settings_rule_user
-NEW ir.access: base.user_device
-NEW ir.access: base.user_device_admin
-NEW ir.access: base.user_device_logs
-NEW ir.access: base.user_device_logs_admin
+ir.access: base.res_users_settings_rule_admin (noupdate switched)
+ir.access: base.res_users_settings_rule_user (noupdate switched)
+ir.access: base.user_device (noupdate switched)
+ir.access: base.user_device_admin (noupdate switched)
+ir.access: base.user_device_logs (noupdate switched)
+ir.access: base.user_device_logs_admin (noupdate switched)
 NEW ir.access: base.user_session
 NEW ir.access: base.user_session_admin
+# DONE: created from module data. The ones marked as noupdate switched were noupdate
+# ir.rule records with the same xmlid in v19: pre-migration adds the suffix _ir_rule
+# (_ir_model_access for ir.model.access) to the old xmlids so that they don't clash,
+# end-migration carries over the changes users made to those rules (see obsolete model
+# ir.rule)
+
 NEW ir.actions.act_window: base.action_user_session
 NEW ir.actions.act_window: base.ir_access_action
 DEL ir.actions.act_window: base.action_res_bank_form
 DEL ir.actions.act_window: base.action_rule
 DEL ir.actions.act_window: base.ir_access_act
+# NOTHING TO DO
+
 NEW ir.actions.server: base.ir_actions_server_change_password_wizard
 NEW ir.actions.server: base.ir_profile_query_action_explain
-DEL ir.model.access: base.access_base_enable_profiling_wizard
-DEL ir.model.access: base.access_base_language_export
-DEL ir.model.access: base.access_base_language_import
-DEL ir.model.access: base.access_base_language_install
-DEL ir.model.access: base.access_base_module_uninstall
-DEL ir.model.access: base.access_base_module_update
-DEL ir.model.access: base.access_base_module_upgrade
-DEL ir.model.access: base.access_base_partner_merge_automatic_wizard
-DEL ir.model.access: base.access_base_partner_merge_line
-DEL ir.model.access: base.access_change_password_own
-DEL ir.model.access: base.access_change_password_user
-DEL ir.model.access: base.access_change_password_wizard
-DEL ir.model.access: base.access_decimal_precision_config
-DEL ir.model.access: base.access_ir_actions_act_url_group_system
-DEL ir.model.access: base.access_ir_actions_act_window_close_group_system
-DEL ir.model.access: base.access_ir_actions_act_window_system
-DEL ir.model.access: base.access_ir_actions_act_window_view_group_system
-DEL ir.model.access: base.access_ir_actions_client
-DEL ir.model.access: base.access_ir_actions_group_system
-DEL ir.model.access: base.access_ir_actions_report_group_system
-DEL ir.model.access: base.access_ir_actions_server_group_system
-DEL ir.model.access: base.access_ir_actions_server_history_group_system
-DEL ir.model.access: base.access_ir_actions_todo_group_system
-DEL ir.model.access: base.access_ir_asset_group_system
+# NOTHING TO DO
+
+DEL ir.cron: base_vat.vies_iap_check_update [renamed to l10n_eu_account_vies module]
+# DONE: pre-migration: xmlid renamed if some company has vat_check_vies set, in which
+# case post-migration installs l10n_eu_account_vies. Deleted with base_vat otherwise
+
 DEL ir.model.access: base.access_ir_attachment_group_portal_public
 DEL ir.model.access: base.access_ir_attachment_group_user
-DEL ir.model.access: base.access_ir_config_parameter_system
-DEL ir.model.access: base.access_ir_cron_group_cron
-DEL ir.model.access: base.access_ir_cron_progress_group_cron
-DEL ir.model.access: base.access_ir_cron_trigger_group_cron
 DEL ir.model.access: base.access_ir_default_all
 DEL ir.model.access: base.access_ir_default_group_system
-DEL ir.model.access: base.access_ir_default_group_user
-DEL ir.model.access: base.access_ir_demo
-DEL ir.model.access: base.access_ir_demo_failure
-DEL ir.model.access: base.access_ir_demo_failure_wizard
-DEL ir.model.access: base.access_ir_embedded_actions_group_user
-DEL ir.model.access: base.access_ir_exports_group_system
-DEL ir.model.access: base.access_ir_exports_line_group_system
 DEL ir.model.access: base.access_ir_filter_erp_manager
 DEL ir.model.access: base.access_ir_filter_portal
 DEL ir.model.access: base.access_ir_filter_public
 DEL ir.model.access: base.access_ir_filter_user
-DEL ir.model.access: base.access_ir_logging
-DEL ir.model.access: base.access_ir_mail_server
 DEL ir.model.access: base.access_ir_model_access_group_erp_manager
-DEL ir.model.access: base.access_ir_model_constraint_group_erp_manager
-DEL ir.model.access: base.access_ir_model_data_group_erp_manager
 DEL ir.model.access: base.access_ir_model_data_user
-DEL ir.model.access: base.access_ir_model_fields_group_erp_manager
-DEL ir.model.access: base.access_ir_model_fields_selection_group_erp_manager
 DEL ir.model.access: base.access_ir_model_fields_selection_user
 DEL ir.model.access: base.access_ir_model_fields_user
-DEL ir.model.access: base.access_ir_model_group_erp_manager
 DEL ir.model.access: base.access_ir_model_inherit
-DEL ir.model.access: base.access_ir_model_relation_group_erp_manager
 DEL ir.model.access: base.access_ir_model_user
-DEL ir.model.access: base.access_ir_module_category_group_user
-DEL ir.model.access: base.access_ir_module_module_dependency_group_system
-DEL ir.model.access: base.access_ir_module_module_exclusion_group_system
-DEL ir.model.access: base.access_ir_module_module_group_user
-DEL ir.model.access: base.access_ir_profile
 DEL ir.model.access: base.access_ir_rule_group_erp_manager
-DEL ir.model.access: base.access_ir_sequence_date_range_group_system
-DEL ir.model.access: base.access_ir_sequence_date_range_group_user
-DEL ir.model.access: base.access_ir_sequence_group_system
-DEL ir.model.access: base.access_ir_sequence_group_user
-DEL ir.model.access: base.access_ir_ui_menu_group_system
-DEL ir.model.access: base.access_ir_ui_menu_group_user
-DEL ir.model.access: base.access_ir_ui_view_custom_group_user
 DEL ir.model.access: base.access_ir_ui_view_group_system
 DEL ir.model.access: base.access_ir_ui_view_group_user
 DEL ir.model.access: base.access_properties_base_definition_group_system
-DEL ir.model.access: base.access_report_layout
 DEL ir.model.access: base.access_res_bank_group_partner_manager
 DEL ir.model.access: base.access_res_bank_group_system
 DEL ir.model.access: base.access_res_bank_user
@@ -512,71 +391,39 @@ DEL ir.model.access: base.access_res_company_employee
 DEL ir.model.access: base.access_res_company_group_erp_manager
 DEL ir.model.access: base.access_res_company_portal
 DEL ir.model.access: base.access_res_company_public
-DEL ir.model.access: base.access_res_config
-DEL ir.model.access: base.access_res_config_settings
 DEL ir.model.access: base.access_res_country_employee
 DEL ir.model.access: base.access_res_country_group_employee
-DEL ir.model.access: base.access_res_country_group_group_user
 DEL ir.model.access: base.access_res_country_group_portal
 DEL ir.model.access: base.access_res_country_group_public
-DEL ir.model.access: base.access_res_country_group_system
 DEL ir.model.access: base.access_res_country_group_user
 DEL ir.model.access: base.access_res_country_portal
-DEL ir.model.access: base.access_res_country_public
 DEL ir.model.access: base.access_res_country_state_employee
-DEL ir.model.access: base.access_res_country_state_group_user
 DEL ir.model.access: base.access_res_country_state_portal
-DEL ir.model.access: base.access_res_country_state_public
 DEL ir.model.access: base.access_res_currency_employee
-DEL ir.model.access: base.access_res_currency_group_system
 DEL ir.model.access: base.access_res_currency_portal
-DEL ir.model.access: base.access_res_currency_public
 DEL ir.model.access: base.access_res_currency_rate_employee
-DEL ir.model.access: base.access_res_currency_rate_group_system
 DEL ir.model.access: base.access_res_currency_rate_portal
-DEL ir.model.access: base.access_res_currency_rate_public
 DEL ir.model.access: base.access_res_device
 DEL ir.model.access: base.access_res_device_log
-DEL ir.model.access: base.access_res_groups_group_erp_manager
-DEL ir.model.access: base.access_res_groups_group_user
-DEL ir.model.access: base.access_res_groups_privilege_group_erp_manager
-DEL ir.model.access: base.access_res_groups_privilege_group_user
 DEL ir.model.access: base.access_res_lang_employee
-DEL ir.model.access: base.access_res_lang_group_system
 DEL ir.model.access: base.access_res_lang_portal
-DEL ir.model.access: base.access_res_lang_public
 DEL ir.model.access: base.access_res_partner_bank_group_partner_manager
 DEL ir.model.access: base.access_res_partner_bank_group_user
-DEL ir.model.access: base.access_res_partner_category_group_partner_manager
-DEL ir.model.access: base.access_res_partner_category_group_user
-DEL ir.model.access: base.access_res_partner_group_partner_manager
 DEL ir.model.access: base.access_res_partner_group_user
-DEL ir.model.access: base.access_res_partner_industry_group_system
-DEL ir.model.access: base.access_res_partner_industry_group_user
 DEL ir.model.access: base.access_res_partner_portal
 DEL ir.model.access: base.access_res_partner_public
 DEL ir.model.access: base.access_res_users_apikeys_access_employee
 DEL ir.model.access: base.access_res_users_apikeys_access_portal
-DEL ir.model.access: base.access_res_users_apikeys_description_employee
-DEL ir.model.access: base.access_res_users_apikeys_description_portal
-DEL ir.model.access: base.access_res_users_apikeys_show_employee
 DEL ir.model.access: base.access_res_users_deletion_all
-DEL ir.model.access: base.access_res_users_deletion_group_erp_manager
 DEL ir.model.access: base.access_res_users_employee
 DEL ir.model.access: base.access_res_users_group_erp_manager
-DEL ir.model.access: base.access_res_users_identitycheck_employee
-DEL ir.model.access: base.access_res_users_identitycheck_portal
-DEL ir.model.access: base.access_res_users_log_system
 DEL ir.model.access: base.access_res_users_portal
-DEL ir.model.access: base.access_res_users_public
 DEL ir.model.access: base.access_res_users_settings_all
 DEL ir.model.access: base.access_res_users_settings_user
-DEL ir.model.access: base.access_reset_view_arch_wizard
 DEL ir.model.access: base.access_reset_view_arch_wizard_group_system
-DEL ir.model.access: base.access_server_action_history_wizard
-DEL ir.model.access: base.access_wizard_ir_model_menu_create
-DEL ir.model.access: base.paperformat_access_employee
-DEL ir.model.access: base.paperformat_access_portal
+# NOTHING TO DO: replaced by the ir.access records of the module data. Changes to
+# these records were overwritten on every module update in v19
+
 NEW ir.model.constraint: base.constraint_res_country_code_check
 NEW ir.model.constraint: base.constraint_res_currency_rate_reversed_unique_name_per_day
 ir.model.constraint: base.constraint_res_currency_rate_unique_name_per_day (changed definition: is now 'UNIQUE INDEX (currency_id, company_id, name) NULLS NOT DISTINCT' ('unique (name,currency_id,company_id)'))
@@ -593,42 +440,20 @@ ir.module.category: base.module_category_administration (noupdate) (noupdate swi
 # DONE: set noupdate flag
 
 DEL ir.module.module: base.module_industry_fsm (noupdate)
-DEL ir.rule: base.api_key_admin (noupdate)
+# NOTHING TO DO
+
 DEL ir.rule: base.api_key_public (noupdate)
-DEL ir.rule: base.api_key_user (noupdate)
-DEL ir.rule: base.change_password_own_rule (noupdate)
-DEL ir.rule: base.change_password_rule (noupdate)
-DEL ir.rule: base.embedded_action_admin_delete_rule (noupdate)
-DEL ir.rule: base.embedded_action_user_delete_rule (noupdate)
-DEL ir.rule: base.ir_default_system_rule (noupdate)
-DEL ir.rule: base.ir_default_user_rule (noupdate)
-DEL ir.rule: base.ir_filters_admin_all_rights_rule (noupdate)
-DEL ir.rule: base.ir_filters_employee_rule (noupdate)
-DEL ir.rule: base.ir_filters_portal_public_rule (noupdate)
-DEL ir.rule: base.ir_ui_view_custom_personal (noupdate)
-DEL ir.rule: base.properties_base_definition_rule_admin (noupdate)
 DEL ir.rule: base.res_company_rule_employee (noupdate)
-DEL ir.rule: base.res_company_rule_erp_manager (noupdate)
 DEL ir.rule: base.res_company_rule_portal (noupdate)
-DEL ir.rule: base.res_company_rule_public (noupdate)
-DEL ir.rule: base.res_currency_rate_rule (noupdate)
-DEL ir.rule: base.res_partner_bank_rule (noupdate)
-DEL ir.rule: base.res_partner_portal_public_rule (noupdate)
-DEL ir.rule: base.res_partner_rule (noupdate)
-DEL ir.rule: base.res_users_identity_check (noupdate)
-DEL ir.rule: base.res_users_log_rule (noupdate)
-DEL ir.rule: base.res_users_rule (noupdate)
-DEL ir.rule: base.res_users_rule_portal (noupdate)
-DEL ir.rule: base.res_users_settings_rule_admin (noupdate)
-DEL ir.rule: base.res_users_settings_rule_user (noupdate)
-DEL ir.rule: base.user_device (noupdate)
-DEL ir.rule: base.user_device_admin (noupdate)
-DEL ir.rule: base.user_device_logs (noupdate)
-DEL ir.rule: base.user_device_logs_admin (noupdate)
+# DONE: end-migration: no ir.access with the same xmlid, if users changed these rules
+# in v19 an inactive ir.access is created for review
+
 NEW ir.ui.menu: base.menu_action_user_session
 NEW ir.ui.menu: base.menu_ir_access
 DEL ir.ui.menu: base.menu_action_rule
 DEL ir.ui.menu: base.menu_ir_access_act
+# NOTHING TO DO
+
 NEW ir.ui.view: base.clearing_label_list
 NEW ir.ui.view: base.ir_access_form_view
 NEW ir.ui.view: base.ir_access_kanban_view
@@ -654,7 +479,13 @@ DEL ir.ui.view: base.view_res_bank_tree
 DEL ir.ui.view: base.view_rule_form
 DEL ir.ui.view: base.view_rule_search
 DEL ir.ui.view: base.view_rule_tree
+DEL ir.ui.view: base_vat.res_config_settings_view_form
+DEL ir.ui.view: base_vat.view_partner_base_vat_form
+# NOTHING TO DO
+
 DEL res.bank: base.res_bank_1 (noupdate)
+# NOTHING TO DO: res.bank records are not migrated as such, see obsolete model res.bank
+
 NEW res.country.state: base.state_bh_13
 NEW res.country.state: base.state_bh_14
 NEW res.country.state: base.state_bh_15

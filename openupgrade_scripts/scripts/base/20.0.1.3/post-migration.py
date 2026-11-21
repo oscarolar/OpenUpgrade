@@ -65,7 +65,8 @@ def res_partner_tz(env):
 
 def res_partner_bank(env):
     """
-    Fill new res.partner.bank fields from res.bank, set company_id from partner,
+    Fill new res.partner.bank fields from res.bank and align the clearing label with
+    the country taken from the bank
     """
     openupgrade.logged_query(
         env.cr,
@@ -75,7 +76,7 @@ def res_partner_bank(env):
         SET
             bank_bic=res_bank.bic,
             city=res_bank.city,
-            country_id=res_bank.country,
+            country_id=COALESCE(res_bank.country, res_partner_bank.country_id),
             bank_name=res_bank.name,
             state_id=res_bank.state,
             street=res_bank.street,
@@ -85,6 +86,29 @@ def res_partner_bank(env):
             res_bank
         WHERE
             bank_id=res_bank.id
+        """,
+    )
+    openupgrade.logged_query(
+        env.cr,
+        """
+        UPDATE
+            res_partner_bank
+        SET
+            clearing_label_id=COALESCE(
+                (
+                    SELECT id FROM clearing_label
+                    WHERE clearing_label.country_id=res_partner_bank.country_id
+                    ORDER BY id LIMIT 1
+                ),
+                (
+                    SELECT id FROM clearing_label
+                    WHERE clearing_label.country_id IS NULL
+                    ORDER BY id LIMIT 1
+                ),
+                clearing_label_id
+            )
+        WHERE
+            bank_id IS NOT NULL
         """,
     )
 
@@ -104,6 +128,25 @@ def res_partner(env):
             ) || jsonb_build_object('OTHER', company_registry)
         WHERE
             company_registry IS NOT NULL
+        """,
+    )
+
+
+def res_country_zip_applicability(env):
+    """
+    Keep the zip code optional for countries where it was not required
+    """
+    openupgrade.logged_query(
+        env.cr,
+        """
+        UPDATE
+            res_country
+        SET
+            zip_applicability='optional'
+        WHERE
+            zip_required IS NOT TRUE
+        AND
+            zip_applicability='required'
         """,
     )
 
@@ -174,6 +217,23 @@ def ir_config_parameter_default_max_email_size(env):
         IrConfigParameter.set_float(key, 20)
 
 
+def l10n_eu_account_vies(env):
+    """
+    Install l10n_eu_account_vies if some company uses VIES validation, which was part
+    of base_vat
+    """
+    if not openupgrade.column_exists(env.cr, "res_company", "vat_check_vies"):
+        return
+    env.cr.execute("SELECT 1 FROM res_company WHERE vat_check_vies LIMIT 1")
+    if not env.cr.rowcount:
+        return
+    IrModuleModule = env["ir.module.module"]
+    IrModuleModule.update_list()
+    IrModuleModule.search(
+        [("name", "=", "l10n_eu_account_vies"), ("state", "=", "uninstalled")]
+    ).button_install()
+
+
 @openupgrade.migrate()
 def migrate(env, version):
     openupgrade.load_data(
@@ -184,12 +244,18 @@ def migrate(env, version):
     )
     openupgrade.delete_records_safely_by_xml_id(
         env,
-        [],
+        [
+            "base.transifex_code_translation_reload",
+            "base.transifex_code_translation_reload_ir_actions_server",
+            "base.transifex_project_url",
+        ],
     )
     res_partner_tz(env)
     ir_model_fields_index(env)
     res_partner_bank(env)
     res_partner(env)
+    res_country_zip_applicability(env)
     res_groups(env)
     res_users_apikeys_scope(env)
     ir_config_parameter_default_max_email_size(env)
+    l10n_eu_account_vies(env)
