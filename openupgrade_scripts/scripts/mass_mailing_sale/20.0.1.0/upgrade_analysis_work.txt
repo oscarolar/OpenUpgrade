@@ -4,3 +4,4 @@ mass_mailing_sale / mailing.mailing          / sale_invoiced_amount (integer): t
 # NOTHING TO DO: not stored
 
 ---XML records in module 'mass_mailing_sale'---
+# DONE: post-migration: not in the analysis, the quotations and invoices of a mailing are found by utm_reference instead of its utm source: filled for sale.order and account.move where the source belongs to a single mailing
