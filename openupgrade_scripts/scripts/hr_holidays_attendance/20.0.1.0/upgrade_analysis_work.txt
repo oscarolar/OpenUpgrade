@@ -5,7 +5,7 @@ hr_holidays_attendance / hr.attendance.overtime.rule / compensable_as_leave (boo
 # NOTHING TO DO: fields of the overtime models that hr_attendance drops in v20
 
 hr_holidays_attendance / hr.leave.type            / overtime_deductible (boolean) : DEL
-# TODO: time types have no overtime_deductible in v20, extra hours become time off through the time rules (hr.time.rule#allocation_type_id and leave_compensation_rate). The balance of deductible extra hours is not turned into allocations, it depends on how hr_attendance migrates the overtime (see its work file)
+# DONE: post-migration: time types have no overtime_deductible in v20, extra hours become time off through allocations made by the time rules. The types that deducted extra hours without allocation now require one, and every employee gets a validated allocation in hours that leaves the v19 balance: approved compensable extra hours, minus time off taken on those types, minus allocations already taken from the extra hours. With several such types the balance goes to the first one and the others get an allocation equal to the time off taken. The balance is exact for types in hours; for types in days the hours are converted with the hours per day of the employee
 
 ---XML records in module 'hr_holidays_attendance'---
 DEL hr.leave.type: hr_holidays.holiday_status_extra_hours (noupdate)
