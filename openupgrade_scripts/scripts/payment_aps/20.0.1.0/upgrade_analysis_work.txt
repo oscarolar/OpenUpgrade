@@ -1,0 +1,30 @@
+---Models in module 'payment_aps'---
+---Fields in module 'payment_aps'---
+---XML records in module 'payment_aps'---
+DEL ir.ui.view: payment_aps.redirect_form
+
+# NOTHING TO DO: removed by the ORM
+
+NEW payment.method: payment_aps.payment_method_amex (noupdate)
+NEW payment.method: payment_aps.payment_method_benefit (noupdate)
+
+# NOTHING TO DO
+
+NEW payment.method: payment_aps.payment_method_knet [renamed from payment module] (noupdate)
+NEW payment.method: payment_aps.payment_method_mada [renamed from payment module] (noupdate)
+
+# DONE: in the pre-migration of payment (one method per provider, xmlid in the provider module)
+
+NEW payment.method: payment_aps.payment_method_mastercard (noupdate)
+
+# NOTHING TO DO
+
+NEW payment.method: payment_aps.payment_method_meeza [renamed from payment module] (noupdate)
+NEW payment.method: payment_aps.payment_method_naps [renamed from payment module] (noupdate)
+NEW payment.method: payment_aps.payment_method_omannet [renamed from payment module] (noupdate)
+
+# DONE: in the pre-migration of payment (one method per provider, xmlid in the provider module)
+
+NEW payment.method: payment_aps.payment_method_visa (noupdate)
+
+# NOTHING TO DO
