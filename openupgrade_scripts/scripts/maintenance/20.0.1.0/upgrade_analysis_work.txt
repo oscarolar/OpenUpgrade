@@ -1,0 +1,62 @@
+---Models in module 'maintenance'---
+---Fields in module 'maintenance'---
+hr_maintenance / maintenance.equipment    / equipment_assign_to (selection): selection_keys removed: [department, employee]
+maintenance  / maintenance.equipment    / equipment_assign_to (selection): previously in module hr_maintenance
+# NOTHING TO DO: the field keeps its column, the keys of hr_maintenance are added back by that module
+
+maintenance  / maintenance.equipment    / equipment_req_properties_definition (properties_definition): NEW
+# NOTHING TO DO: new functionality
+
+maintenance  / maintenance.request      / archive (boolean)             : DEL
+# DONE: pre-migration: archived requests get state 'cancelled'
+
+maintenance  / maintenance.request      / email_cc (char)               : DEL
+# NOTHING TO DO: mail.thread.cc is obsolete, the column is kept without replacement
+
+maintenance  / maintenance.request      / equipment_req_properties (properties): NEW hasdefault: compute
+# NOTHING TO DO: new functionality
+
+maintenance  / maintenance.request      / instruction_google_slide (char): DEL
+maintenance  / maintenance.request      / instruction_pdf (binary)      : DEL attachment: True
+maintenance  / maintenance.request      / instruction_type (selection)  : DEL selection_keys: ['google_slide', 'pdf', 'text']
+# DONE: post-migration: only instruction_text is left, the Google Slide link is appended to it and the PDF becomes a regular attachment of the request
+
+maintenance  / maintenance.request      / kanban_state (selection)      : DEL required, selection_keys: ['blocked', 'done', 'normal']
+# DONE: pre-migration: 'blocked' becomes state 'changes_requested' and 'done' becomes 'approved'
+
+maintenance  / maintenance.request      / request_date (date)           : DEL
+# NOTHING TO DO: the column is kept, 20 uses schedule_date or create_date instead
+
+maintenance  / maintenance.request      / state (selection)             : NEW required, selection_keys: ['approved', 'cancelled', 'changes_requested', 'done', 'normal'], hasdefault: default
+# DONE: pre-migration: filled from archive (cancelled), the done flag of the stage (done) and kanban_state
+
+maintenance  / maintenance.request      / user_id (many2one)            : DEL relation: res.users
+maintenance  / maintenance.request      / user_ids (many2many)          : NEW relation: res.users, hasdefault: compute
+# DONE: pre-migration: relation created and filled from user_id, so that the ORM does not add the technician of the equipment to every request
+
+maintenance  / maintenance.stage        / done (boolean)                : DEL
+# DONE: pre-migration: used to set state 'done' on the requests
+
+maintenance  / maintenance.stage        / maintenance_team_ids (many2many): NEW relation: maintenance.team
+# NOTHING TO DO: new functionality, stages without teams are available for all of them
+
+---XML records in module 'maintenance'---
+ir.access: maintenance.equipment_request_rule_admin_user (noupdate switched)
+ir.access: maintenance.equipment_request_rule_user (noupdate switched)
+ir.access: maintenance.equipment_rule_admin_user (noupdate switched)
+ir.access: maintenance.equipment_rule_user (noupdate switched)
+ir.access: maintenance.maintenance_equipment_category_comp_rule (noupdate switched)
+ir.access: maintenance.maintenance_equipment_comp_rule (noupdate switched)
+ir.access: maintenance.maintenance_request_comp_rule (noupdate switched)
+ir.access: maintenance.maintenance_team_comp_rule (noupdate switched)
+# NOTHING TO DO: ir.access records are created from the module data, the previous ir.model.access and ir.rule are handled in base
+
+DEL ir.model.access: maintenance.access_equipment_admin_user
+DEL ir.model.access: maintenance.access_equipment_user
+DEL ir.model.access: maintenance.access_maintenance_system_user
+# NOTHING TO DO: handled in base
+
+DEL ir.ui.menu: maintenance.menu_m_request_calendar
+NEW ir.ui.view: maintenance.hr_equipment_request_view_card
+NEW ir.ui.view: maintenance.hr_equipment_stage_view_form
+# NOTHING TO DO
