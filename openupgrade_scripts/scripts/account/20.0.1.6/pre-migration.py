@@ -168,6 +168,19 @@ def _account_journal_group_unique_name(env):
     )
 
 
+def _account_reconcile_model_stale_columns(env):
+    """
+    rule_type, payment_tolerance_type and matching_order were dropped in 19.0
+    and come back with other values. A database that went through 18.0 still
+    has the old columns: set them aside so the ORM creates the new ones.
+    """
+    for column in ("rule_type", "payment_tolerance_type", "matching_order"):
+        if openupgrade.column_exists(env.cr, "account_reconcile_model", column):
+            openupgrade.rename_columns(
+                env.cr, {"account_reconcile_model": [(column, None)]}
+            )
+
+
 @openupgrade.migrate()
 def migrate(env, version):
     openupgrade.rename_models(env.cr, _model_renames)
@@ -179,3 +192,4 @@ def migrate(env, version):
     _account_payment_state(env)
     _account_payment_new_columns(env)
     _account_journal_group_unique_name(env)
+    _account_reconcile_model_stale_columns(env)

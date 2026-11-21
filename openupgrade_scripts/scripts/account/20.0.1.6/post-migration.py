@@ -7,13 +7,6 @@ from openupgradelib import openupgrade
 
 from odoo.orm.commands import Command
 
-_deleted_xmlids = [
-    "account.account_group_comp_rule",
-    "account.account_move_line_rule_group_invoice",
-    "account.account_move_rule_group_invoice",
-    "account.journal_group_comp_rule",
-]
-
 _company_defaults = [
     ("expense_account_id", "property_account_expense_categ_id"),
     ("income_account_id", "property_account_income_categ_id"),
@@ -290,6 +283,52 @@ def _res_partner_global_location_number(env):
     )
 
 
+def _res_partner_latam_identification(env):
+    """
+    l10n_latam.identification.type is gone: res.partner#vat only holds the tax
+    id and any other document goes to additional_identifiers. Move the
+    passports here; the country specific types are moved by their l10n module.
+    """
+    if not openupgrade.column_exists(
+        env.cr, "res_partner", "l10n_latam_identification_type_id"
+    ):
+        return
+    openupgrade.logged_query(
+        env.cr,
+        """
+        UPDATE res_partner rp
+        SET additional_identifiers =
+                jsonb_build_object('PASSPORT', rp.vat)
+                || COALESCE(rp.additional_identifiers, '{}'::jsonb),
+            vat = NULL
+        FROM ir_model_data imd
+        WHERE imd.model = 'l10n_latam.identification.type'
+            AND imd.module IN ('account', 'l10n_latam_base')
+            AND imd.name = 'it_pass'
+            AND imd.res_id = rp.l10n_latam_identification_type_id
+            AND COALESCE(rp.vat, '') <> ''
+        """,
+    )
+
+
+def _account_reconcile_model_matching_order(env):
+    """
+    Restore account.reconcile.model#matching_order when the column survived
+    from 18.0, where the field had the same values
+    """
+    legacy = openupgrade.get_legacy_name("matching_order")
+    if not openupgrade.column_exists(env.cr, "account_reconcile_model", legacy):
+        return
+    openupgrade.logged_query(
+        env.cr,
+        f"""
+        UPDATE account_reconcile_model
+        SET matching_order = {legacy}
+        WHERE {legacy} IN ('new_first', 'old_first')
+        """,
+    )
+
+
 @openupgrade.migrate()
 def migrate(env, version):
     openupgrade.load_data(env, "account", "20.0.1.6/noupdate_changes.xml")
@@ -303,10 +342,11 @@ def migrate(env, version):
         ],
         ["body_html"],
     )
-    openupgrade.delete_records_safely_by_xml_id(env, _deleted_xmlids)
     _account_group_to_parent_account(env)
     _account_journal_group_id(env)
     _account_report_line_foldability(env)
     _res_company_defaults(env)
     _account_move_inventory_closing(env)
     _res_partner_global_location_number(env)
+    _res_partner_latam_identification(env)
+    _account_reconcile_model_matching_order(env)
