@@ -2,6 +2,7 @@
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 
 from openupgradelib import openupgrade
+from psycopg2 import sql
 
 _added_columns = [
     ("res.company", "attendance_validation", "selection", "no_validation"),
@@ -146,8 +147,26 @@ def hr_attendance_break_duration(env):
     )
 
 
+def hr_attendance_overtime_line_legacy(env):
+    """
+    Keep the history of the extra hours, whose model is gone, in a legacy table
+    """
+    openupgrade.logged_query(
+        env.cr,
+        sql.SQL(
+            "CREATE TABLE IF NOT EXISTS {legacy_table} AS "
+            "SELECT * FROM hr_attendance_overtime_line"
+        ).format(
+            legacy_table=sql.Identifier(
+                openupgrade.get_legacy_name("hr_attendance_overtime_line")
+            )
+        ),
+    )
+
+
 @openupgrade.migrate()
 def migrate(env, version):
+    hr_attendance_overtime_line_legacy(env)
     openupgrade.add_columns(env, _added_columns)
     res_company_attendance_validation(env)
     res_company_attendance_work_entry_type_id(env)

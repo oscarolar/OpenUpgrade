@@ -3,7 +3,7 @@ obsolete model hr.attendance.overtime.line
 obsolete model hr.attendance.overtime.rule
 obsolete model hr.attendance.overtime.ruleset
 # NOTHING TO DO: overtime is no longer a model of its own, in v20 the time rules (hr.time.rule in hr_work_entry) split an attendance and write the overtime as another hr.attendance (time_rule_id, source_attendance_id). The tables are kept
-# TODO: v19 overtime lines only hold a duration per attendance (time_start/time_stop are the check_in/check_out of the attendance), so they can't be turned into v20 output attendances without choosing where the overtime happened and which hr.time.rule produced it. hr.employee#total_overtime is 0 after the migration until the time rules run again
+# DONE: pre-migration: the overtime lines are copied to the table openupgrade_legacy_20_0_hr_attendance_overtime_line. v19 lines only hold a duration per attendance, so they are not turned into v20 overtime attendances: hr.employee#total_overtime starts at 0 and custom rulesets are not converted to hr.time.rule. The balance of extra hours that can be taken as time off is kept by hr_holidays_attendance as allocations
 
 ---Fields in module 'hr_attendance'---
 hr_attendance / hr.attendance            / break_duration (float)        : NEW
