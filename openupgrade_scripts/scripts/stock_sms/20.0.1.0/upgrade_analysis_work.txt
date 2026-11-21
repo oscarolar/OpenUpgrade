@@ -1,0 +1,5 @@
+---Models in module 'stock_sms'---
+---Fields in module 'stock_sms'---
+---XML records in module 'stock_sms'---
+ir.access: stock_sms.ir_rule_sms_template_stock_manager (noupdate switched)
+# NOTHING TO DO: ir.access conversion is handled in base

@@ -1,0 +1,69 @@
+---Models in module 'sale_stock'---
+new model return.reason
+# NOTHING TO DO: new functionality
+
+---Fields in module 'sale_stock'---
+sale_stock   / res.company              / allow_spontaneous_returns (boolean): NEW
+sale_stock   / res.company              / return_validity_days (integer): NEW hasdefault: default
+# NOTHING TO DO
+
+sale_stock   / res.company              / security_lead (float)         : type is now 'integer' ('float')
+# DONE: pre-migration: column converted with float_to_integer
+
+sale_stock   / return.reason            / name (char)                   : NEW required, translate
+sale_stock   / return.reason            / sequence (integer)            : NEW hasdefault: default
+# NOTHING TO DO: new functionality
+
+sale_stock   / sale.order               / delivery_status (selection)   : module is now 'sale' ('sale_stock')
+sale_stock   / sale.order               / incoterm (many2one)           : module is now 'sale' ('sale_stock')
+sale_stock   / sale.order               / incoterm_location (char)      : module is now 'sale' ('sale_stock')
+sale_stock   / sale.order.line          / display_qty_widget (boolean)  : module is now 'sale' ('sale_stock')
+sale_stock   / sale.order.line          / is_storable (boolean)         : module is now 'sale' ('sale_stock')
+sale_stock   / sale.order.line          / qty_available_today (float)   : module is now 'sale' ('sale_stock')
+sale_stock   / sale.order.line          / scheduled_date (datetime)     : module is now 'sale' ('sale_stock')
+sale_stock   / sale.order.line          / virtual_available_at_date (float): module is now 'sale' ('sale_stock')
+# NOTHING TO DO: the column is kept, the field only changes its owner module
+
+sale_stock   / stock.picking            / return_reason_id (many2one)   : NEW relation: return.reason
+# NOTHING TO DO: new functionality
+
+---XML records in module 'sale_stock'---
+NEW ir.access: sale_stock.access_return_reason_everyone
+NEW ir.access: sale_stock.access_return_reason_user
+NEW ir.access: sale_stock.access_stock_lot_salesman
+ir.access: sale_stock.sale_order_line_rule_stock_user (noupdate switched)
+NEW ir.access: sale_stock.sale_order_stock_rule
+ir.access: sale_stock.stock_picking_rule_portal (noupdate switched)
+# NOTHING TO DO: handled by base (ir.model.access and ir.rule are merged into ir.access)
+
+NEW ir.actions.act_window: sale_stock.action_open_return_reasons
+NEW ir.actions.act_window: sale_stock.action_stock_picking_return_report
+NEW ir.actions.act_window.view: sale_stock.action_stock_picking_return_report_graph
+NEW ir.actions.act_window.view: sale_stock.action_stock_picking_return_report_pivot
+NEW ir.actions.report: sale_stock.action_report_return_label
+# NOTHING TO DO
+
+DEL ir.model.access: sale_stock.access_sale_order_line_stock_worker
+DEL ir.model.access: sale_stock.access_sale_order_stock_worker
+DEL ir.model.access: sale_stock.access_stock_location_sale_manager
+DEL ir.model.access: sale_stock.access_stock_picking_portal
+# NOTHING TO DO: handled by base (ir.model.access and ir.rule are merged into ir.access)
+
+NEW ir.ui.menu: sale_stock.menu_stock_picking_return_report
+NEW ir.ui.view: sale_stock.product_template_form_view_stock
+NEW ir.ui.view: sale_stock.return_label
+NEW ir.ui.view: sale_stock.return_reason_list
+NEW ir.ui.view: sale_stock.sale_order_portal_template
+NEW ir.ui.view: sale_stock.stock_picking_return_report_graph
+NEW ir.ui.view: sale_stock.stock_picking_return_report_pivot
+NEW ir.ui.view: sale_stock.view_stock_replenishment_info_sale_stock_inherit
+DEL ir.ui.view: sale_stock.portal_my_orders
+DEL ir.ui.view: sale_stock.report_saleorder_document_inherit_sale_stock
+# NOTHING TO DO
+
+NEW return.reason: sale_stock.return_reason_damaged_product
+NEW return.reason: sale_stock.return_reason_incorrect_specs
+NEW return.reason: sale_stock.return_reason_not_meeting_expectations
+NEW return.reason: sale_stock.return_reason_order_by_mistake
+NEW return.reason: sale_stock.return_reason_wrong_item
+# NOTHING TO DO: new functionality

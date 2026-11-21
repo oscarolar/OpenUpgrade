@@ -1,0 +1,26 @@
+---Models in module 'purchase_alternative'---
+new model purchase.alternative.create (renamed from purchase.requisition.create.alternative in module purchase_requisition) [transient]
+new model purchase.alternative.warning (renamed from purchase.requisition.alternative.warning in module purchase_requisition) [transient]
+model purchase.order.group (moved from purchase_requisition)
+# DONE: pre-migration of purchase: model moved from purchase_requisition and module installed if alternatives were in use. Scripts of this module do not run because it is newly installed
+# NOTHING TO DO for the wizards: transient models, their many2many tables are dropped in purchase's pre-migration to have them recreated with the new column names
+
+---Fields in module 'purchase_alternative'---
+purchase_alternative / purchase.order           / alternative_po_ids (one2many) : previously in module purchase_requisition
+purchase_alternative / purchase.order           / purchase_group_id (many2one)  : previously in module purchase_requisition
+purchase_alternative / purchase.order.group     / _order                        : previously in module purchase_requisition
+purchase_alternative / purchase.order.group     / display_name (char)           : previously in module purchase_requisition
+purchase_alternative / purchase.order.group     / order_ids (one2many)          : previously in module purchase_requisition
+purchase_alternative / purchase.order.line      / company_currency_id (many2one): previously in module purchase_requisition
+purchase_alternative / purchase.order.line      / price_total_cc (float)        : previously in module purchase_requisition
+# DONE: pre-migration of purchase: field xmlids moved from purchase_requisition, columns are kept
+
+---XML records in module 'purchase_alternative'---
+NEW ir.access: purchase_alternative.access_purchase_alternative_create
+NEW ir.access: purchase_alternative.access_purchase_alternative_purchase_order_group
+NEW ir.access: purchase_alternative.access_purchase_alternative_warning
+NEW ir.ui.view: purchase_alternative.purchase_alternative_create_form
+NEW ir.ui.view: purchase_alternative.purchase_alternative_warning_form
+NEW ir.ui.view: purchase_alternative.purchase_order_form
+NEW ir.ui.view: purchase_alternative.purchase_order_line_view_compare_list
+# NOTHING TO DO: new records, the views of purchase_requisition they replace are deleted by the ORM
