@@ -12,13 +12,4 @@
   <record id="project.account_analytic_line_rule_manager" model="ir.access">
     <field name="active">False</field>
   </record>
-  <record id="timesheet_line_rule_portal_user" model="ir.access">
-    <field name="domain">[
-                ('project_id', '!=', False),
-                ('project_id.privacy_visibility', 'in', ['invited_users', 'portal']),
-                ('project_id.collaborator_ids.partner_id', 'in', [user.partner_id.id]),
-            ]</field>
-    <field name="group_id" ref="base.group_portal"/>
-    <field name="operation">r</field>
-  </record>
 </odoo>
