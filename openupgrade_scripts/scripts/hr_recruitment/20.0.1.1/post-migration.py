@@ -1,13 +1,15 @@
 # Copyright 2026 Vauxoo
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 
+import ast
+
 from openupgradelib import openupgrade
 
 
 def hr_job_favorite_recruiter_ids(env):
     """
-    Fill hr.job#favorite_recruiter_ids (hr.employee) with the employees of the
-    users in hr.job#favorite_user_ids
+    Fill hr.job#favorite_recruiter_ids (hr.employee) with the employees that the
+    users in hr.job#favorite_user_ids have in the company of the job
     """
     openupgrade.logged_query(
         env.cr,
@@ -15,10 +17,26 @@ def hr_job_favorite_recruiter_ids(env):
         INSERT INTO job_favorite_recruiter_rel (job_id, recruiter_id)
         SELECT DISTINCT job_favorite_user_rel.job_id, hr_employee.id
         FROM job_favorite_user_rel
-        JOIN hr_employee ON hr_employee.user_id = job_favorite_user_rel.user_id
+        JOIN hr_job ON hr_job.id = job_favorite_user_rel.job_id
+        JOIN hr_employee
+            ON hr_employee.user_id = job_favorite_user_rel.user_id
+            AND hr_employee.company_id = hr_job.company_id
         ON CONFLICT DO NOTHING
         """,
     )
+
+
+def hr_job_alias_defaults(env):
+    """
+    The defaults of the job aliases set the recruiter instead of the user on the
+    applicants created from incoming mails
+    """
+    jobs = env["hr.job"].with_context(active_test=False).search([])
+    for job in jobs.filtered("alias_id"):
+        defaults = ast.literal_eval(job.alias_defaults or "{}")
+        defaults.pop("user_id", None)
+        job.alias_defaults = repr(defaults)
+        job.alias_defaults = job._alias_get_creation_values()["alias_defaults"]
 
 
 def res_company_applicant_properties_definition(env):
@@ -91,4 +109,5 @@ def migrate(env, version):
         ["body_html"],
     )
     hr_job_favorite_recruiter_ids(env)
+    hr_job_alias_defaults(env)
     res_company_applicant_properties_definition(env)

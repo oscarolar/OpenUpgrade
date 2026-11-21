@@ -19,8 +19,9 @@ hr_recruitment / hr.applicant             / linked_applicant_ids (one2many): NEW
 
 hr_recruitment / hr.applicant             / recruiter_id (many2one)       : NEW relation: hr.employee, hasdefault: compute
 # DONE: pre-migration: column added and filled with the employee of user_id
-# (preferring the applicant's company) instead of recomputing it from the job.
-# Applicants whose recruiter user has no employee are logged and keep user_id
+# in the company of the applicant instead of recomputing it from the job.
+# Only the employee of the company of the applicant is used. Applicants whose
+# recruiter user has no employee there are reported and keep user_id
 # hr.job#recruiter_id, the source of the compute, is migrated in hr
 
 hr_recruitment / hr.applicant             / schedule_pay (selection)      : NEW required, selection_keys: ['biweekly', 'daily', 'hourly', 'monthly', 'weekly', 'yearly'], hasdefault: default
@@ -40,7 +41,7 @@ hr_recruitment / hr.job                   / applicant_properties_definition (pro
 # res.company#applicant_properties_definition
 
 hr_recruitment / hr.job                   / favorite_recruiter_ids (many2many): NEW relation: hr.employee
-# DONE: post-migration: filled with the employees of favorite_user_ids
+# DONE: post-migration: filled with the employees that favorite_user_ids have in the company of the job
 
 hr_recruitment / hr.job                   / favorite_user_ids (many2many) : DEL relation: res.users
 # DONE: post-migration: used to fill favorite_recruiter_ids

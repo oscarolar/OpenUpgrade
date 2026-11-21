@@ -33,5 +33,22 @@ env["hr.applicant"].create(
         "applicant_properties": {"ou19field": "ou19 value"},
     }
 )
+company2 = env["res.company"].create({"name": "ou19 recruitment company 2"})
+job2 = env["hr.job"].create(
+    {
+        "name": "ou19 job of company 2",
+        "company_id": company2.id,
+        "user_id": recruiter_user.id,
+    }
+)
+job2.favorite_user_ids = recruiter_user
+env["hr.applicant"].create(
+    {
+        "partner_name": "ou19 applicant of company 2",
+        "job_id": job2.id,
+        "company_id": company2.id,
+        "user_id": recruiter_user.id,
+    }
+)
 
 env.cr.commit()

@@ -23,6 +23,18 @@ class TestHrRecruitmentMigration(TransactionCase):
         self.assertEqual(self.applicant.recruiter_id, self.employee)
         self.assertEqual(self.applicant.job_id.favorite_recruiter_ids, self.employee)
 
+    def test_recruiter_other_company(self):
+        """
+        Test that the employee of another company is not used as recruiter
+        """
+        applicant = self.env["hr.applicant"].search(
+            [("partner_name", "=", "ou19 applicant of company 2")]
+        )
+        self.assertTrue(applicant)
+        self.assertFalse(applicant.recruiter_id)
+        self.assertFalse(applicant.job_id.favorite_recruiter_ids)
+        self.assertNotIn("user_id", self.applicant.job_id.alias_defaults)
+
     def test_properties(self):
         """
         Test that the property definitions of jobs have been moved to companies
