@@ -1,0 +1,9 @@
+---Models in module 'hr_timesheet_attendance'---
+---Fields in module 'hr_timesheet_attendance'---
+---XML records in module 'hr_timesheet_attendance'---
+ir.access: hr_timesheet_attendance.hr_timesheet_attendance_report_restricted_company_rule (noupdate switched)
+ir.access: hr_timesheet_attendance.hr_timesheet_attendance_report_rule_manager (noupdate switched)
+DEL ir.model.access: hr_timesheet_attendance.access_hr_timesheet_attendance_report
+DEL ir.rule: hr_timesheet_attendance.hr_timesheet_attendance_report_rule_approver (noupdate)
+DEL ir.rule: hr_timesheet_attendance.hr_timesheet_attendance_report_rule_user (noupdate)
+# NOTHING TO DO: base renames the xmlids of v19 ir.model.access and ir.rule records, the ir.access records are created anew
