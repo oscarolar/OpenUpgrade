@@ -1,6 +1,8 @@
 ---Models in module 'project_sale_expense'---
 ---Fields in module 'project_sale_expense'---
 project_sale_expense / account.analytic.line    / category (False)              : NEW selection_keys: ['expense', 'invoice', 'manufacturing_order', 'other', 'picking_entry', 'vendor_bill'], mode: modify
-# DONE: post-migration: the analytic lines created from expenses get the new category 'expense' and their billable type is recomputed
+# DONE: post-migration: the analytic lines created from expenses get the new category
+# 'expense', and the billable type is recomputed on them and on the lines of a sale
+# order line that is an expense (so_line is not filled where it was empty)
 
 ---XML records in module 'project_sale_expense'---
