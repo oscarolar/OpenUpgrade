@@ -1,0 +1,67 @@
+---Models in module 'crm'---
+obsolete model crm.lead2opportunity.partner (merged to crm.lead2opportunity.partner.mass) [transient]
+# NOTHING TO DO: transient model
+
+---Fields in module 'crm'---
+crm          / crm.lead                 / commercial_partner_id (many2one): DEL relation: res.partner, stored: False
+# NOTHING TO DO: non stored
+
+crm          / crm.lead                 / duration_tracking (json)      : is now stored
+# DONE: pre-migration: column created and filled from the tracking values of the stage, in the new format (minutes per stage, current stage and date it was set)
+
+crm          / crm.lead                 / email_cc (char)               : DEL
+# NOTHING TO DO: mail.thread.cc is obsolete, the field has no replacement
+
+crm          / crm.lead                 / utm_reference (reference)     : NEW
+# NOTHING TO DO
+
+crm          / crm.lead                 / website_message_ids (one2many): DEL relation: mail.message
+# NOTHING TO DO: non stored
+
+crm          / crm.stage                / color (integer)               : DEL
+# NOTHING TO DO: removed without replacement
+
+crm          / crm.team.member          / assignment_optout (boolean)   : DEL
+crm          / crm.team.member          / assignment_rules (selection)  : NEW selection_keys: ['limited', 'opt-out', 'unlimited'], hasdefault: compute, stored: False
+# DONE: post-migration: members with assignment_optout get assignment_max 0, which is the opt-out rule now
+
+---XML records in module 'crm'---
+NEW ir.access: crm.calendar_event_rule_employee
+NEW ir.access: crm.calendar_event_rule_employee_1
+ir.access: crm.crm_activity_report_rule_all_activities (noupdate switched)
+ir.access: crm.crm_activity_report_rule_multi_company (noupdate switched)
+ir.access: crm.crm_activity_report_rule_personal_activities (noupdate switched)
+ir.access: crm.crm_lead_company_rule (noupdate switched)
+ir.access: crm.crm_rule_all_lead (noupdate switched)
+NEW ir.access: crm.crm_rule_all_lead_1
+ir.access: crm.crm_rule_personal_lead (noupdate switched)
+ir.access: crm.mail_plan_rule_group_sale_manager_lead (noupdate switched)
+ir.access: crm.mail_plan_templates_rule_group_sale_manager_lead (noupdate switched)
+NEW ir.access: crm.res_partner_rule_edit_all
+NEW ir.access: crm.res_partner_rule_user
+# NOTHING TO DO: ir.model.access and ir.rule are merged into ir.access, handled in base
+
+DEL ir.actions.act_window: crm.action_crm_lead2opportunity_partner
+DEL ir.actions.act_window.view: crm.crm_lead_all_leads_view_calendar
+DEL ir.actions.server: crm.action_opportunity_forecast
+DEL ir.actions.server: crm.action_your_pipeline
+# NOTHING TO DO
+
+DEL ir.model.access: crm.access_calendar_event
+DEL ir.model.access: crm.access_calendar_event_manager
+DEL ir.model.access: crm.access_calendar_event_type_sale_salesman
+DEL ir.model.access: crm.access_crm_activity_report_salesman
+DEL ir.model.access: crm.access_crm_activity_report_user
+DEL ir.model.access: crm.access_crm_lead
+DEL ir.model.access: crm.access_crm_lead2opportunity_partner
+DEL ir.model.access: crm.access_crm_lead_manager
+DEL ir.model.access: crm.access_crm_lost_reason_salesman
+DEL ir.model.access: crm.access_res_partner_category_manager
+DEL ir.model.access: crm.access_res_partner_manager
+# NOTHING TO DO: ir.model.access and ir.rule are merged into ir.access, handled in base
+
+NEW ir.ui.view: crm.crm_lead_creation_message
+NEW ir.ui.view: crm.crm_lead_view_list_simplified
+NEW ir.ui.view: crm.crm_module_access_request_template
+DEL ir.ui.view: crm.view_crm_lead2opportunity_partner
+# NOTHING TO DO
