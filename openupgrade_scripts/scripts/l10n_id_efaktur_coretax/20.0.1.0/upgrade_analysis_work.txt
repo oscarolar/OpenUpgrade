@@ -1,0 +1,27 @@
+---Models in module 'l10n_id_efaktur_coretax'---
+---Fields in module 'l10n_id_efaktur_coretax'---
+l10n_id_efaktur_coretax / l10n_id_efaktur_coretax.document / website_message_ids (one2many): DEL relation: mail.message
+
+# NOTHING TO DO: mail.thread no longer has website_message_ids
+
+l10n_id_efaktur_coretax / res.partner              / l10n_id_nik (char)            : DEL
+l10n_id_efaktur_coretax / res.partner              / l10n_id_pkp (boolean)         : DEL
+
+# TODO: pending review
+
+l10n_id_efaktur_coretax / res.partner              / l10n_id_tku (char)            : DEL
+
+# DONE: post-migration: copied to res.partner#additional_identifiers['ID_TKU']
+
+---XML records in module 'l10n_id_efaktur_coretax'---
+ir.access: l10n_id_efaktur_coretax.efaktur_document_multi_company (noupdate switched)
+
+# NOTHING TO DO: ir.rule and ir.model.access become ir.access in base
+
+NEW ir.ui.view: l10n_id_efaktur_coretax.uom_uom_view_form
+
+# NOTHING TO DO
+
+DEL ir.ui.view: l10n_id_efaktur_coretax.product_uom_form_view_inherit_coretax
+
+# NOTHING TO DO: removed by the ORM

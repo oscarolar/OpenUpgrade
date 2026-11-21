@@ -1,0 +1,20 @@
+---Models in module 'l10n_latam_check'---
+---Fields in module 'l10n_latam_check'---
+l10n_latam_check / l10n_latam.check         / bank_account_id (many2one)    : NEW relation: res.partner.bank, hasdefault: compute
+
+# NOTHING TO DO: the ORM sets the default
+
+l10n_latam_check / l10n_latam.check         / bank_id (many2one)            : DEL relation: res.bank
+l10n_latam_check / l10n_latam.check         / company_id (many2one)         : not related anymore
+l10n_latam_check / l10n_latam.check         / company_id (many2one)         : now a function
+
+# TODO: pending review
+
+l10n_latam_check / l10n_latam.check         / website_message_ids (one2many): DEL relation: mail.message
+
+# NOTHING TO DO: mail.thread no longer has website_message_ids
+
+---XML records in module 'l10n_latam_check'---
+ir.access: l10n_latam_check.l10n_latam_check_comp_rule (noupdate switched)
+
+# NOTHING TO DO: ir.rule and ir.model.access become ir.access in base

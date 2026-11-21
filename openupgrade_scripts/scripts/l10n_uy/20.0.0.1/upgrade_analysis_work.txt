@@ -1,0 +1,20 @@
+---Models in module 'l10n_uy'---
+---Fields in module 'l10n_uy'---
+l10n_uy      / l10n_latam.identification.type / l10n_uy_dgi_code (char)       : DEL
+
+# TODO: l10n_latam.identification.type is removed (see account): the partners that used the types of this module keep their number in vat and the type in the kept column l10n_latam_identification_type_id; moving them to additional_identifiers is pending
+
+---XML records in module 'l10n_uy'---
+DEL l10n_latam.identification.type: l10n_uy.it_ci
+DEL l10n_latam.identification.type: l10n_uy.it_dni
+DEL l10n_latam.identification.type: l10n_uy.it_nie
+DEL l10n_latam.identification.type: l10n_uy.it_nife
+DEL l10n_latam.identification.type: l10n_uy.it_other
+DEL l10n_latam.identification.type: l10n_uy.it_pass
+DEL l10n_latam.identification.type: l10n_uy.it_rut
+
+# TODO: l10n_latam.identification.type is removed (see account): the partners that used the types of this module keep their number in vat and the type in the kept column l10n_latam_identification_type_id; moving them to additional_identifiers is pending
+
+DEL res.partner: l10n_uy.partner_dgi
+
+# NOTHING TO DO: removed by the ORM

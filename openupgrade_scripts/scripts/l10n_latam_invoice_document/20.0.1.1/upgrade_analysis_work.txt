@@ -1,0 +1,16 @@
+---Models in module 'l10n_latam_invoice_document'---
+---Fields in module 'l10n_latam_invoice_document'---
+---XML records in module 'l10n_latam_invoice_document'---
+NEW ir.ui.view: l10n_latam_invoice_document.external_layout_center
+NEW ir.ui.view: l10n_latam_invoice_document.external_layout_compact
+NEW ir.ui.view: l10n_latam_invoice_document.external_layout_dual
+NEW ir.ui.view: l10n_latam_invoice_document.external_layout_footer_content
+NEW ir.ui.view: l10n_latam_invoice_document.external_layout_lines
+
+# NOTHING TO DO
+
+DEL ir.ui.view: l10n_latam_invoice_document.external_layout_bold
+DEL ir.ui.view: l10n_latam_invoice_document.external_layout_boxed
+DEL ir.ui.view: l10n_latam_invoice_document.external_layout_striped
+
+# NOTHING TO DO: removed by the ORM

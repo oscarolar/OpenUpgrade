@@ -1,0 +1,30 @@
+---Models in module 'l10n_account_withholding_tax'---
+---Fields in module 'l10n_account_withholding_tax'---
+l10n_account_withholding_tax / account.move             / withholding_deducted_amount_currency (float): NEW isfunction: function, stored
+l10n_account_withholding_tax / account.move             / withholding_total_amount_currency (float): NEW isfunction: function, stored
+
+# NOTHING TO DO: computed by the ORM
+
+l10n_account_withholding_tax / account.payment          / should_withhold_tax (boolean) : DEL
+
+# TODO: pending review
+
+l10n_account_withholding_tax / account.payment          / withhold (selection)          : NEW selection_keys: ['payment', 'withhold', 'withhold_pay'], hasdefault: default
+
+# NOTHING TO DO: the ORM sets the default
+
+l10n_account_withholding_tax / account.tax              / is_withholding_tax (boolean)  : NEW
+
+# NOTHING TO DO
+
+l10n_account_withholding_tax / account.tax              / is_withholding_tax_on_payment (boolean): DEL
+
+# TODO: pending review
+
+---XML records in module 'l10n_account_withholding_tax'---
+NEW ir.ui.view: l10n_account_withholding_tax.account_move_view_form_inherit_l10n_account_withholding_tax
+NEW ir.ui.view: l10n_account_withholding_tax.report_invoice_document
+NEW ir.ui.view: l10n_account_withholding_tax.view_account_payment_tree
+NEW ir.ui.view: l10n_account_withholding_tax.view_account_tax_search_inherit_l10n_account_withholding_tax
+
+# NOTHING TO DO

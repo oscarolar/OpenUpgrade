@@ -1,0 +1,7 @@
+---Models in module 'l10n_it_edi_doi'---
+---Fields in module 'l10n_it_edi_doi'---
+l10n_it_edi_doi / l10n_it_edi_doi.declaration_of_intent / website_message_ids (one2many): DEL relation: mail.message
+
+# NOTHING TO DO: mail.thread no longer has website_message_ids
+
+---XML records in module 'l10n_it_edi_doi'---

@@ -1,0 +1,24 @@
+---Models in module 'payment_razorpay'---
+---Fields in module 'payment_razorpay'---
+payment_razorpay / payment.provider         / code (False)                  : selection_keys added: [qfpay] (most likely nothing to do)
+
+# NOTHING TO DO
+
+---XML records in module 'payment_razorpay'---
+NEW payment.method: payment_razorpay.payment_method_amex (noupdate)
+NEW payment.method: payment_razorpay.payment_method_card (noupdate)
+NEW payment.method: payment_razorpay.payment_method_diners (noupdate)
+NEW payment.method: payment_razorpay.payment_method_discover (noupdate)
+NEW payment.method: payment_razorpay.payment_method_emi_india (noupdate)
+NEW payment.method: payment_razorpay.payment_method_fpx (noupdate)
+NEW payment.method: payment_razorpay.payment_method_maestro (noupdate)
+NEW payment.method: payment_razorpay.payment_method_mastercard (noupdate)
+NEW payment.method: payment_razorpay.payment_method_netbanking (noupdate)
+NEW payment.method: payment_razorpay.payment_method_paylater_india (noupdate)
+NEW payment.method: payment_razorpay.payment_method_paynow (noupdate)
+NEW payment.method: payment_razorpay.payment_method_rupay (noupdate)
+NEW payment.method: payment_razorpay.payment_method_upi (noupdate)
+NEW payment.method: payment_razorpay.payment_method_visa (noupdate)
+NEW payment.method: payment_razorpay.payment_method_wallets_india (noupdate)
+
+# NOTHING TO DO
