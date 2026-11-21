@@ -1,0 +1,10 @@
+---Models in module 'mail_tracking_sms'---
+---Fields in module 'mail_tracking_sms'---
+mail_tracking_sms / mail.message             / source_sms_template_id (many2one): NEW relation: sms.template
+# NOTHING TO DO: new feature
+
+---XML records in module 'mail_tracking_sms'---
+NEW ir.ui.view: mail_tracking_sms.mail_message_view_form
+NEW ir.ui.view: mail_tracking_sms.mail_message_view_list
+NEW ir.ui.view: mail_tracking_sms.mail_message_view_search
+# NOTHING TO DO: handled by the ORM
