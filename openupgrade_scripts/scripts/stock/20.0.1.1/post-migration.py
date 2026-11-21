@@ -47,7 +47,9 @@ def stock_scrap_draft(env):
     """
     Scraps that were never validated have no move in v19, create a draft scrap move
     for them. The link is kept in the legacy column stock_move.scrap_id so that
-    dependent modules can pass their own data.
+    dependent modules can pass their own data. The move is not attached to the
+    scrap's transfer, as an open scrap move would keep the transfer from being
+    done; the transfer's name is kept as origin.
     """
     env.cr.execute(
         """
@@ -57,11 +59,9 @@ def stock_scrap_draft(env):
             stock_scrap.product_uom_id, stock_scrap.scrap_qty,
             stock_scrap.location_id, stock_scrap.scrap_location_id,
             stock_scrap.lot_id, stock_scrap.should_replenish,
-            stock_picking.id, stock_picking.name
+            stock_picking.name
         FROM stock_scrap
-        LEFT JOIN stock_picking
-            ON stock_picking.id=stock_scrap.picking_id
-            AND stock_picking.state NOT IN ('done', 'cancel')
+        LEFT JOIN stock_picking ON stock_picking.id=stock_scrap.picking_id
         WHERE stock_scrap.state='draft'
         AND NOT EXISTS (
             SELECT 1 FROM stock_move WHERE stock_move.scrap_id=stock_scrap.id
@@ -69,6 +69,7 @@ def stock_scrap_draft(env):
         ORDER BY stock_scrap.id
         """
     )
+    failed_ids = []
     for (
         scrap_id,
         name,
@@ -81,7 +82,6 @@ def stock_scrap_draft(env):
         location_dest_id,
         lot_id,
         should_replenish,
-        picking_id,
         picking_name,
     ) in env.cr.fetchall():
         vals = {
@@ -94,7 +94,6 @@ def stock_scrap_draft(env):
             "product_uom_qty": quantity,
             "location_id": location_id,
             "location_dest_id": location_dest_id,
-            "picking_id": picking_id,
             "should_replenish_scrapped": should_replenish,
         }
         try:
@@ -112,10 +111,64 @@ def stock_scrap_draft(env):
         except Exception:
             _logger.exception("Draft scrap %s (id %s) not converted", name, scrap_id)
             env.invalidate_all()
+            failed_ids.append(scrap_id)
             continue
         env.cr.execute(
             "UPDATE stock_move SET scrap_id=%s WHERE id=%s", (scrap_id, move.id)
         )
+    if failed_ids:
+        openupgrade.message(
+            env.cr,
+            "stock",
+            "stock_scrap",
+            "id",
+            "%s draft scraps could not be converted to scrap moves and only "
+            "remain in the legacy table stock_scrap, ids: %s",
+            len(failed_ids),
+            failed_ids,
+        )
+
+
+def stock_scrap_chatter(env):
+    """
+    stock.move has no chatter, and the messages, activities and attachments of
+    stock.scrap would be deleted or orphaned together with the model. Pass them
+    to the scrap's transfer, or to the product if there is none.
+    """
+    for table, model_column, model_id_column in (
+        ("mail_message", "model", None),
+        ("ir_attachment", "res_model", None),
+        ("mail_activity", "res_model", "res_model_id"),
+    ):
+        for target_model, target_expression, extra_join in (
+            ("stock.picking", "stock_scrap.picking_id", ""),
+            (
+                "product.template",
+                "product_product.product_tmpl_id",
+                "JOIN product_product ON product_product.id=stock_scrap.product_id",
+            ),
+        ):
+            set_model_id = (
+                f", {model_id_column}=(SELECT id FROM ir_model WHERE model=%(model)s)"
+                if model_id_column
+                else ""
+            )
+            openupgrade.logged_query(
+                env.cr,
+                f"""
+                UPDATE {table}
+                SET {model_column}=%(model)s, res_id=scrap.target_id{set_model_id}
+                FROM (
+                    SELECT stock_scrap.id, {target_expression} AS target_id
+                    FROM stock_scrap
+                    {extra_join}
+                ) scrap
+                WHERE {table}.{model_column}='stock.scrap'
+                AND {table}.res_id=scrap.id
+                AND scrap.target_id IS NOT NULL
+                """,
+                {"model": target_model},
+            )
 
 
 def stock_scrap_reason_tags(env):
@@ -163,16 +216,24 @@ def stock_move_line_date(env):
     """
     stock.move.line#date is a stored related to its move's date now
     """
-    openupgrade.logged_query(
-        env.cr,
-        """
-        UPDATE stock_move_line
-        SET date=stock_move.date
-        FROM stock_move
-        WHERE stock_move.id=stock_move_line.move_id
-        AND stock_move_line.date IS DISTINCT FROM stock_move.date
-        """,
-    )
+    env.cr.execute("SELECT MIN(move_id), MAX(move_id) FROM stock_move_line")
+    min_id, max_id = env.cr.fetchone()
+    if min_id is None:
+        return
+    step = 5000000
+    for start in range(min_id, max_id + 1, step):
+        openupgrade.logged_query(
+            env.cr,
+            """
+            UPDATE stock_move_line
+            SET date=stock_move.date
+            FROM stock_move
+            WHERE stock_move.id=stock_move_line.move_id
+            AND stock_move_line.move_id >= %s AND stock_move_line.move_id < %s
+            AND stock_move_line.date IS DISTINCT FROM stock_move.date
+            """,
+            (start, start + step),
+        )
 
 
 def res_company_picking_policy(env):
@@ -238,6 +299,7 @@ def migrate(env, version):
     stock_scrap_reason_tag_color(env)
     stock_scrap_done(env)
     stock_scrap_draft(env)
+    stock_scrap_chatter(env)
     stock_scrap_reason_tags(env)
     stock_lot_partner_ids(env)
     stock_move_line_date(env)

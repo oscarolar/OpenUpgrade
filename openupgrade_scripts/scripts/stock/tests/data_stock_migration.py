@@ -38,6 +38,46 @@ scrap_done = env["stock.scrap"].create(
     }
 )
 scrap_done.action_validate()
+env["ir.attachment"].create(
+    {
+        "name": "OpenUpgrade v20 scrap attachment",
+        "raw": b"scrap",
+        "res_model": "stock.scrap",
+        "res_id": scrap_done.id,
+    }
+)
+scrap_done.message_post(body="OpenUpgrade v20 scrap message")
+open_picking = env["stock.picking"].create(
+    {
+        "picking_type_id": warehouse.out_type_id.id,
+        "location_id": stock_location.id,
+        "location_dest_id": customer_location.id,
+        "origin": "OpenUpgrade v20 open picking",
+        "move_ids": [
+            (
+                0,
+                0,
+                {
+                    "product_id": product.id,
+                    "product_uom_qty": 1,
+                    "product_uom": product.uom_id.id,
+                    "location_id": stock_location.id,
+                    "location_dest_id": customer_location.id,
+                },
+            )
+        ],
+    }
+)
+open_picking.action_confirm()
+picking_scrap = env["stock.scrap"].create(
+    {
+        "product_id": product.id,
+        "scrap_qty": 1,
+        "location_id": stock_location.id,
+        "picking_id": open_picking.id,
+    }
+)
+picking_scrap.message_post(body="OpenUpgrade v20 picking scrap message")
 env["stock.scrap"].create(
     {
         "product_id": lot_product.id,

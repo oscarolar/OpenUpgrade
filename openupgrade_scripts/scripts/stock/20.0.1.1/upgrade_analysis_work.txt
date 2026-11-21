@@ -8,7 +8,7 @@ obsolete model stock.return.picking.line [transient]
 # NOTHING TO DO: abstract and transient models
 
 obsolete model stock.scrap (merged to stock.move)
-# DONE: post-migration: moves of validated scraps are flagged is_scrap and get should_replenish_scrapped and the reason tags; draft scraps are recreated as draft scrap moves. The scrap's messages and followers stay behind as stock.move has no chatter. stock_move.scrap_id is kept as legacy column for dependent modules
+# DONE: post-migration: moves of validated scraps are flagged is_scrap and get should_replenish_scrapped and the reason tags; draft scraps are recreated as draft scrap moves without transfer (the transfer's name goes to origin, an open scrap move would keep the transfer from being done). Writing the quantity reserves it, as v20 does when saving a scrap, so those moves end up assigned. Draft scraps that fail to convert are reported with their ids and stay in the legacy table. stock_move.scrap_id is kept as legacy column for dependent modules
 
 new model report.stock_fleet.report_cmr [abstract]
 new model report.stock_fleet.report_cmr_batch [abstract]
@@ -66,7 +66,7 @@ stock        / stock.move               / forecasted_location_id (many2one): NEW
 # DONE: pre-migration: renamed location_final_id to forecasted_location_id
 
 stock        / stock.move               / is_scrap (boolean)            : NEW
-# DONE: post-migration: moves of validated scraps are flagged is_scrap and get should_replenish_scrapped and the reason tags; draft scraps are recreated as draft scrap moves. The scrap's messages and followers stay behind as stock.move has no chatter. stock_move.scrap_id is kept as legacy column for dependent modules
+# DONE: post-migration: moves of validated scraps are flagged is_scrap and get should_replenish_scrapped and the reason tags; draft scraps are recreated as draft scrap moves without transfer (the transfer's name goes to origin, an open scrap move would keep the transfer from being done). Writing the quantity reserves it, as v20 does when saving a scrap, so those moves end up assigned. Draft scraps that fail to convert are reported with their ids and stay in the legacy table. stock_move.scrap_id is kept as legacy column for dependent modules
 
 stock        / stock.move               / location_final_id (many2one)  : DEL relation: stock.location
 # DONE: pre-migration: renamed location_final_id to forecasted_location_id
@@ -75,20 +75,20 @@ stock        / stock.move               / product_uom (many2one)        : DEL re
 # DONE: pre-migration: renamed product_uom to uom_id
 
 stock        / stock.move               / quantity_product_uom (float)  : NEW isfunction: function, stored
-# DONE: pre-migration: column precomputed with SQL (also covers OCA's stock_move_quantity_product_uom, which is merged into stock)
+# DONE: pre-migration: column created as a copy of quantity in a single table rewrite, then converted only for moves in a unit different from their product's (also covers OCA's stock_move_quantity_product_uom, which is merged into stock)
 
 stock        / stock.move               / reference (char)              : not a function anymore
 # NOTHING TO DO: still a stored compute, scrap moves keep the scrap's name they already had
 
 stock        / stock.move               / scrap_id (many2one)           : DEL relation: stock.scrap
 stock        / stock.move               / should_replenish_scrapped (boolean): NEW
-# DONE: post-migration: moves of validated scraps are flagged is_scrap and get should_replenish_scrapped and the reason tags; draft scraps are recreated as draft scrap moves. The scrap's messages and followers stay behind as stock.move has no chatter. stock_move.scrap_id is kept as legacy column for dependent modules
+# DONE: post-migration: moves of validated scraps are flagged is_scrap and get should_replenish_scrapped and the reason tags; draft scraps are recreated as draft scrap moves without transfer (the transfer's name goes to origin, an open scrap move would keep the transfer from being done). Writing the quantity reserves it, as v20 does when saving a scrap, so those moves end up assigned. Draft scraps that fail to convert are reported with their ids and stay in the legacy table. stock_move.scrap_id is kept as legacy column for dependent modules
 
 stock        / stock.move               / uom_id (many2one)             : NEW relation: uom.uom, required, hasdefault: compute
 # DONE: pre-migration: renamed product_uom to uom_id
 
 stock        / stock.move.line          / date (datetime)               : now related
-# DONE: post-migration: aligned with the move's date
+# DONE: post-migration: aligned with the move's date, in ranges of move ids and only where it differs
 
 stock        / stock.move.line          / product_uom_id (many2one)     : DEL relation: uom.uom, required
 stock        / stock.move.line          / uom_id (many2one)             : NEW relation: uom.uom, required, hasdefault: compute
@@ -126,52 +126,54 @@ stock        / stock.picking.type       / wave_group_by_date (boolean)  : NEW
 # NOTHING TO DO: new feature, the default is fine
 
 stock        / stock.scrap              / company_id (many2one)         : DEL relation: res.company, required
-# DONE: post-migration: moves of validated scraps are flagged is_scrap and get should_replenish_scrapped and the reason tags; draft scraps are recreated as draft scrap moves. The scrap's messages and followers stay behind as stock.move has no chatter. stock_move.scrap_id is kept as legacy column for dependent modules
+# DONE: post-migration: moves of validated scraps are flagged is_scrap and get should_replenish_scrapped and the reason tags; draft scraps are recreated as draft scrap moves without transfer (the transfer's name goes to origin, an open scrap move would keep the transfer from being done). Writing the quantity reserves it, as v20 does when saving a scrap, so those moves end up assigned. Draft scraps that fail to convert are reported with their ids and stay in the legacy table. stock_move.scrap_id is kept as legacy column for dependent modules
 
 stock        / stock.scrap              / date_done (datetime)          : DEL
-# NOTHING TO DO: validated scraps have this on their move (reference, date, state, lines); owner and package of draft scraps and the chatter are not passed
+# NOTHING TO DO: validated scraps have this on their move (reference, date, state, lines); owner and package of draft scraps are not passed
 
 stock        / stock.scrap              / location_id (many2one)        : DEL relation: stock.location, required
 stock        / stock.scrap              / lot_id (many2one)             : DEL relation: stock.lot
-# DONE: post-migration: moves of validated scraps are flagged is_scrap and get should_replenish_scrapped and the reason tags; draft scraps are recreated as draft scrap moves. The scrap's messages and followers stay behind as stock.move has no chatter. stock_move.scrap_id is kept as legacy column for dependent modules
+# DONE: post-migration: moves of validated scraps are flagged is_scrap and get should_replenish_scrapped and the reason tags; draft scraps are recreated as draft scrap moves without transfer (the transfer's name goes to origin, an open scrap move would keep the transfer from being done). Writing the quantity reserves it, as v20 does when saving a scrap, so those moves end up assigned. Draft scraps that fail to convert are reported with their ids and stay in the legacy table. stock_move.scrap_id is kept as legacy column for dependent modules
 
 stock        / stock.scrap              / message_follower_ids (one2many): DEL relation: mail.followers
 stock        / stock.scrap              / message_ids (one2many)        : DEL relation: mail.message
+# DONE: post-migration: messages, activities and attachments of scraps are passed to the scrap's transfer, or to the product template when there is none, as stock.move has no chatter and they would be deleted with the model. Followers are not passed
+
 stock        / stock.scrap              / move_ids (one2many)           : DEL relation: stock.move
 stock        / stock.scrap              / name (char)                   : DEL required
-# NOTHING TO DO: validated scraps have this on their move (reference, date, state, lines); owner and package of draft scraps and the chatter are not passed
+# NOTHING TO DO: validated scraps have this on their move (reference, date, state, lines); owner and package of draft scraps are not passed
 
 stock        / stock.scrap              / origin (char)                 : DEL
-# DONE: post-migration: moves of validated scraps are flagged is_scrap and get should_replenish_scrapped and the reason tags; draft scraps are recreated as draft scrap moves. The scrap's messages and followers stay behind as stock.move has no chatter. stock_move.scrap_id is kept as legacy column for dependent modules
+# DONE: post-migration: moves of validated scraps are flagged is_scrap and get should_replenish_scrapped and the reason tags; draft scraps are recreated as draft scrap moves without transfer (the transfer's name goes to origin, an open scrap move would keep the transfer from being done). Writing the quantity reserves it, as v20 does when saving a scrap, so those moves end up assigned. Draft scraps that fail to convert are reported with their ids and stay in the legacy table. stock_move.scrap_id is kept as legacy column for dependent modules
 
 stock        / stock.scrap              / owner_id (many2one)           : DEL relation: res.partner
 stock        / stock.scrap              / package_id (many2one)         : DEL relation: stock.package
-# NOTHING TO DO: validated scraps have this on their move (reference, date, state, lines); owner and package of draft scraps and the chatter are not passed
+# NOTHING TO DO: validated scraps have this on their move (reference, date, state, lines); owner and package of draft scraps are not passed
 
 stock        / stock.scrap              / picking_id (many2one)         : DEL relation: stock.picking
 stock        / stock.scrap              / product_id (many2one)         : DEL relation: product.product, required
 stock        / stock.scrap              / product_uom_id (many2one)     : DEL relation: uom.uom, required
-# DONE: post-migration: moves of validated scraps are flagged is_scrap and get should_replenish_scrapped and the reason tags; draft scraps are recreated as draft scrap moves. The scrap's messages and followers stay behind as stock.move has no chatter. stock_move.scrap_id is kept as legacy column for dependent modules
+# DONE: post-migration: moves of validated scraps are flagged is_scrap and get should_replenish_scrapped and the reason tags; draft scraps are recreated as draft scrap moves without transfer (the transfer's name goes to origin, an open scrap move would keep the transfer from being done). Writing the quantity reserves it, as v20 does when saving a scrap, so those moves end up assigned. Draft scraps that fail to convert are reported with their ids and stay in the legacy table. stock_move.scrap_id is kept as legacy column for dependent modules
 
 stock        / stock.scrap              / rating_ids (one2many)         : DEL relation: rating.rating
-# NOTHING TO DO: validated scraps have this on their move (reference, date, state, lines); owner and package of draft scraps and the chatter are not passed
+# DONE: post-migration: messages, activities and attachments of scraps are passed to the scrap's transfer, or to the product template when there is none, as stock.move has no chatter and they would be deleted with the model. Followers are not passed
 
 stock        / stock.scrap              / scrap_location_id (many2one)  : DEL relation: stock.location, required
 stock        / stock.scrap              / scrap_qty (float)             : DEL required
-# DONE: post-migration: moves of validated scraps are flagged is_scrap and get should_replenish_scrapped and the reason tags; draft scraps are recreated as draft scrap moves. The scrap's messages and followers stay behind as stock.move has no chatter. stock_move.scrap_id is kept as legacy column for dependent modules
+# DONE: post-migration: moves of validated scraps are flagged is_scrap and get should_replenish_scrapped and the reason tags; draft scraps are recreated as draft scrap moves without transfer (the transfer's name goes to origin, an open scrap move would keep the transfer from being done). Writing the quantity reserves it, as v20 does when saving a scrap, so those moves end up assigned. Draft scraps that fail to convert are reported with their ids and stay in the legacy table. stock_move.scrap_id is kept as legacy column for dependent modules
 
 stock        / stock.scrap              / scrap_reason_tag_ids (many2many): column1 is now 'stock_move_id' ('stock_scrap_id') [stock_scrap_stock_scrap_reason_tag_rel]
 stock        / stock.scrap              / scrap_reason_tag_ids (many2many): table is now 'stock_move_stock_scrap_reason_tag_rel' ('stock_scrap_stock_scrap_reason_tag_rel')
 # DONE: post-migration: copied to the relation of the scrap's move
 
 stock        / stock.scrap              / should_replenish (boolean)    : DEL
-# DONE: post-migration: moves of validated scraps are flagged is_scrap and get should_replenish_scrapped and the reason tags; draft scraps are recreated as draft scrap moves. The scrap's messages and followers stay behind as stock.move has no chatter. stock_move.scrap_id is kept as legacy column for dependent modules
+# DONE: post-migration: moves of validated scraps are flagged is_scrap and get should_replenish_scrapped and the reason tags; draft scraps are recreated as draft scrap moves without transfer (the transfer's name goes to origin, an open scrap move would keep the transfer from being done). Writing the quantity reserves it, as v20 does when saving a scrap, so those moves end up assigned. Draft scraps that fail to convert are reported with their ids and stay in the legacy table. stock_move.scrap_id is kept as legacy column for dependent modules
 
 stock        / stock.scrap              / state (selection)             : DEL selection_keys: ['done', 'draft']
-# NOTHING TO DO: validated scraps have this on their move (reference, date, state, lines); owner and package of draft scraps and the chatter are not passed
+# NOTHING TO DO: validated scraps have this on their move (reference, date, state, lines); owner and package of draft scraps are not passed
 
 stock        / stock.scrap              / website_message_ids (one2many): DEL relation: mail.message
-# NOTHING TO DO
+# DONE: post-migration: messages, activities and attachments of scraps are passed to the scrap's transfer, or to the product template when there is none, as stock.move has no chatter and they would be deleted with the model. Followers are not passed
 
 stock        / stock.scrap.reason.tag   / color (char)                  : type is now 'integer' ('char')
 # DONE: pre-migration and post-migration: hex string converted to its integer value

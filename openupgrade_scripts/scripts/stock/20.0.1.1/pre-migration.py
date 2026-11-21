@@ -135,20 +135,20 @@ def stock_move_quantity_product_uom(env):
     openupgrade.logged_query(
         env.cr,
         """
+        ALTER TABLE stock_move
+        ALTER COLUMN quantity_product_uom TYPE numeric USING quantity
+        """,
+    )
+    openupgrade.logged_query(
+        env.cr,
+        """
         UPDATE stock_move
-        SET quantity_product_uom = CASE
-            WHEN stock_move.quantity IS NULL OR stock_move.quantity = 0
-                OR stock_move.uom_id = product_template.uom_id
-            THEN stock_move.quantity
-            ELSE round(
-                (
-                    stock_move.quantity * move_uom.factor / product_uom.factor
-                )::numeric,
-                COALESCE((
-                    SELECT digits FROM decimal_precision
-                    WHERE name='Product Unit'
-                ), 2)
-            ) END
+        SET quantity_product_uom = round(
+            (stock_move.quantity * move_uom.factor / product_uom.factor)::numeric,
+            COALESCE((
+                SELECT digits FROM decimal_precision WHERE name='Product Unit'
+            ), 2)
+        )
         FROM product_product
         JOIN product_template
             ON product_template.id=product_product.product_tmpl_id
@@ -156,6 +156,8 @@ def stock_move_quantity_product_uom(env):
         uom_uom move_uom
         WHERE product_product.id=stock_move.product_id
         AND move_uom.id=stock_move.uom_id
+        AND stock_move.uom_id != product_template.uom_id
+        AND stock_move.quantity != 0
         """,
     )
 

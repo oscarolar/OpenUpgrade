@@ -48,6 +48,63 @@ class TestStockMigration(TransactionCase):
         self.assertEqual(move.lot_ids.name, "OU20LOT")
         self.assertEqual(move.scrap_reason_tag_ids.name, "OpenUpgrade v20 scrap tag")
 
+    def test_scrap_draft_picking(self):
+        """
+        Test that a draft scrap of an open transfer does not join the transfer
+        """
+        picking = self.env["stock.picking"].search(
+            [("origin", "=", "OpenUpgrade v20 open picking")]
+        )
+        self.assertEqual(len(picking.move_ids), 1)
+        self.assertFalse(picking.move_ids.is_scrap)
+        move = self.env["stock.move"].search(
+            [("origin", "=", picking.name), ("is_scrap", "=", True)]
+        )
+        self.assertEqual(len(move), 1)
+        self.assertFalse(move.picking_id)
+        self.assertNotIn(move.state, ("done", "cancel"))
+        self.assertTrue(
+            self.env["mail.message"].search(
+                [
+                    ("model", "=", "stock.picking"),
+                    ("res_id", "=", picking.id),
+                    ("body", "like", "OpenUpgrade v20 picking scrap message"),
+                ]
+            )
+        )
+
+    def test_scrap_chatter(self):
+        """
+        Test that messages and attachments of scraps without transfer are passed
+        to the product
+        """
+        template = (
+            self.env["product.product"]
+            .search([("name", "=", "OpenUpgrade v20 stock product")])
+            .product_tmpl_id
+        )
+        self.assertTrue(
+            self.env["mail.message"].search(
+                [
+                    ("model", "=", "product.template"),
+                    ("res_id", "=", template.id),
+                    ("body", "like", "OpenUpgrade v20 scrap message"),
+                ]
+            )
+        )
+        self.assertTrue(
+            self.env["ir.attachment"].search(
+                [
+                    ("res_model", "=", "product.template"),
+                    ("res_id", "=", template.id),
+                    ("name", "=", "OpenUpgrade v20 scrap attachment"),
+                ]
+            )
+        )
+        self.assertFalse(
+            self.env["mail.message"].search([("model", "=", "stock.scrap")])
+        )
+
     def test_lot_partner_ids(self):
         """
         Test that lots know the partners they were delivered to
