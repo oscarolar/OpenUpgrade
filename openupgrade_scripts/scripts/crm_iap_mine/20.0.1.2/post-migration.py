@@ -84,6 +84,36 @@ def crm_iap_lead_industry(env):
     )
 
 
+def crm_iap_lead_industry_required(env):
+    """
+    Industries created by the user have no SIC group nor division, which are
+    required now: classify them as nonclassifiable establishments. Then set the
+    constraints that could not be set while the v19 industries existed
+    """
+    default_industry = env.ref("crm_iap_mine.crm_iap_mine_industry_99")
+    openupgrade.logged_query(
+        env.cr,
+        """
+        UPDATE crm_iap_lead_industry
+        SET
+            sic_group=COALESCE(sic_group, %(sic_group)s),
+            division_id=COALESCE(division_id, %(division_id)s)
+        WHERE sic_group IS NULL OR division_id IS NULL
+        """,
+        {
+            "sic_group": default_industry.sic_group,
+            "division_id": default_industry.division_id.id,
+        },
+    )
+    env["crm.iap.lead.industry"].invalidate_model(["sic_group", "division_id"])
+    for column in ("sic_group", "division_id"):
+        openupgrade.logged_query(
+            env.cr,
+            f"ALTER TABLE crm_iap_lead_industry ALTER COLUMN {column} SET NOT NULL",
+        )
+
+
 @openupgrade.migrate()
 def migrate(env, version):
     crm_iap_lead_industry(env)
+    crm_iap_lead_industry_required(env)

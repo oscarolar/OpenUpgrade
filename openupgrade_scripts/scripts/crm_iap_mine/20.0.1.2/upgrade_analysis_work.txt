@@ -127,7 +127,7 @@ DEL crm.iap.lead.industry: crm_iap_mine.crm_iap_mine_industry_30_155
 DEL crm.iap.lead.industry: crm_iap_mine.crm_iap_mine_industry_69_157
 # DONE: pre-migration: crm_iap_mine_industry_114 (Real Estate) renamed to crm_iap_mine_industry_65, same industry and same unique name
 # DONE: post-migration: mining requests (and reveal rules of website_crm_iap_reveal) using a v19 industry are linked to the v20 industries that cover it, then the v19 industries are deleted. The v19 to v20 correspondence is an approximation by industry name, as there is no official mapping from reveal_ids to SIC groups
-# TODO: industries created manually (without xmlid) are kept without sic_group and division_id, so the NOT NULL constraints can't be set if there's any
+# DONE: post-migration: industries created manually (without xmlid) get the SIC group and division of 'Nonclassifiable Establishments', then the NOT NULL constraints are set
 
 NEW crm.iap.lead.industry.division: crm_iap_mine.crm_iap_mine_division_a
 NEW crm.iap.lead.industry.division: crm_iap_mine.crm_iap_mine_division_b
