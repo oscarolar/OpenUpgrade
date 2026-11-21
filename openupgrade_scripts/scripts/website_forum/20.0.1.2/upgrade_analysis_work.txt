@@ -1,6 +1,6 @@
 ---Models in module 'website_forum'---
 new model forum.post.comment
-# DONE: post-migration: comments of posts (mail.message of type comment) are copied to forum.post.comment, the messages are kept
+# DONE: post-migration: public comments of posts (mail.message of type comment, email or email_outgoing that are not internal notes) are copied to forum.post.comment, the messages are kept
 
 ---Fields in module 'website_forum'---
 website_forum / forum.forum              / website_message_ids (one2many): DEL relation: mail.message

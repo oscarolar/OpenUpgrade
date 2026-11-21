@@ -6,8 +6,9 @@ from openupgradelib import openupgrade
 
 def forum_post_comment(env):
     """
-    Posts don't inherit mail.thread anymore, their comments were mail.message
-    records and are forum.post.comment records now
+    Posts don't inherit mail.thread anymore, their comments were the public
+    mail.message records (comments and emails, not internal notes) and are
+    forum.post.comment records now
     """
     openupgrade.logged_query(
         env.cr,
@@ -30,9 +31,22 @@ def forum_post_comment(env):
             ORDER BY active DESC, id
             LIMIT 1
         ) author_user ON TRUE
+        LEFT JOIN mail_message_subtype
+            ON mail_message_subtype.id=mail_message.subtype_id
         WHERE mail_message.model='forum.post'
-        AND mail_message.message_type='comment'
+        AND mail_message.message_type IN ('comment', 'email', 'email_outgoing')
+        AND NOT COALESCE(mail_message.is_internal, FALSE)
+        AND NOT COALESCE(mail_message_subtype.internal, FALSE)
         AND COALESCE(mail_message.body, '') <> ''
+        AND NOT EXISTS (
+            SELECT 1
+            FROM forum_post_comment
+            WHERE forum_post_comment.post_id=forum_post.id
+            AND forum_post_comment.create_date=COALESCE(
+                mail_message.date, mail_message.create_date
+            )
+            AND forum_post_comment.body=mail_message.body
+        )
         ORDER BY mail_message.id
         """,
     )

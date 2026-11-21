@@ -10,6 +10,16 @@ post.message_post(
     message_type="comment",
     subtype_xmlid="mail.mt_comment",
 )
+post.message_post(
+    body="OpenUpgrade v20 test internal note",
+    message_type="comment",
+    subtype_xmlid="mail.mt_note",
+)
+post.message_post(
+    body="OpenUpgrade v20 test email",
+    message_type="email",
+    subtype_xmlid="mail.mt_comment",
+)
 follower = env["res.partner"].create({"name": "OpenUpgrade v20 forum follower"})
 post.message_subscribe(partner_ids=follower.ids)
 env.cr.commit()
