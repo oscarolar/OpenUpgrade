@@ -11,8 +11,8 @@ hr_skills    / hr.job.skill             / certificate_file (binary)     : NEW at
 # NOTHING TO DO: new functionality, stored as attachment
 
 hr_skills    / hr.resume.line           / certificate_filename (char)   : DEL
-# NOTHING TO DO: the name of the uploaded file is not kept anymore,
-# certificate_file itself is untouched
+# DONE: post-migration: the name of the uploaded file is copied to the attachment of
+# certificate_file, which is untouched
 
 ---XML records in module 'hr_skills'---
 ir.access: hr_skills.hr_employee_skill_history_report_hr_user (noupdate switched)
@@ -52,6 +52,6 @@ DEL ir.ui.view: hr_skills.hr_employee_certification_report_view_search
 # NOTHING TO DO: removed by the ORM
 
 DEL mail.activity.type: hr_skills.mail_activity_data_upload_certification (noupdate)
-# DONE: post-migration: its activities and messages are moved to
-# mail.mail_activity_data_upload_document, the type v20 schedules certification
-# activities with, and the record is deleted
+# DONE: post-migration: its activities, messages, plan templates, server actions and
+# the types that trigger it are moved to mail.mail_activity_data_upload_document,
+# the type v20 schedules certification activities with, and the record is deleted
