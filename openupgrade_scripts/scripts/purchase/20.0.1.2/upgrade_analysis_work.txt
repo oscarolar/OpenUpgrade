@@ -1,0 +1,119 @@
+---Models in module 'purchase'---
+---Fields in module 'purchase'---
+purchase     / account.analytic.applicability / business_domain (False)       : selection_keys added: [timesheet] (most likely nothing to do)
+purchase     / product.category         / property_account_billed_not_received_id (many2one): NEW relation: account.account
+purchase     / product.category         / property_account_bills_to_receive_id (many2one): NEW relation: account.account
+purchase     / product.product          / sold_by_vendor_id (many2one)  : NEW relation: res.partner, stored: False
+# NOTHING TO DO: new functionality
+
+purchase     / purchase.order           / document_tax_mode (selection) : NEW required, selection_keys: ['tax_excluded', 'tax_included'], hasdefault: compute
+# DONE: pre-migration: column added and filled from res.company#account_price_include, as the compute method does
+
+purchase     / purchase.order           / incoterm_location (char)      : previously in module purchase_stock
+purchase     / purchase.order           / receipt_status (selection)    : previously in module purchase_stock
+# DONE: pre-migration: field xmlids moved from purchase_stock; if purchase_stock was not installed, incoterm_location is added empty and receipt_status is added and filled from the received quantities
+
+purchase     / purchase.order           / tax_totals (binary)           : type is now 'json' ('binary')
+purchase     / purchase.order           / website_message_ids (one2many): DEL relation: mail.message
+# NOTHING TO DO: tax_totals is computed and not stored, website_message_ids is not stored
+
+purchase     / purchase.order.line      / accrual_move_ids (many2many)  : NEW relation: account.move
+# NOTHING TO DO: new functionality
+
+purchase     / purchase.order.line      / bill_to_receive (boolean)     : NEW stored: False
+# NOTHING TO DO: not stored
+
+purchase     / purchase.order.line      / non_deductible_tax (float)    : NEW isfunction: function, stored
+# DONE: pre-migration: column added to avoid recomputing all amounts
+# DONE: post-migration: computed for lines with taxes having a non deductible part
+
+purchase     / purchase.order.line      / prepaid_expense (boolean)     : NEW stored: False
+# NOTHING TO DO: not stored
+
+purchase     / purchase.order.line      / price_unit_product_uom (float): is now stored
+# DONE: pre-migration: column added and filled with SQL
+
+purchase     / purchase.order.line      / product_uom_id (many2one)     : DEL relation: uom.uom
+# DONE: pre-migration: renamed to uom_id
+
+purchase     / purchase.order.line      / qty_to_invoice_raw (float)    : NEW isfunction: function, stored
+# DONE: pre-migration: column added and filled with product_qty - qty_invoiced
+
+purchase     / purchase.order.line      / uom_id (many2one)             : NEW relation: uom.uom
+# DONE: pre-migration: renamed from product_uom_id
+
+purchase     / res.partner              / purchase_incoterm_id (many2one): NEW relation: account.incoterms
+purchase     / res.partner              / purchase_incoterm_location (char): NEW
+# NOTHING TO DO: new functionality
+
+---XML records in module 'purchase'---
+NEW ir.access: purchase.base_user_account_move_line_rule
+NEW ir.access: purchase.base_user_account_move_line_rule_1
+ir.access: purchase.portal_purchase_order_user_rule (noupdate switched)
+ir.access: purchase.purchase_bill_union_comp_rule (noupdate switched)
+ir.access: purchase.purchase_order_comp_rule (noupdate switched)
+NEW ir.access: purchase.purchase_order_invoicing_readonly_rule
+NEW ir.access: purchase.purchase_order_invoicing_rule
+ir.access: purchase.purchase_order_line_comp_rule (noupdate switched)
+NEW ir.access: purchase.purchase_order_line_invoicing_readonly_rule
+NEW ir.access: purchase.purchase_order_line_invoicing_rule
+NEW ir.access: purchase.purchase_order_line_rule
+NEW ir.access: purchase.purchase_order_line_user_rule
+ir.access: purchase.purchase_order_report_comp_rule (noupdate switched)
+NEW ir.access: purchase.purchase_order_user_rule
+NEW ir.access: purchase.purchase_user_account_analytic_line_rule
+ir.access: purchase.purchase_user_account_move_rule (noupdate switched)
+NEW ir.access: purchase.res_partner_rule_edit_all
+NEW ir.access: purchase.res_partner_rule_user
+# NOTHING TO DO: ir.access conversion is handled in base
+
+NEW ir.actions.act_window: purchase.action_purchase_order_mass_mail
+DEL ir.actions.act_window: purchase.action_accrued_expense_entry
+DEL ir.actions.act_window: purchase.product_product_action
+# NOTHING TO DO
+
+NEW ir.actions.server: purchase.action_accrued_expense_entry_purchase_order_line
+NEW ir.actions.server: purchase.action_unmatch_lines
+DEL ir.model.access: purchase.access_account_analytic_line
+DEL ir.model.access: purchase.access_account_journal_manager
+DEL ir.model.access: purchase.access_account_move
+DEL ir.model.access: purchase.access_account_move_line
+DEL ir.model.access: purchase.access_account_move_line_manager
+DEL ir.model.access: purchase.access_account_tax_purchase_user_manager
+DEL ir.model.access: purchase.access_purchase_order
+DEL ir.model.access: purchase.access_purchase_order_invoicing_payments
+DEL ir.model.access: purchase.access_purchase_order_invoicing_payments_readonly
+DEL ir.model.access: purchase.access_purchase_order_line
+DEL ir.model.access: purchase.access_purchase_order_line_invoicing_payments
+DEL ir.model.access: purchase.access_purchase_order_line_invoicing_payments_readonly
+DEL ir.model.access: purchase.access_purchase_order_line_manager
+DEL ir.model.access: purchase.access_purchase_order_line_portal
+DEL ir.model.access: purchase.access_purchase_order_manager
+DEL ir.model.access: purchase.access_purchase_order_portal
+DEL ir.model.access: purchase.access_report_purchase_order
+DEL ir.model.access: purchase.access_res_partner_purchase_user
+# NOTHING TO DO: ir.access conversion is handled in base
+
+ir.model.constraint: purchase.constraint_purchase_order_line_accountable_required_fields (changed definition: is now 'CHECK(display_type IS NOT NULL OR is_downpayment OR (product_id IS NOT NULL AND uom_id IS NOT NULL AND date_planned IS NOT NULL))' ('CHECK(display_type IS NOT NULL OR is_downpayment OR (product_id IS NOT NULL AND product_uom_id IS NOT NULL AND date_planned IS NOT NULL))'))
+ir.model.constraint: purchase.constraint_purchase_order_line_non_accountable_null_fields (changed definition: is now 'CHECK(display_type IS NULL OR (product_id IS NULL AND price_unit = 0 AND product_uom_qty = 0 AND uom_id IS NULL AND date_planned is NULL))' ('CHECK(display_type IS NULL OR (product_id IS NULL AND price_unit = 0 AND product_uom_qty = 0 AND product_uom_id IS NULL AND date_planned is NULL))'))
+# NOTHING TO DO: recreated by the ORM after the field rename in pre-migration
+
+DEL ir.rule: purchase.portal_purchase_order_line_rule (noupdate)
+DEL ir.rule: purchase.purchase_user_account_move_line_rule (noupdate)
+# NOTHING TO DO: ir.access conversion is handled in base
+
+DEL ir.ui.menu: purchase.product_product_menu
+NEW ir.ui.view: purchase.product_product_purchase_tree_view
+NEW ir.ui.view: purchase.product_template_purchase_tree_view
+NEW ir.ui.view: purchase.product_view_search_catalog_inherit
+NEW ir.ui.view: purchase.purchase_bill_line_match_search
+NEW ir.ui.view: purchase.purchase_order_line_list_invoice
+NEW ir.ui.view: purchase.purchase_order_line_view_form_invoice
+NEW ir.ui.view: purchase.view_category_property_form
+NEW ir.ui.view: purchase.view_purchase_bill_union_list_invoice
+DEL ir.ui.view: purchase.portal_my_home_purchase
+# NOTHING TO DO
+
+NEW portal.entry: purchase.portal_purchase_orders (noupdate)
+NEW portal.entry: purchase.portal_rfq (noupdate)
+# NOTHING TO DO: new records, replace the portal_my_home_purchase template
