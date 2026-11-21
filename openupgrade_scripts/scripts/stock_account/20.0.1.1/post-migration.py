@@ -64,6 +64,7 @@ def account_move_closing_datetime(env):
             "SELECT id, date FROM account_move WHERE id IN %s AND company_id=%s",
             (tuple(move_ids), company_id),
         )
+        closing_datetimes = {}
         for move_id, date in env.cr.fetchall():
             closing_datetime = _closing_validation_datetime(env, move_id)
             if (
@@ -71,12 +72,29 @@ def account_move_closing_datetime(env):
                 or closing_datetime.replace(tzinfo=UTC).astimezone(tz).date() != date
             ):
                 closing_datetime = company._to_datetime_upper_bound(date)
+            closing_datetimes[move_id] = closing_datetime
             openupgrade.logged_query(
                 env.cr,
                 "UPDATE account_move SET closing_datetime=%s{} WHERE id=%s".format(
                     ", inventory_closing=True" if has_inventory_closing else ""
                 ),
                 (closing_datetime, move_id),
+            )
+        listed_ids = [move_id for move_id in move_ids if move_id in closing_datetimes]
+        if listed_ids != sorted(
+            listed_ids, key=lambda move_id: (closing_datetimes[move_id], move_id)
+        ):
+            openupgrade.message(
+                env.cr,
+                "stock_account",
+                "account_move",
+                "closing_datetime",
+                "The closing entries of company %s are not listed in the order of "
+                "their closing dates. v19 took the last listed posted entry as "
+                "last closing, v20 takes the posted one with the latest "
+                "closing_datetime, ids as listed: %s",
+                company_id,
+                listed_ids,
             )
 
 

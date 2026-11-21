@@ -8,7 +8,7 @@ stock_account / account.account          / account_stock_variation_id (many2one)
 # NOTHING TO DO: the fields only change module
 
 stock_account / account.move             / closing_datetime (datetime)   : NEW
-# DONE: post-migration: set (together with account's inventory_closing) on the closing entries listed in the parameters <company id>.stock_valuation_closing_ids, with the moment v19 derived from the entry's state tracking or the end of the entry's day
+# DONE: post-migration: set (together with account's inventory_closing) on the closing entries listed in the parameters <company id>.stock_valuation_closing_ids, with the moment v19 derived from the entry's state tracking or the end of the entry's day. v20 picks the last closing by closing_datetime instead of the position in the parameter, a difference between both orders is reported
 
 stock_account / account.move             / product_value_id (one2many)   : NEW relation: product.value
 # NOTHING TO DO: new feature; existing product.value records keep their value, the informative old/new columns are unknown for them
