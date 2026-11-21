@@ -94,7 +94,38 @@ def loyalty_history_settle_debt(env):
         env.invalidate_all()
 
 
+def loyalty_card_program(env):
+    """
+    The program of a card is required now. Cards without program go to an archived
+    program without rules or rewards, so they are kept and the constraint holds
+    """
+    env.cr.execute("SELECT 1 FROM loyalty_card WHERE program_id IS NULL LIMIT 1")
+    if not env.cr.rowcount:
+        return
+    program = (
+        env["loyalty.program"]
+        .with_context(loyalty_skip_reward_check=True)
+        .create(
+            {
+                "name": "Cards without program (migration to 20.0)",
+                "program_type": "coupons",
+                "applies_on": "current",
+                "active": False,
+                "company_id": False,
+                "rule_ids": [],
+                "reward_ids": [],
+            }
+        )
+    )
+    openupgrade.logged_query(
+        env.cr,
+        "UPDATE loyalty_card SET program_id=%s WHERE program_id IS NULL",
+        (program.id,),
+    )
+
+
 @openupgrade.migrate()
 def migrate(env, version):
+    loyalty_card_program(env)
     loyalty_card_points(env)
     loyalty_history_settle_debt(env)

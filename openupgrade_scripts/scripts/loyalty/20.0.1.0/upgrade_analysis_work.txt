@@ -5,7 +5,8 @@ loyalty      / loyalty.card             / points (float)                : now a 
 # DONE: post-migration: points are now computed from loyalty.history, a history line is added for cards whose former stored balance differs from the sum of their history lines, then debts are settled with the standard method
 
 loyalty      / loyalty.card             / program_id (many2one)         : now required
-# TODO: cards without program make the NOT NULL constraint fail (logged, not blocking). There is no program to assign them to; decide whether to delete them
+# DONE: post-migration: cards without program are assigned to an archived program without
+# rules or rewards
 
 loyalty      / loyalty.card             / website_message_ids (one2many): DEL relation: mail.message
 # NOTHING TO DO: non stored one2many, the messages are untouched
