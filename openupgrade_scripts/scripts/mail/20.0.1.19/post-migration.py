@@ -78,142 +78,53 @@ def mail_activity_type_triggered_next_type_id(env):
     )
 
 
+_mail_post_note_code = """template = env["mail.template"].browse(%(template_id)s)
+if records and template.exists():
+    records.with_context(
+        mail_post_autofollow_author_skip=True,
+        mail_post_autofollow=%(autofollow)s,
+    ).message_post_with_source(
+        template,
+        message_type="auto_comment",
+        subtype_id=env.ref("mail.mt_note").id,
+    )
+"""
+_mail_post_email_code = """template = env["mail.template"].browse(%(template_id)s)
+if records and template.exists():
+    for record in records:
+        template.send_mail(record.id, force_send=False, raise_exception=False)
+"""
+
+
 def ir_actions_server_mail_post_method(env):
     """
-    Server actions of type mail_post always post a comment in v20. Report the ones
-    that sent an email without posting or logged a note, they need a review
+    Server actions of type mail_post always post a comment that notifies followers in
+    v20. The ones that logged a note or only sent an email become code actions that
+    do what they did in v19
     """
     env.cr.execute(
         """
         SELECT
-            id, name->>'en_US', mail_post_method
+            id, mail_post_method, template_id, mail_post_autofollow
         FROM
             ir_act_server
         WHERE
             state='mail_post'
         AND
             mail_post_method IN ('email', 'note')
+        AND
+            template_id IS NOT NULL
         """
     )
-    for action_id, name, method in env.cr.fetchall():
-        openupgrade.message(
-            env.cr,
-            "mail",
-            "ir_act_server",
-            "mail_post_method",
-            "Server action %s (%s) used method '%s' in v19, in v20 it posts a comment "
-            "that notifies followers",
-            action_id,
-            name,
-            method,
-        )
-
-
-def _tracking_escape(expression):
-    return (
-        f"replace(replace(replace({expression}, '&', '&amp;'), '<', '&lt;'), "
-        "'>', '&gt;')"
-    )
-
-
-def _tracking_value(prefix):
-    """
-    Return the SQL expression that formats the old or new value of a tracking record
-    """
-    number = "trim_scale(round(COALESCE({}, 0)::numeric, {}))::text"
-    return _tracking_escape(
-        f"""
-        CASE COALESCE(field.ttype, value.field_info->>'type')
-        WHEN 'boolean' THEN
-            CASE WHEN value.{prefix}_value_integer = 1 THEN 'Yes' ELSE 'No' END
-        WHEN 'integer' THEN
-            COALESCE(value.{prefix}_value_integer, 0)::text
-        WHEN 'float' THEN
-            {number.format(f"value.{prefix}_value_float", 6)}
-        WHEN 'monetary' THEN
-            concat_ws(
-                ' ', round(COALESCE(value.{prefix}_value_float, 0)::numeric, 2)::text,
-                currency.symbol
-            )
-        WHEN 'date' THEN
-            COALESCE(value.{prefix}_value_datetime::date::text, 'None')
-        WHEN 'datetime' THEN
-            COALESCE(
-                to_char(value.{prefix}_value_datetime, 'YYYY-MM-DD HH24:MI:SS')
-                || ' UTC',
-                'None'
-            )
-        WHEN 'text' THEN
-            COALESCE(NULLIF(value.{prefix}_value_text, ''), 'None')
-        WHEN 'html' THEN
-            COALESCE(NULLIF(value.{prefix}_value_text, ''), 'None')
-        ELSE
-            COALESCE(NULLIF(value.{prefix}_value_char, ''), 'None')
-        END
-        """
-    )
-
-
-def mail_message_tracking_body(env):
-    """
-    v20 does not render mail.tracking.value records in the chatter any more, tracked
-    changes are part of the body of the message. Append the tracking values of existing
-    messages to their body the way mail.mail_tracking_template does
-    """
-    lang = env.ref("base.main_company").partner_id.lang or "en_US"
-    label = _tracking_escape(
-        """
-        COALESCE(
-            field.field_description->>%(lang)s, field.field_description->>'en_US',
-            value.field_info->>'desc', field.name, value.field_info->>'name', ''
-        )
-        """
-    )
-    currency_join = "LEFT JOIN res_currency currency ON FALSE"
-    if openupgrade.column_exists(env.cr, "mail_tracking_value", "currency_id"):
-        currency_join = (
-            "LEFT JOIN res_currency currency ON currency.id=value.currency_id"
-        )
-    env.cr.execute(
-        "SELECT min(mail_message_id), max(mail_message_id) FROM mail_tracking_value"
-    )
-    min_id, max_id = env.cr.fetchone()
-    if min_id is None:
-        return
-    step = 500000
-    for start in range(min_id, max_id + 1, step):
+    for action_id, method, template_id, autofollow in env.cr.fetchall():
+        code = _mail_post_note_code if method == "note" else _mail_post_email_code
         openupgrade.logged_query(
             env.cr,
-            f"""
-            UPDATE
-                mail_message
-            SET
-                body=COALESCE(mail_message.body, '') || tracking.html
-            FROM (
-                SELECT
-                    value.mail_message_id,
-                    '<div>' || string_agg(
-                        {_tracking_value("old")} || ' → <b>'
-                        || {_tracking_value("new")} || '</b> <i>(' || {label}
-                        || ')</i>',
-                        '<br>' ORDER BY value.id DESC
-                    ) || '</div>' AS html
-                FROM
-                    mail_tracking_value value
-                LEFT JOIN
-                    ir_model_fields field ON field.id=value.field_id
-                {currency_join}
-                WHERE
-                    value.mail_message_id >= %(start)s
-                AND
-                    value.mail_message_id < %(stop)s
-                GROUP BY
-                    value.mail_message_id
-            ) tracking
-            WHERE
-                mail_message.id=tracking.mail_message_id
-            """,
-            {"lang": lang, "start": start, "stop": start + step},
+            "UPDATE ir_act_server SET state='code', code=%s WHERE id=%s",
+            (
+                code % {"template_id": template_id, "autofollow": bool(autofollow)},
+                action_id,
+            ),
         )
 
 
@@ -229,4 +140,3 @@ def migrate(env, version):
     mail_activity_type_suggested_next_type_id(env)
     mail_activity_type_triggered_next_type_id(env)
     ir_actions_server_mail_post_method(env)
-    mail_message_tracking_body(env)
