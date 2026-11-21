@@ -35,10 +35,13 @@ def purchase_order_document_tax_mode(env):
             purchase_order
         SET
             document_tax_mode=COALESCE(
-                res_company.account_price_include, 'tax_excluded'
+                root_company.account_price_include, 'tax_excluded'
             )
         FROM
             res_company
+        JOIN
+            res_company root_company
+            ON root_company.id=split_part(res_company.parent_path, '/', 1)::integer
         WHERE
             res_company.id=purchase_order.company_id
         """,

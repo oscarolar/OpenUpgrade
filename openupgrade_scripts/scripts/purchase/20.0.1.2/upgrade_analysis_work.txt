@@ -7,7 +7,7 @@ purchase     / product.product          / sold_by_vendor_id (many2one)  : NEW re
 # NOTHING TO DO: new functionality
 
 purchase     / purchase.order           / document_tax_mode (selection) : NEW required, selection_keys: ['tax_excluded', 'tax_included'], hasdefault: compute
-# DONE: pre-migration: column added and filled from res.company#account_price_include, as the compute method does
+# DONE: pre-migration: column added and filled from the root company's res.company#account_price_include, as the compute method does
 
 purchase     / purchase.order           / incoterm_location (char)      : previously in module purchase_stock
 purchase     / purchase.order           / receipt_status (selection)    : previously in module purchase_stock
