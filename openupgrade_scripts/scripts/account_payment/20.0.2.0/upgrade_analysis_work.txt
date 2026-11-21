@@ -1,0 +1,28 @@
+---Models in module 'account_payment'---
+---Fields in module 'account_payment'---
+account_payment / payment.provider         / available_pricelist_ids (many2many): NEW relation: product.pricelist
+
+# NOTHING TO DO
+
+---XML records in module 'account_payment'---
+ir.access: account_payment.payment_token_billing_rule (noupdate switched)
+
+# NOTHING TO DO: ir.rule and ir.model.access become ir.access in base
+
+DEL ir.ui.menu: account_payment.payment_method_menu
+DEL ir.ui.menu: account_payment.payment_token_menu
+DEL ir.ui.menu: account_payment.payment_transaction_menu
+
+# NOTHING TO DO: removed by the ORM
+
+NEW ir.ui.view: account_payment.payment_status
+
+# NOTHING TO DO
+
+DEL ir.ui.view: account_payment.portal_my_home_account_payment
+
+# NOTHING TO DO: removed by the ORM
+
+NEW portal.entry: account_payment.portal_entry_overdue_invoices (noupdate)
+
+# NOTHING TO DO
