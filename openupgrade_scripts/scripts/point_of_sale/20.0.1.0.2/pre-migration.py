@@ -143,28 +143,60 @@ def pos_config_journal_id(env):
         WHERE invoice_journal_id IS NOT NULL
         """,
     )
+    openupgrade.logged_query(
+        env.cr, "ALTER TABLE pos_config ALTER COLUMN journal_id DROP NOT NULL"
+    )
+    openupgrade.logged_query(
+        env.cr,
+        """
+        UPDATE pos_config
+        SET journal_id = (
+            SELECT sale_journal.id
+            FROM account_journal sale_journal
+            WHERE sale_journal.company_id = pos_config.company_id
+            AND sale_journal.type = 'sale'
+            AND sale_journal.active
+            ORDER BY sale_journal.sequence, sale_journal.id
+            LIMIT 1
+        )
+        FROM account_journal
+        WHERE account_journal.id = pos_config.journal_id
+        AND pos_config.invoice_journal_id IS NULL
+        AND account_journal.type != 'sale'
+        """,
+    )
 
 
 def account_journal_poss_code(env):
     """
     v20 searches a sale journal with code POSS per company when closing a session
     and creates it if missing. The v19 journal with this code is of type general, so
-    the creation would violate the unique constraint on the journal code.
+    the creation would violate the unique constraint on the journal code. Give the
+    old journal the first free code among POSSO, POSS1 ... POSS9, PS001 ...
     """
-    openupgrade.logged_query(
-        env.cr,
+    env.cr.execute(
         """
-        UPDATE account_journal
-        SET code = 'POSSO'
-        WHERE code = 'POSS'
-        AND type != 'sale'
-        AND NOT EXISTS (
-            SELECT 1 FROM account_journal other
-            WHERE other.company_id = account_journal.company_id
-            AND other.code = 'POSSO'
-        )
-        """,
+        SELECT id, company_id FROM account_journal
+        WHERE code = 'POSS' AND type != 'sale'
+        ORDER BY id
+        """
     )
+    candidates = (
+        ["POSSO"]
+        + [f"POSS{number}" for number in range(1, 10)]
+        + [f"PS{number:03d}" for number in range(1, 1000)]
+    )
+    for journal_id, company_id in env.cr.fetchall():
+        env.cr.execute(
+            "SELECT code FROM account_journal WHERE company_id = %s", (company_id,)
+        )
+        used_codes = {row[0] for row in env.cr.fetchall()}
+        code = next(code for code in candidates if code not in used_codes)
+        openupgrade.logged_query(
+            env.cr,
+            "UPDATE account_journal SET code = %s WHERE id = %s",
+            (code, journal_id),
+        )
 
 
 def pos_config_default_partner_id(env):

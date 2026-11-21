@@ -47,7 +47,7 @@ point_of_sale / pos.config               / auto_validate_terminal_payment (boole
 # DONE: pre-migration: renamed auto_validate_terminal_payment to auto_validate_electronic_payment
 
 point_of_sale / pos.config               / closing_journal_id (many2one) : NEW relation: account.journal, required, hasdefault: compute
-# DONE: pre-migration: v19 journal with code POSS that is not a sale journal gets code POSSO so that v20 can create its POSS/POSC sale journals; the ORM computes closing_journal_id (journal POSC per company)
+# DONE: pre-migration: v19 journal with code POSS that is not a sale journal gets the first free code among POSSO, POSS1 ... POSS9, PS001 ... so that v20 can create its POSS/POSC sale journals; the ORM computes closing_journal_id (journal POSC per company)
 
 point_of_sale / pos.config               / custom_email (char)           : NEW
 point_of_sale / pos.config               / custom_logo (binary)          : NEW attachment: True
@@ -79,7 +79,7 @@ point_of_sale / pos.config               / iface_scan_via_proxy (boolean): DEL
 # NOTHING TO DO: IoT box settings removed from point_of_sale
 
 point_of_sale / pos.config               / invoice_journal_id (many2one) : DEL relation: account.journal
-# DONE: pre-migration: journal_id is the invoice journal in v20, set from invoice_journal_id; the v19 journal_id is kept in a legacy column
+# DONE: pre-migration: journal_id is the invoice journal in v20, set from invoice_journal_id; without invoice journal, a v19 journal_id that is not a sale journal is replaced by the first sale journal of the company or emptied; the v19 journal_id is kept in a legacy column
 
 point_of_sale / pos.config               / is_closing_entry_by_product (boolean): DEL
 # DONE: pre-migration: renamed is_closing_entry_by_product to use_closing_entry_by_product
