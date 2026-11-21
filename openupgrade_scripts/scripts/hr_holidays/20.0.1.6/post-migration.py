@@ -1,13 +1,10 @@
 # Copyright 2026 Vauxoo
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 
-import logging
 from io import StringIO
 
 from lxml import etree
 from openupgradelib import openupgrade
-
-_logger = logging.getLogger(__name__)
 
 _leave_type_column = openupgrade.get_legacy_name("leave_type_id")
 
@@ -95,28 +92,6 @@ def hr_work_entry_type_from_leave_type(env):
         WHERE {_leave_type_column} IS NULL
         """,
     )
-    env.cr.execute(
-        f"""
-        SELECT count(*)
-        FROM hr_work_entry_type wet
-        WHERE wet.{_leave_type_column} IS NOT NULL
-            AND wet.country_id IS NULL
-            AND EXISTS (
-                SELECT 1
-                FROM res_company rc
-                JOIN res_partner rp ON rp.id = rc.partner_id
-                JOIN hr_work_entry_type country_wet
-                    ON country_wet.country_id = rp.country_id
-            )
-        """
-    )
-    count = env.cr.fetchone()[0]
-    if count:
-        _logger.warning(
-            "%s time types coming from leave types have no country, they are not "
-            "selectable by the companies of a country that has its own time types",
-            count,
-        )
 
 
 def resource_calendar_leaves_work_entry_type_id(env):
@@ -148,9 +123,17 @@ def hr_leave_request_duration(env):
             WHEN request_unit_hours THEN 'specific'
             ELSE COALESCE(request_date_from_period, 'full')
         END
-        WHERE request_unit_hours
+        WHERE (
+                request_unit_hours
+                AND request_date_from = request_date_to
+                AND (
+                    COALESCE(request_hour_from, 0) != 0
+                    OR COALESCE(request_hour_to, 0) != 0
+                )
+            )
             OR (
                 request_unit_half
+                AND request_unit_hours IS NOT TRUE
                 AND request_date_from = request_date_to
                 AND request_date_from_period = request_date_to_period
             )

@@ -1,6 +1,6 @@
 ---Models in module 'hr_holidays'---
 obsolete model hr.leave.type (merged to hr.work.entry.type)
-# DONE: pre-migration: every leave type gets a time type, recorded in hr_work_entry_type.openupgrade_legacy_20_0_leave_type_id; post-migration: configuration copied from the leave type. A leave type takes the work entry type it was linked to (or the one with the same code in its country) unless another leave type took it, otherwise a new time type with code LT<id> is created. The country is the one of the leave type, or the one shared by all the companies, when v20 has time types for it; company_id has no counterpart. Time types not coming from a leave type are set as not selectable in Time Off
+# DONE: pre-migration: every leave type gets a time type, recorded in hr_work_entry_type.openupgrade_legacy_20_0_leave_type_id; post-migration: configuration copied from the leave type. A leave type takes the work entry type it was linked to (or the one with the same code in its country) unless another leave type took it, otherwise a new time type with code LT<id> is created. v20 offers to a company the time types of its country when it has any, else the ones without country: that is the effective country of a company (none for companies without country). A leave type with country keeps it. A leave type without country gets the effective country that uses it most and a copy of the time type (flagged in openupgrade_legacy_20_0_leave_type_copy) for every other effective country of the companies it was offered to; requests, allocations and accrual plans point to the copy for the company of the employee. Custom many2one fields, ir.default and ir.filters of hr.leave.type are pointed to the time types, filters that use leave types are reported. Time types not coming from a leave type are set as not selectable in Time Off
 
 new model hr.leave.display.name.mixin [abstract]
 new model hr.leave.employee.report [sql_view]
@@ -25,7 +25,7 @@ hr_holidays  / hr.leave                 / output_leave_ids (one2many)   : NEW re
 # NOTHING TO DO
 
 hr_holidays  / hr.leave                 / request_duration (selection)  : NEW selection_keys: ['am', 'full', 'pm', 'specific'], hasdefault: default
-# DONE: post-migration: specific for hourly requests, am/pm for requests of a single half day, full otherwise
+# DONE: post-migration: specific for hourly requests of a single day with hours set, am/pm for requests of a single half day, full otherwise
 
 hr_holidays  / hr.leave                 / request_unit_half (boolean)   : DEL
 hr_holidays  / hr.leave                 / request_unit_hours (boolean)  : DEL
@@ -107,7 +107,7 @@ hr_holidays  / hr.leave.type            / color (integer)               : DEL
 # DONE: copied to the time type of the leave type (pre-migration for new time types, post-migration for all)
 
 hr_holidays  / hr.leave.type            / company_id (many2one)         : DEL relation: res.company
-# NOTHING TO DO: time types have no company in v20, only a country
+# NOTHING TO DO: time types have no company in v20, only a country. Functional change without loss of balances: a leave type restricted to a company is offered to all the companies of its effective country
 
 hr_holidays  / hr.leave.type            / country_id (many2one)         : not a function anymore
 hr_holidays  / hr.leave.type            / country_id (many2one)         : not stored anymore
@@ -122,7 +122,7 @@ hr_holidays  / hr.leave.type            / name (char)                   : DEL re
 # DONE: copied to the time type of the leave type (pre-migration for new time types, post-migration for all)
 
 hr_holidays  / hr.leave.type            / responsible_ids (many2many)   : DEL relation: res.users
-# NOTHING TO DO: removed without replacement
+# NOTHING TO DO: removed without replacement. Functional change without loss of balances: the responsibles of a leave type don't approve or get the activities of its requests anymore, v20 only knows the approvers of the employee and the time off officers. The table hr_leave_type_res_users_rel is kept
 
 hr_holidays  / hr.leave.type            / sequence (integer)            : DEL
 # DONE: copied to the time type of the leave type (pre-migration for new time types, post-migration for all)
