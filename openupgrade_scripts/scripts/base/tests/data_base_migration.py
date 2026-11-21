@@ -88,18 +88,6 @@ env["ir.rule"].create(
         "domain_force": "[('create_uid', '=', user.id)]",
     }
 )
-rule_with_faulty_domain = env["ir.rule"].create(
-    {
-        "name": "rule with faulty domain",
-        "model_id": base_test_model.id,
-        "domain_force": "[('create_uid2', '=', user.id)]",
-        "perm_create": False,
-        "perm_read": False,
-        "perm_write": False,
-        "perm_unlink": True,
-        "active": False,
-    }
-)
 base_test_model2 = env["ir.model"].create(
     {
         "name": "v19_base_test_model2",
@@ -112,9 +100,6 @@ env["ir.model.access"].create(
         "model_id": base_test_model2.id,
         "perm_read": True,
     }
-)
-env.cr.execute(
-    "UPDATE ir_rule SET active=TRUE WHERE id=%s", (rule_with_faulty_domain.id,)
 )
 env["ir.actions.client"].create(
     {

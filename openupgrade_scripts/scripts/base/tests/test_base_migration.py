@@ -6,36 +6,109 @@ from odoo.addons.openupgrade_framework import openupgrade_test
 @tagged("-at_install", "post_install")
 @openupgrade_test
 class TestBaseMigration(TransactionCase):
+    def _get_access(self, domain):
+        return (
+            self.env["ir.access"]
+            .search(domain)
+            .mapped(lambda x: (x.group_id, x.operation, x.domain))
+        )
+
     def test_ir_access(self):
         """
         Test that manual ir.model.access/ir.rule records have been migrated correctly
         """
-        expected_access = (
-            (self.env["res.groups"], "r", False),
-            (self.env["res.groups"], "d", "[('create_uid', '=', user.id)]"),
-            (self.env.ref("base.group_user"), "cru", "[('create_uid', '=', user.id)]"),
-            (self.env.ref("base.group_erp_manager"), "u", "[(1, '=', 1)]"),
-            (self.env.ref("base.group_system"), "d", "[(1, '=', 1)]"),
-            (self.env.ref("base.group_portal"), "ru", "[('create_uid', '=', user.id)]"),
-        )
-        test_model_access = self.env["ir.access"].search(
-            [
-                ("model_id.model", "=", "x_v19_base_test_model"),
-            ]
+        own = "[('create_uid', '=', user.id)]"
+        everything = "[(1, '=', 1)]"
+        group_user = self.env.ref("base.group_user")
+        group_system = self.env.ref("base.group_system")
+        group_portal = self.env.ref("base.group_portal")
+        self.assertItemsEqual(
+            (
+                (self.env["res.groups"], "d", own),
+                (group_user, "cru", own),
+                (group_system, "d", own),
+                (self.env.ref("base.group_erp_manager"), "u", everything),
+                (group_system, "ud", everything),
+                (group_system, "d", False),
+                (group_portal, "ru", own),
+            ),
+            self._get_access([("model_id.model", "=", "x_v19_base_test_model")]),
         )
         self.assertItemsEqual(
-            expected_access,
-            test_model_access.mapped(lambda x: (x.group_id, x.operation, x.domain)),
-        )
-        expected_access2 = ((self.env.ref("base.group_everyone"), "r", False),)
-        test_model_access2 = self.env["ir.access"].search(
-            [
-                ("model_id.model", "=", "x_v19_base_test_model2"),
-            ]
+            ((group_portal, "cd", own),),
+            self._get_access(
+                [
+                    ("model_id.model", "=", "x_v19_base_test_model"),
+                    ("active", "=", False),
+                ]
+            ),
         )
         self.assertItemsEqual(
-            expected_access2,
-            test_model_access2.mapped(lambda x: (x.group_id, x.operation, x.domain)),
+            ((self.env.ref("base.group_everyone"), "r", False),),
+            self._get_access([("model_id.model", "=", "x_v19_base_test_model2")]),
+        )
+
+    def _skip_without_customization_data(self):
+        if not self.env["res.partner.bank"].search(
+            [("bank_name", "=", "OpenUpgrade v20 bank")]
+        ):
+            self.skipTest("data_base_migration_customization.py was not loaded")
+
+    def test_ir_access_group_rule_restricts(self):
+        """
+        Test that a custom group rule keeps restricting when the group and the groups
+        above it have a standard permission without domain
+        """
+        self._skip_without_customization_data()
+        domain = "[('active', '=', True)]"
+        self.assertFalse(
+            self.env.ref("base.access_res_partner_industry_group_user").active
+        )
+        self.assertFalse(
+            self.env.ref("base.access_res_partner_industry_group_system").active
+        )
+        self.assertItemsEqual(
+            (
+                (self.env.ref("base.group_user"), "r", domain),
+                (self.env.ref("base.group_system"), "cud", domain),
+            ),
+            self._get_access([("model_id.model", "=", "res.partner.industry")]),
+        )
+
+    def test_ir_access_manual_access_keeps_standard_rule(self):
+        """
+        Test that a custom ir.model.access gets the domain of the standard group rule
+        that restricted it
+        """
+        self._skip_without_customization_data()
+        self.assertIn(
+            (self.env.ref("base.group_user"), "d", "[('user_id', '=', user.id)]"),
+            self._get_access([("model_id.model", "=", "res.device")]),
+        )
+        self.assertFalse(
+            self.env["ir.access"].search(
+                [
+                    ("model_id.model", "=", "res.device"),
+                    ("group_id", "=", self.env.ref("base.group_user").id),
+                    ("domain", "=", False),
+                    ("for_unlink", "=", True),
+                ]
+            )
+        )
+
+    def test_ir_access_global_rules(self):
+        """
+        Test that custom global rules stay active restrictions, with renamed fields
+        and with xmlids that don't belong to a module
+        """
+        self._skip_without_customization_data()
+        self.assertIn(
+            (self.env["res.groups"], "crud", "[('account_number', '!=', 'OU20 forbidden')]"),
+            self._get_access([("model_id.model", "=", "res.partner.bank")]),
+        )
+        self.assertIn(
+            (self.env["res.groups"], "crud", "[('name', '!=', 'OU20 forbidden')]"),
+            self._get_access([("model_id.model", "=", "res.partner.category")]),
         )
 
     def test_ir_actions_client(self):
@@ -64,8 +137,7 @@ class TestBaseMigration(TransactionCase):
         Test that changes to ir.rule records provided by modules are carried over
         """
         IrAccess = self.env["ir.access"].with_context(active_test=False)
-        if not IrAccess.search([("name", "like", "Customized in v19 (%")]):
-            self.skipTest("data_base_migration_customization.py was not loaded")
+        self._skip_without_customization_data()
         self.assertFalse(self.env.ref("base.res_partner_bank_rule").active)
         custom_access = IrAccess.search(
             [
@@ -78,13 +150,6 @@ class TestBaseMigration(TransactionCase):
         self.assertEqual(custom_access.operation, "crud")
         self.assertFalse(custom_access.is_standard)
         self.assertFalse(self.env.ref("base.res_currency_rate_rule").active)
-        self.assertTrue(self.env.ref("base.res_users_rule").active)
-        review_access = IrAccess.search(
-            [("name", "=", "Customized in v19 (base.res_users_rule)")]
-        )
-        self.assertFalse(review_access.active)
-        self.assertEqual(review_access.group_id, self.env.ref("base.group_system"))
-        self.assertEqual(review_access.model_id.model, "res.users")
 
     def test_bank_account(self):
         """

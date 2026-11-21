@@ -119,11 +119,19 @@ def ir_rule_customized(env):
             ir_model_data.model='ir.rule' AND ir_model_data.res_id=ir_rule.id
         """
     )
-    for row in env.cr.dictfetchall():
+    rules = env.cr.dictfetchall()
+    env.cr.execute("SELECT name FROM ir_module_module WHERE state='installed'")
+    installed_modules = {name for (name,) in env.cr.fetchall()}
+    unknown_rules = []
+    for row in rules:
         standard = standard_rules.get(row["xmlid"])
         if not standard:
+            if row["xmlid"].split(".")[0] in installed_modules:
+                unknown_rules.append(row["xmlid"])
             continue
-        std_active = standard["active"] == "1"
+        std_active = (
+            row["active"] if standard["active"] == "*" else standard["active"] == "1"
+        )
         diff_domain = _normalize_domain(row["domain_force"]) != _normalize_domain(
             standard["domain"]
         )
@@ -156,6 +164,17 @@ def ir_rule_customized(env):
                 diff_perms,
                 diff_groups,
             ),
+        )
+    if unknown_rules:
+        openupgrade.message(
+            env.cr,
+            "base",
+            "ir_rule",
+            None,
+            "Changes users made to these record rules cannot be detected, because "
+            "their modules are not part of the reference of v19 rules. Their v20 "
+            "ir.access records will be the ones of the module: %s",
+            ", ".join(sorted(unknown_rules)),
         )
 
 

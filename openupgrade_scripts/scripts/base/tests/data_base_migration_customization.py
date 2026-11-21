@@ -18,6 +18,48 @@ Account.search([("acc_number", "=", "OU20 67890")]) or Account.create(
 )
 env.ref("base.res_partner_bank_rule").domain_force = "[('company_id', '=', company_id)]"
 env.ref("base.res_currency_rate_rule").active = False
-env.ref("base.res_users_rule").groups = env.ref("base.group_system")
+Rule = env["ir.rule"]
+Rule.search([("name", "=", "rule with faulty domain")]).unlink()
+Rule.search([("name", "=", "OU20 industry")]) or Rule.create(
+    {
+        "name": "OU20 industry",
+        "model_id": env.ref("base.model_res_partner_industry").id,
+        "groups": [(6, 0, env.ref("base.group_user").ids)],
+        "domain_force": "[('active', '=', True)]",
+    }
+)
+Access = env["ir.model.access"]
+Access.search([("name", "=", "OU20 device unlink")]) or Access.create(
+    {
+        "name": "OU20 device unlink",
+        "model_id": env.ref("base.model_res_device").id,
+        "group_id": env.ref("base.group_user").id,
+        "perm_read": False,
+        "perm_unlink": True,
+    }
+)
+Rule.search([("name", "=", "OU20 renamed field")]) or Rule.create(
+    {
+        "name": "OU20 renamed field",
+        "model_id": env.ref("base.model_res_partner_bank").id,
+        "domain_force": "[('acc_number', '!=', 'OU20 forbidden')]",
+    }
+)
+imported_rule = Rule.search([("name", "=", "OU20 imported")]) or Rule.create(
+    {
+        "name": "OU20 imported",
+        "model_id": env.ref("base.model_res_partner_category").id,
+        "domain_force": "[('name', '!=', 'OU20 forbidden')]",
+    }
+)
+ModelData = env["ir.model.data"]
+ModelData.search([("module", "=", "__import__")]) or ModelData.create(
+    {
+        "module": "__import__",
+        "name": "ou20_imported_rule",
+        "model": "ir.rule",
+        "res_id": imported_rule.id,
+    }
+)
 env.ref("base.fr").zip_required = False
 env.cr.commit()

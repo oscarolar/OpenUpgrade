@@ -1,16 +1,23 @@
 ---Models in module 'base'---
 obsolete model ir.model.access (merged to ir.access)
-# DONE: end-migration: custom records are converted to ir.access (inactive ones as
-# inactive ir.access). Records provided by modules are recreated as ir.access from
-# module data, their old xmlids get a suffix in pre-migration and the table is kept
+# DONE: end-migration: records without xmlid of an installed module are converted to
+# ir.access permissions, with the domains of the v19 group rules that applied to their
+# group (inactive ones as inactive ir.access). Records provided by modules are
+# recreated as ir.access from module data, their old xmlids get a suffix in
+# pre-migration and the table is kept
 
 obsolete model ir.rule (merged to ir.access)
-# DONE: end-migration: custom records are converted to ir.access (inactive ones and
-# the ones without matching model access as inactive ir.access).
-# Rules provided by modules were noupdate in v19: pre-migration stores the ones that
-# differ from the v19 definition (ir_rule_19.csv), end-migration replaces the standard
-# ir.access by a custom copy with the changed domain when it has the same role, and
-# creates an inactive ir.access for review otherwise
+# DONE: end-migration: v20 combines permissions (with group) with OR and restrictions
+# (without group) with AND, so access is kept at most as wide as in v19:
+# - custom global rules become active restrictions, with renamed fields replaced
+# - custom group rules give their domain to the groups that had model access, and
+#   standard permissions without domain of those groups are replaced
+# - rules provided by modules were noupdate in v19: pre-migration stores the ones that
+#   differ from the v19 definition (ir_rule_19.csv) and logs the ones it can't check,
+#   end-migration replaces the standard ir.access by a copy with the changed domain,
+#   or copies the active flag
+# What can't be kept as restrictive as it was makes the migration fail with the list
+# of rules, unless OPENUPGRADE_IR_ACCESS_ALLOW_WIDEN=1 is set
 
 obsolete model res.bank (merged to res.partner.bank)
 # DONE: post-migration: name, bic, street, street2, zip, city, state and country are
