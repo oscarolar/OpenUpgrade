@@ -2,7 +2,9 @@
 ---Fields in module 'lunch'---
 lunch        / lunch.alert              / notification_moment (selection): DEL required, selection_keys: ['am', 'pm']
 lunch        / lunch.supplier           / moment (selection)            : DEL required, selection_keys: ['am', 'pm']
-# DONE: post-migration: times are stored in 24 hours format, 12 hours are added to notification_time and automatic_email_time of the records with moment 'pm'
+# DONE: post-migration: times are stored in 24 hours format, 12 hours are added to
+# notification_time and automatic_email_time of the records with moment 'pm', and
+# the moment is set to 'am' in the same update so that a second run changes nothing
 
 ---XML records in module 'lunch'---
 ir.access: lunch.ir_rule_lunch_location_multi_company (noupdate switched)
