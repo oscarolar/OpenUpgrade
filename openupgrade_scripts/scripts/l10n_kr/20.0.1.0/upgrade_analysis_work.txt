@@ -195,7 +195,7 @@ DEL account.report.expression: l10n_kr.l10n_kr_simplified_tp_vat_srzrt_balance
 DEL account.report.expression: l10n_kr.l10n_kr_simplified_tp_vat_srzrt_tax
 DEL account.report.expression: l10n_kr.l10n_kr_simplified_tp_vat_stosvbt_balance
 
-# NOTHING TO DO: removed by the ORM
+# DONE: post-migration: the tax_tags ones are deleted by SQL; the taxes of the template take the new tags on their repartition lines and journal items, the other taxes keep the old ones (l10n_tax_tags)
 
 NEW account.report.line: l10n_kr.l10n_kr_general_tp_vat_fioti
 NEW account.report.line: l10n_kr.l10n_kr_general_tp_vat_oita
