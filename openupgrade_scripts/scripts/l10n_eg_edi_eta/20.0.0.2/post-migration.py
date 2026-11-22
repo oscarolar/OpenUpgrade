@@ -88,7 +88,7 @@ def _l10n_eg_edi_eta_submission(env):
     env.cr.execute(
         """
         INSERT INTO l10n_eg_edi_eta_submission (
-            move_id, eta_document_uuid, eta_submission_id, state,
+            move_id, eta_document_uuid, eta_submission_id, state, message,
             create_uid, create_date, write_uid, write_date
         )
         SELECT
@@ -104,9 +104,20 @@ def _l10n_eg_edi_eta_submission(env):
                 WHEN rc.l10n_eg_production_env THEN 'accepted'
                 ELSE 'test'
             END,
+            pending.error,
             am.write_uid, am.write_date, am.write_uid, am.write_date
         FROM account_move am
         JOIN res_company rc ON rc.id = am.company_id
+        LEFT JOIN LATERAL (
+            SELECT regexp_replace(aed.error, '<[^>]*>', '', 'g') AS error
+            FROM account_edi_document aed
+            JOIN account_edi_format aef ON aef.id = aed.edi_format_id
+            WHERE aed.move_id = am.id
+                AND aef.code = 'eg_eta'
+                AND aed.state = 'to_send'
+                AND COALESCE(aed.error, '') <> ''
+            LIMIT 1
+        ) pending ON TRUE
         WHERE COALESCE(am.l10n_eg_uuid, '') <> ''
             AND NOT EXISTS (
                 SELECT 1 FROM l10n_eg_edi_eta_submission s
@@ -126,9 +137,29 @@ def _l10n_eg_edi_eta_submission(env):
     moves.flush_recordset()
 
 
+def _account_edi_document_eta(env):
+    """
+    The 19.0 account.edi.document of the ETA format are copied above: remove
+    them, so the ORM can delete the format at the end of the upgrade instead
+    of failing on their foreign key
+    """
+    if not openupgrade.table_exists(env.cr, "account_edi_document"):
+        return
+    openupgrade.logged_query(
+        env.cr,
+        """
+        DELETE FROM account_edi_document aed
+        USING account_edi_format aef
+        WHERE aef.id = aed.edi_format_id
+            AND aef.code = 'eg_eta'
+        """,
+    )
+
+
 @openupgrade.migrate()
 def migrate(env, version):
     _product_product_l10n_eg_eta_code(env)
     _res_company_l10n_eg_edi_api_mode(env)
     _l10n_eg_invoicing_threshold(env)
     _l10n_eg_edi_eta_submission(env)
+    _account_edi_document_eta(env)
