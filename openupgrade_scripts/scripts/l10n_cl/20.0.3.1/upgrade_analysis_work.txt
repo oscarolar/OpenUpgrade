@@ -18,7 +18,7 @@ DEL l10n_latam.identification.type: l10n_cl.it_DNI
 DEL l10n_latam.identification.type: l10n_cl.it_RUN
 DEL l10n_latam.identification.type: l10n_cl.it_RUT
 
-# TODO: l10n_latam.identification.type is removed (see account): the partners that used the types of this module keep their number in vat and the type in the kept column l10n_latam_identification_type_id; moving them to additional_identifiers is pending
+# DONE: pre-migration: the numbers of the other document types of this module move from vat to the additional identifier that replaces them; the RUT stays in vat; ID CARD (l10n_cl.it_DNI) has no identifier in 20.0 and stays in vat
 
 DEL res.bank: l10n_cl.bank_001_0
 DEL res.bank: l10n_cl.bank_001_1
