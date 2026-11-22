@@ -23,8 +23,7 @@ l10n_vn_edi_viettel / l10n_vn_edi_viettel.sinvoice.symbol / active (boolean)    
 
 l10n_vn_edi_viettel / l10n_vn_edi_viettel.sinvoice.symbol / company_id (many2one)         : NEW relation: res.company, required
 
-# DONE: pre-migration: column created empty, so the ORM does not give every symbol the current company
-# DONE: post-migration: each symbol gets the first company whose invoices used it (or the first Vietnamese company) and is copied for the other companies that used it, their invoices point to the copy
+# DONE: pre-migration: column created and filled there, since the ORM fills an empty required column with its default (the current company): each symbol gets the first company that used it in invoices, PoS configurations, the company PoS default or the company default of the partner property (or the first Vietnamese company) and is copied for the other companies that used it; their invoices, PoS configurations, PoS defaults and property defaults point to the copy
 
 l10n_vn_edi_viettel / l10n_vn_edi_viettel.sinvoice.symbol / invoice_template_code (char)  : NEW required
 l10n_vn_edi_viettel / l10n_vn_edi_viettel.sinvoice.symbol / invoice_template_id (many2one): DEL relation: l10n_vn_edi_viettel.sinvoice.template, required
@@ -32,7 +31,7 @@ l10n_vn_edi_viettel / l10n_vn_edi_viettel.sinvoice.template / invoice_symbols_id
 l10n_vn_edi_viettel / l10n_vn_edi_viettel.sinvoice.template / name (char)                   : DEL required
 l10n_vn_edi_viettel / l10n_vn_edi_viettel.sinvoice.template / template_invoice_type (selection): DEL required, selection_keys: ['1', '2', '3', '4', '5', '6']
 
-# DONE: post-migration: invoice_template_code set from the name (code) of the template of the symbol
+# DONE: pre-migration: invoice_template_code set from the name (code) of the template of the symbol, before the symbols are copied per company
 
 l10n_vn_edi_viettel / res.company              / l10n_vn_edi_symbol_id (many2one): NEW relation: l10n_vn_edi_viettel.sinvoice.symbol
 l10n_vn_edi_viettel / res.partner              / invoice_edi_format (False)    : selection_keys added: [ubl_21_fr, ubl_gr], removed: [oioubl_201, pint_sg, ubl_tr]
@@ -64,7 +63,7 @@ DEL ir.model.access: l10n_vn_edi_viettel.access_l10n_vn_edi_viettel_sinvoice_tem
 
 ir.model.constraint: l10n_vn_edi_viettel.constraint_l10n_vn_edi_viettel_sinvoice_symbol_name_template_uniq (changed definition: is now 'unique (name, invoice_template_code, company_id)' ('unique (name, invoice_template_id)'))
 
-# NOTHING TO DO: recreated by the ORM
+# DONE: pre-migration: the 19.0 constraint is dropped before the symbols are copied per company; the ORM creates the new one
 
 DEL ir.model.constraint: l10n_vn_edi_viettel.constraint_l10n_vn_edi_viettel_sinvoice_template_name_uniq
 DEL ir.ui.menu: l10n_vn_edi_viettel.l10n_vn_edi_sinvoice_templates
