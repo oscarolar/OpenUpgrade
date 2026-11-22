@@ -241,6 +241,10 @@ base         / res.partner.bank         / company_id (many2one)         : not re
 base         / res.partner.bank         / country_id (many2one)         : NEW relation: res.country, hasdefault: compute
 # DONE: post-migration: set from res.bank#country when the bank has one, computed by
 # the ORM from the partner otherwise
+# DONE: post-migration: when neither the partner, the company of the account nor the
+# bank have a country, take the commercial partner's or the one of the company using the
+# account most on entries and payments instead of the main company, and align
+# clearing_label_id
 
 base         / res.partner.bank         / currency_id (many2one)        : DEL relation: res.currency
 # NOTHING TO DO: no equivalent in v20, the column is kept

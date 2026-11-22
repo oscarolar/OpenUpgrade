@@ -1,10 +1,14 @@
 # Copyright 2026 Hunki Enterprises BV
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 
+import logging
+
 from openupgradelib import openupgrade
 from psycopg2 import sql
 
 from odoo.addons.base.models.ir_model import selection_xmlid
+
+_logger = logging.getLogger(__name__)
 
 
 def ir_model_fields_index(env):
@@ -112,6 +116,95 @@ def res_partner_bank(env):
             bank_id IS NOT NULL
         """,
     )
+
+
+def res_partner_bank_country(env):
+    """
+    res.partner.bank#country_id is new: its compute falls back on the country
+    of the current company (the main one during the upgrade) when neither the
+    partner, the company of the account nor its bank have one. Take instead the
+    country of the commercial partner, or of the company that uses the account
+    most on journal entries and payments, and give the account the clearing
+    label of that country. The main company stays as the last resort
+    """
+    usages = [
+        f"SELECT partner_bank_id, company_id FROM {table} "
+        "WHERE partner_bank_id IS NOT NULL"
+        for table in ("account_move", "account_payment")
+        if openupgrade.column_exists(env.cr, table, "partner_bank_id")
+        and openupgrade.column_exists(env.cr, table, "company_id")
+    ] or ["SELECT NULL::int AS partner_bank_id, NULL::int AS company_id"]
+    env.cr.execute(
+        f"""
+        WITH usage AS ({" UNION ALL ".join(usages)}),
+        usage_country AS (
+            SELECT DISTINCT ON (usage.partner_bank_id)
+                usage.partner_bank_id, company_partner.country_id
+            FROM usage
+            JOIN res_company company ON company.id = usage.company_id
+            JOIN res_partner company_partner
+                ON company_partner.id = company.partner_id
+            WHERE company_partner.country_id IS NOT NULL
+            GROUP BY usage.partner_bank_id, company_partner.country_id
+            ORDER BY usage.partner_bank_id, COUNT(*) DESC,
+                company_partner.country_id
+        ),
+        new AS (
+            SELECT rpb.id,
+                COALESCE(commercial.country_id, usage_country.country_id)
+                    AS country_id
+            FROM res_partner_bank rpb
+            JOIN res_partner partner ON partner.id = rpb.partner_id
+            LEFT JOIN res_partner commercial
+                ON commercial.id = partner.commercial_partner_id
+            LEFT JOIN res_company company ON company.id = rpb.company_id
+            LEFT JOIN res_partner company_partner
+                ON company_partner.id = company.partner_id
+            LEFT JOIN res_bank bank ON bank.id = rpb.bank_id
+            LEFT JOIN usage_country ON usage_country.partner_bank_id = rpb.id
+            WHERE partner.country_id IS NULL
+                AND company_partner.country_id IS NULL
+                AND bank.country IS NULL
+        )
+        UPDATE res_partner_bank rpb
+        SET country_id = new.country_id
+        FROM new
+        WHERE new.id = rpb.id
+            AND new.country_id IS NOT NULL
+            AND new.country_id IS DISTINCT FROM rpb.country_id
+        RETURNING rpb.id
+        """
+    )
+    account_ids = [row[0] for row in env.cr.fetchall()]
+    _logger.info(
+        "res.partner.bank: country of %s accounts taken from their commercial "
+        "partner or the company using them",
+        len(account_ids),
+    )
+    if not account_ids:
+        return account_ids
+    openupgrade.logged_query(
+        env.cr,
+        """
+        UPDATE res_partner_bank rpb
+        SET clearing_label_id = COALESCE(
+            (
+                SELECT id FROM clearing_label
+                WHERE clearing_label.country_id = rpb.country_id
+                ORDER BY id LIMIT 1
+            ),
+            (
+                SELECT id FROM clearing_label
+                WHERE clearing_label.country_id IS NULL
+                ORDER BY id LIMIT 1
+            ),
+            rpb.clearing_label_id
+        )
+        WHERE rpb.id = ANY(%s)
+        """,
+        (account_ids,),
+    )
+    return account_ids
 
 
 def res_partner(env):
@@ -509,6 +602,7 @@ def migrate(env, version):
     res_partner_tz(env)
     ir_model_fields_index(env)
     res_partner_bank(env)
+    res_partner_bank_country(env)
     res_partner(env)
     res_country_zip_applicability(env)
     res_groups(env)
