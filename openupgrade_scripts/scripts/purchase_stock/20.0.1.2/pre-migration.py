@@ -22,7 +22,8 @@ def date_promised(env):
     """
     The promised date is set from the planned date when an order is confirmed, and
     it replaces the planned date for the on-time rate of the vendors, so fill it
-    for the confirmed orders
+    for the confirmed orders. The lines are filled with one rewrite of the table
+    instead of an UPDATE of almost every row
     """
     if openupgrade.column_exists(env.cr, "purchase_order_line", "date_promised"):
         return
@@ -30,19 +31,34 @@ def date_promised(env):
     openupgrade.logged_query(
         env.cr,
         """
-        UPDATE
-            purchase_order_line
-        SET
-            date_promised=purchase_order_line.date_planned
-        FROM
-            purchase_order
-        WHERE
-            purchase_order.id=purchase_order_line.order_id
-        AND
-            purchase_order.state='purchase'
-        AND
-            purchase_order_line.display_type IS NULL
+        CREATE FUNCTION pg_temp.openupgrade_purchase_order_state(order_id integer)
+        RETURNS varchar LANGUAGE sql STABLE AS $$
+            SELECT state FROM purchase_order WHERE id=order_id
+        $$
         """,
+    )
+    openupgrade.logged_query(
+        env.cr,
+        """
+        ALTER TABLE
+            purchase_order_line
+        ALTER COLUMN
+            date_promised
+        TYPE
+            timestamp
+        USING
+            CASE
+                WHEN
+                    display_type IS NULL
+                AND
+                    pg_temp.openupgrade_purchase_order_state(order_id)='purchase'
+                THEN
+                    date_planned
+            END
+        """,
+    )
+    openupgrade.logged_query(
+        env.cr, "DROP FUNCTION pg_temp.openupgrade_purchase_order_state(integer)"
     )
     openupgrade.logged_query(
         env.cr,
