@@ -2,11 +2,11 @@
 ---Fields in module 'l10n_es'---
 l10n_es      / account.move             / l10n_es_invoice_type (selection): NEW selection_keys: function, hasdefault: compute
 
-# NOTHING TO DO: the ORM sets the default
+# DONE: post-migration: computed by the ORM, then corrected with the 19.0 simplified flag; the refund reasons of TicketBAI and Veri*Factu are written by their own post-migration
 
 l10n_es      / account.move             / l10n_es_is_simplified (boolean): DEL
 
-# TODO: pending review
+# DONE: post-migration: simplified invoices and refunds get F2/R5, the others F1/R4 where the ORM computed a simplified type
 
 l10n_es      / account.move             / l10n_es_original_invoice_credited (char): NEW stored: False
 
