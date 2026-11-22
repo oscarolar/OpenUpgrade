@@ -144,7 +144,7 @@ DEL account.report.expression: l10n_vn.account_tax_report_line_04_02_01_vn_tag_b
 DEL account.report.expression: l10n_vn.account_tax_report_line_05_01_01_vn_tag_base
 DEL account.report.expression: l10n_vn.account_tax_report_line_05_01_02_vn_tag_base
 
-# NOTHING TO DO: removed by the ORM
+# DONE: post-migration: deleted by SQL; the taxes of the template take the new form 01/GTGT tags on their repartition lines and journal items, the other taxes keep the old ones (l10n_tax_tags)
 
 NEW account.report.line: l10n_vn.form_01_gtgt_report_A
 NEW account.report.line: l10n_vn.form_01_gtgt_report_B
