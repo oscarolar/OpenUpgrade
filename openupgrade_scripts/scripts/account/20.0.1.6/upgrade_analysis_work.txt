@@ -336,9 +336,12 @@ account      / res.company              / inventory_valuation (selection): previ
 # NOTHING TO DO: the ORM moves the field to its new module
 
 account      / res.company              / quick_edit_mode_enabled (boolean): NEW
+
+# DONE: pre-migration: enabled for the companies that had a quick encoding mode (quick_edit_mode), which is ignored otherwise
+
 account      / res.company              / set_to_review_documents (boolean): NEW
 
-# NOTHING TO DO
+# NOTHING TO DO: left disabled; in 19.0 the entries posted by users without the accounting rights were always set to review, in 20.0 only when this option is set
 
 account      / res.company              / vat_check_vies (boolean)      : previously in module base_vat
 

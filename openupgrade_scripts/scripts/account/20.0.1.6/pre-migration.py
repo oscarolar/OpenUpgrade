@@ -142,6 +142,28 @@ def _account_payment_new_columns(env):
     )
 
 
+def _res_company_quick_edit_mode_enabled(env):
+    """
+    res.company#quick_edit_mode only applies now when quick_edit_mode_enabled
+    is set: enable it for the companies that had a quick encoding mode.
+    """
+    openupgrade.logged_query(
+        env.cr,
+        """
+        ALTER TABLE res_company
+        ADD COLUMN IF NOT EXISTS quick_edit_mode_enabled bool
+        """,
+    )
+    openupgrade.logged_query(
+        env.cr,
+        """
+        UPDATE res_company
+        SET quick_edit_mode_enabled = quick_edit_mode IS NOT NULL
+        WHERE quick_edit_mode_enabled IS NULL
+        """,
+    )
+
+
 def _account_journal_group_unique_name(env):
     """
     account.journal.group#company_id is gone and the name is now unique across
@@ -191,5 +213,6 @@ def migrate(env, version):
     _account_move_line_deductible_percentage(env)
     _account_payment_state(env)
     _account_payment_new_columns(env)
+    _res_company_quick_edit_mode_enabled(env)
     _account_journal_group_unique_name(env)
     _account_reconcile_model_stale_columns(env)
