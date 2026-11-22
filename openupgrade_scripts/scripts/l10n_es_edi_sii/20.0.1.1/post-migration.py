@@ -51,6 +51,26 @@ def _l10n_es_edi_sii_document(env):
     )
 
 
+def _account_edi_document_sii(env):
+    """
+    The 19.0 account.edi.document of the SII format are copied above: remove
+    them, so the ORM can delete the format at the end of the upgrade instead
+    of failing on their foreign key
+    """
+    if not openupgrade.table_exists(env.cr, "account_edi_document"):
+        return
+    openupgrade.logged_query(
+        env.cr,
+        """
+        DELETE FROM account_edi_document aed
+        USING account_edi_format aef
+        WHERE aef.id = aed.edi_format_id
+            AND aef.code = 'es_sii'
+        """,
+    )
+
+
 @openupgrade.migrate()
 def migrate(env, version):
     _l10n_es_edi_sii_document(env)
+    _account_edi_document_sii(env)
