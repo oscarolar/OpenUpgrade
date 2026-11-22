@@ -597,7 +597,7 @@ NEW res.country.state: base.state_sa_010
 NEW res.country.state: base.state_sa_011
 NEW res.country.state: base.state_sa_012
 NEW res.country.state: base.state_sa_014
-# TODO: see below
+# DONE: post-migration: the 19.0 Saudi cities (state_sa_1..93) are merged into these provinces, see below
 
 DEL res.country.state: base.state_eg_hu
 # DONE: merged into base.state_eg_c
@@ -606,8 +606,7 @@ DEL res.country.state: base.state_eg_su
 # DONE: merged into base.state_eg_gz
 
 DEL res.country.state: base.state_in_dd
-# TODO: probably needs to be merged into some existing state
-# somebody with knowledge about the country should contribute this
+# DONE: pre-migration: merged into base.state_in_dn, which 20.0 renames to Dadra and Nagar Haveli, and Daman and Diu (the union territory of 2020)
 
 DEL res.country.state: base.state_in_or
 # DONE: renamed to state_in_od in pre-migration
@@ -705,8 +704,9 @@ DEL res.country.state: base.state_sa_90
 DEL res.country.state: base.state_sa_91
 DEL res.country.state: base.state_sa_92
 DEL res.country.state: base.state_sa_93
-# TODO: somebody with knowledge about this country should contribute merging those into
-# the new ones
+# DONE: post-migration: 83 cities merged into their province with merge_records (Riyadh 001, Makkah 002, Madinah 003, Eastern 004, Qassim 005, Ha'il 006, Tabuk 007, Northern Borders 008, Jazan 009, Najran 010, Baha 011, Jouf 012, Asir 014)
+# TODO: state_sa_15 (Al Khuraibah), state_sa_19 (Al Qurainah), state_sa_31 (Fiji), state_sa_49 (King Fhad), state_sa_50 (King Khalid), state_sa_55 (Manailih), state_sa_61 (Qalsn), state_sa_83 (Tusdeer Free Zone), state_sa_88 (Waisumah) and state_sa_93 (Zulayfayn) are not merged: their province is ambiguous (port or airport names shared by several provinces, or places that cannot be told apart); the ORM deletes them when unused, partners that use them keep them
+# somebody with knowledge about this country should confirm their province
 
 NEW res.groups: base.group_everyone
 # NOTHING TO DO: filled via implied_ids

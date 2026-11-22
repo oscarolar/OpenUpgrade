@@ -234,6 +234,101 @@ def l10n_eu_account_vies(env):
     ).button_install()
 
 
+_merged_sa_states = [
+    ("base.state_sa_1", "base.state_sa_014"),
+    ("base.state_sa_2", "base.state_sa_004"),
+    ("base.state_sa_3", "base.state_sa_004"),
+    ("base.state_sa_4", "base.state_sa_001"),
+    ("base.state_sa_5", "base.state_sa_011"),
+    ("base.state_sa_6", "base.state_sa_011"),
+    ("base.state_sa_7", "base.state_sa_002"),
+    ("base.state_sa_8", "base.state_sa_012"),
+    ("base.state_sa_9", "base.state_sa_004"),
+    ("base.state_sa_10", "base.state_sa_012"),
+    ("base.state_sa_11", "base.state_sa_004"),
+    ("base.state_sa_12", "base.state_sa_001"),
+    ("base.state_sa_13", "base.state_sa_004"),
+    ("base.state_sa_14", "base.state_sa_004"),
+    ("base.state_sa_16", "base.state_sa_004"),
+    ("base.state_sa_17", "base.state_sa_014"),
+    ("base.state_sa_18", "base.state_sa_002"),
+    ("base.state_sa_20", "base.state_sa_009"),
+    ("base.state_sa_21", "base.state_sa_004"),
+    ("base.state_sa_22", "base.state_sa_005"),
+    ("base.state_sa_23", "base.state_sa_008"),
+    ("base.state_sa_24", "base.state_sa_002"),
+    ("base.state_sa_25", "base.state_sa_008"),
+    ("base.state_sa_26", "base.state_sa_014"),
+    ("base.state_sa_27", "base.state_sa_005"),
+    ("base.state_sa_28", "base.state_sa_005"),
+    ("base.state_sa_29", "base.state_sa_004"),
+    ("base.state_sa_30", "base.state_sa_007"),
+    ("base.state_sa_32", "base.state_sa_005"),
+    ("base.state_sa_33", "base.state_sa_012"),
+    ("base.state_sa_34", "base.state_sa_004"),
+    ("base.state_sa_35", "base.state_sa_006"),
+    ("base.state_sa_36", "base.state_sa_004"),
+    ("base.state_sa_37", "base.state_sa_008"),
+    ("base.state_sa_38", "base.state_sa_004"),
+    ("base.state_sa_39", "base.state_sa_009"),
+    ("base.state_sa_40", "base.state_sa_002"),
+    ("base.state_sa_41", "base.state_sa_002"),
+    ("base.state_sa_42", "base.state_sa_002"),
+    ("base.state_sa_43", "base.state_sa_009"),
+    ("base.state_sa_44", "base.state_sa_012"),
+    ("base.state_sa_45", "base.state_sa_004"),
+    ("base.state_sa_46", "base.state_sa_004"),
+    ("base.state_sa_47", "base.state_sa_014"),
+    ("base.state_sa_48", "base.state_sa_002"),
+    ("base.state_sa_51", "base.state_sa_002"),
+    ("base.state_sa_52", "base.state_sa_003"),
+    ("base.state_sa_53", "base.state_sa_001"),
+    ("base.state_sa_54", "base.state_sa_002"),
+    ("base.state_sa_56", "base.state_sa_001"),
+    ("base.state_sa_57", "base.state_sa_014"),
+    ("base.state_sa_58", "base.state_sa_010"),
+    ("base.state_sa_59", "base.state_sa_010"),
+    ("base.state_sa_60", "base.state_sa_004"),
+    ("base.state_sa_62", "base.state_sa_004"),
+    ("base.state_sa_63", "base.state_sa_004"),
+    ("base.state_sa_64", "base.state_sa_002"),
+    ("base.state_sa_65", "base.state_sa_008"),
+    ("base.state_sa_66", "base.state_sa_004"),
+    ("base.state_sa_67", "base.state_sa_004"),
+    ("base.state_sa_68", "base.state_sa_004"),
+    ("base.state_sa_69", "base.state_sa_004"),
+    ("base.state_sa_70", "base.state_sa_001"),
+    ("base.state_sa_71", "base.state_sa_001"),
+    ("base.state_sa_72", "base.state_sa_004"),
+    ("base.state_sa_73", "base.state_sa_001"),
+    ("base.state_sa_74", "base.state_sa_004"),
+    ("base.state_sa_75", "base.state_sa_004"),
+    ("base.state_sa_76", "base.state_sa_004"),
+    ("base.state_sa_77", "base.state_sa_010"),
+    ("base.state_sa_78", "base.state_sa_002"),
+    ("base.state_sa_79", "base.state_sa_001"),
+    ("base.state_sa_80", "base.state_sa_007"),
+    ("base.state_sa_81", "base.state_sa_002"),
+    ("base.state_sa_82", "base.state_sa_008"),
+    ("base.state_sa_84", "base.state_sa_004"),
+    ("base.state_sa_85", "base.state_sa_007"),
+    ("base.state_sa_86", "base.state_sa_005"),
+    ("base.state_sa_87", "base.state_sa_001"),
+    ("base.state_sa_89", "base.state_sa_007"),
+    ("base.state_sa_90", "base.state_sa_003"),
+    ("base.state_sa_91", "base.state_sa_003"),
+    ("base.state_sa_92", "base.state_sa_001"),
+]
+
+
+def res_country_state_sa(env):
+    """
+    The Saudi cities of 19.0 are replaced by the 13 provinces: merge each city
+    into its province, so partners and addresses keep a valid state
+    """
+    openupgrade.rename_xmlids(env.cr, _merged_sa_states, allow_merge=True)
+
+
 @openupgrade.migrate()
 def migrate(env, version):
     openupgrade.load_data(
@@ -259,3 +354,4 @@ def migrate(env, version):
     res_users_apikeys_scope(env)
     ir_config_parameter_default_max_email_size(env)
     l10n_eu_account_vies(env)
+    res_country_state_sa(env)

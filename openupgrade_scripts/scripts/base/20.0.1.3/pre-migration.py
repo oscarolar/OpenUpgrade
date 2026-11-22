@@ -29,6 +29,7 @@ _copied_columns = {
 _merged_xmlids = [
     ("base.state_eg_su", "base.state_eg_gz"),
     ("base.state_eg_hu", "base.state_eg_c"),
+    ("base.state_in_dd", "base.state_in_dn"),
 ]
 
 _renamed_columns = {
