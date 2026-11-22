@@ -1,7 +1,7 @@
 ---Models in module 'l10n_in'---
 obsolete model l10n_in.section.alert
 
-# TODO: pending review
+# NOTHING TO DO: the TDS/TCS section alerts are dropped in 20.0, the sections are carried by the TDS tax groups of the chart; its records are removed by the ORM
 
 obsolete model l10n_in.withhold.wizard [transient]
 
@@ -10,7 +10,7 @@ obsolete model l10n_in.withhold.wizard [transient]
 ---Fields in module 'l10n_in'---
 l10n_in      / account.account          / l10n_in_tds_tcs_section_id (many2one): DEL relation: l10n_in.section.alert
 
-# TODO: pending review
+# NOTHING TO DO: section alerts dropped (see the model), the column is kept
 
 l10n_in      / account.journal          / l10n_in_self_invoice (boolean): NEW
 
@@ -27,7 +27,7 @@ l10n_in      / account.move             / l10n_in_withhold_move_ids (one2many): 
 l10n_in      / account.move             / l10n_in_withholding_ref_move_id (many2one): DEL relation: account.move
 l10n_in      / account.move             / l10n_in_withholding_ref_payment_id (many2one): DEL relation: account.payment
 
-# TODO: pending review
+# NOTHING TO DO: the separate TDS withholding entries of 19.0 are gone, 20.0 withholds on the payment (l10n_account_withholding_tax); the posted 19.0 withholding entries stay as regular journal entries, their link to the invoice or payment has no 20.0 field and stays only in the kept columns; l10n_in_is_gst_registered_enabled is a non stored compute now
 
 l10n_in      / account.move.line        / l10n_in_gstr_section (selection): selection_keys added: [sale_composition_supplies], removed: [purchase_b2c_regular, purchase_cdnur_regular]
 
@@ -36,15 +36,15 @@ l10n_in      / account.move.line        / l10n_in_gstr_section (selection): sele
 l10n_in      / account.payment          / l10n_in_withhold_move_ids (one2many): DEL relation: account.move
 l10n_in      / account.tax              / l10n_in_section_id (many2one) : DEL relation: l10n_in.section.alert
 
-# TODO: pending review
+# NOTHING TO DO: section alerts dropped, the payment link of the old withholding entries has no 20.0 field (see account.move)
 
 l10n_in      / account.tax              / l10n_in_tax_type (selection)  : selection_keys added: [tds], removed: [tds_purchase, tds_sale]
 
-# NOTHING TO DO
+# DONE: post-migration: 'tds_sale' / 'tds_purchase' taxes become 'tds' withholding taxes (is_withholding_tax) of the sale / purchase use, like the 20.0 chart template
 
 l10n_in      / l10n_in.pan.entity       / tds_certificate_filename (char): DEL
 
-# TODO: pending review
+# DONE: post-migration: the name of the uploaded certificate is copied to its attachment, 20.0 reads it from there
 
 l10n_in      / l10n_in.pan.entity       / website_message_ids (one2many): DEL relation: mail.message
 
@@ -61,7 +61,7 @@ l10n_in      / l10n_in.section.alert    / per_transaction_limit (float) : DEL
 l10n_in      / l10n_in.section.alert    / tax_report_line_id (many2one) : DEL relation: account.report.line
 l10n_in      / l10n_in.section.alert    / tax_source_type (selection)   : DEL selection_keys: ['tcs', 'tds']
 
-# TODO: pending review
+# NOTHING TO DO: model dropped in 20.0, removed by the ORM
 
 l10n_in      / res.company              / l10n_in_composition_tax_rate (selection): NEW selection_keys: ['1', '5', '6']
 l10n_in      / res.company              / l10n_in_disable_b2c_hsn_reporting (boolean): NEW
@@ -75,7 +75,7 @@ l10n_in      / res.company              / l10n_in_gst_registration_type (selecti
 l10n_in      / res.company              / l10n_in_is_gst_registered (boolean): DEL
 l10n_in      / res.company              / l10n_in_withholding_account_id (many2one): DEL relation: account.account
 
-# TODO: pending review
+# DONE: post-migration: companies registered under GST get l10n_in_gst_registration_type = 'regular' (19.0 had no composition scheme); the TDS account has no 20.0 equivalent, the 20.0 TDS taxes carry their own accounts
 
 ---XML records in module 'l10n_in'---
 NEW account.account.tag: l10n_in.account_tag_cash_and_cash_equivalents
@@ -233,4 +233,4 @@ DEL l10n_in.section.alert: l10n_in.tds_section_393_1_8_vi_vda
 
 DEL res.country.state: l10n_in.state_in_la [renamed to base module]
 
-# TODO: the state now belongs to base, which loads before this module: the xmlid has to be renamed in the pre-migration of base
+# DONE: pre-migration of base: renamed to base.state_in_la
