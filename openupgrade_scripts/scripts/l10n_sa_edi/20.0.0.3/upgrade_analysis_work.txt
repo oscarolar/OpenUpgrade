@@ -11,7 +11,7 @@ l10n_sa_edi  / account.move             / l10n_sa_chain_index (integer) : not st
 l10n_sa_edi  / account.move             / l10n_sa_chain_index (integer) : now related
 l10n_sa_edi  / account.move             / l10n_sa_edi_chain_head_id (many2one): DEL relation: account.move
 
-# TODO: pending review
+# DONE: post-migration: the chain index moves to the l10n_sa_edi.document created for each 19.0 ZATCA EDI document (see the XML records); the chain head is now the last document of the journal chain, the column is kept
 
 l10n_sa_edi  / account.move             / l10n_sa_edi_document_id (many2one): NEW relation: l10n_sa_edi.document
 l10n_sa_edi  / account.move             / l10n_sa_edi_supply_end_date (date): NEW
@@ -24,12 +24,12 @@ l10n_sa_edi  / account.move             / l10n_sa_edi_transaction_type_ids (many
 
 l10n_sa_edi  / account.move             / l10n_sa_is_test (boolean)     : NEW isfunction: function, stored
 
-# NOTHING TO DO: computed by the ORM
+# DONE: post-migration: recomputed once the 19.0 documents and their logs exist
 
 l10n_sa_edi  / account.tax              / l10n_sa_exemption_reason_code (selection): DEL selection_keys: ['VATEX-SA-29', 'VATEX-SA-29-7', 'VATEX-SA-30', 'VATEX-SA-32', 'VATEX-SA-33', 'VATEX-SA-34-1', 'VATEX-SA-34-2', 'VATEX-SA-34-3', 'VATEX-SA-34-4', 'VATEX-SA-34-5', 'VATEX-SA-35', 'VATEX-SA-36', 'VATEX-SA-EDU', 'VATEX-SA-HEA', 'VATEX-SA-OOS']
 l10n_sa_edi  / account.tax              / l10n_sa_is_retention (boolean): DEL
 
-# TODO: pending review
+# DONE: post-migration: the exemption reason code is copied to ubl_cii_tax_exemption_reason_code, which l10n_sa_edi extends with the same VATEX-SA codes; l10n_sa_is_retention has no successor, 20.0 leaves every negative (withholding) tax out of the UBL, and the 19.0 retention taxes are negative
 
 l10n_sa_edi  / account.tax              / ubl_cii_tax_exemption_reason_code (False): NEW selection_keys: ['DL8.46.1', 'DL8.46.2', 'DL8.46.3', 'DL8.46.4', 'VATEX-EU-132', 'VATEX-EU-132-1A', 'VATEX-EU-132-1B', 'VATEX-EU-132-1C', 'VATEX-EU-132-1D', 'VATEX-EU-132-1E', 'VATEX-EU-132-1F', 'VATEX-EU-132-1G', 'VATEX-EU-132-1H', 'VATEX-EU-132-1I', 'VATEX-EU-132-1J', 'VATEX-EU-132-1K', 'VATEX-EU-132-1L', 'VATEX-EU-132-1M', 'VATEX-EU-132-1N', 'VATEX-EU-132-1O', 'VATEX-EU-132-1P', 'VATEX-EU-132-1Q', 'VATEX-EU-135-1', 'VATEX-EU-143', 'VATEX-EU-143-1A', 'VATEX-EU-143-1B', 'VATEX-EU-143-1C', 'VATEX-EU-143-1D', 'VATEX-EU-143-1E', 'VATEX-EU-143-1F', 'VATEX-EU-143-1FA', 'VATEX-EU-143-1G', 'VATEX-EU-143-1H', 'VATEX-EU-143-1I', 'VATEX-EU-143-1J', 'VATEX-EU-143-1K', 'VATEX-EU-143-1L', 'VATEX-EU-144', 'VATEX-EU-146-1E', 'VATEX-EU-148', 'VATEX-EU-148-A', 'VATEX-EU-148-B', 'VATEX-EU-148-C', 'VATEX-EU-148-D', 'VATEX-EU-148-E', 'VATEX-EU-148-F', 'VATEX-EU-148-G', 'VATEX-EU-151', 'VATEX-EU-151-1A', 'VATEX-EU-151-1AA', 'VATEX-EU-151-1B', 'VATEX-EU-151-1C', 'VATEX-EU-151-1D', 'VATEX-EU-151-1E', 'VATEX-EU-153', 'VATEX-EU-159', 'VATEX-EU-309', 'VATEX-EU-79-C', 'VATEX-EU-AE', 'VATEX-EU-D', 'VATEX-EU-F', 'VATEX-EU-G', 'VATEX-EU-I', 'VATEX-EU-IC', 'VATEX-EU-J', 'VATEX-EU-O', 'VATEX-FR-298SEXDECIESA', 'VATEX-FR-AE', 'VATEX-FR-CGI261-1', 'VATEX-FR-CGI261-2', 'VATEX-FR-CGI261-3', 'VATEX-FR-CGI261-4', 'VATEX-FR-CGI261-5', 'VATEX-FR-CGI261-7', 'VATEX-FR-CGI261-8', 'VATEX-FR-CGI261A', 'VATEX-FR-CGI261B', 'VATEX-FR-CGI261C-1', 'VATEX-FR-CGI261C-2', 'VATEX-FR-CGI261C-3', 'VATEX-FR-CGI261D-1', 'VATEX-FR-CGI261D-1BIS', 'VATEX-FR-CGI261D-2', 'VATEX-FR-CGI261D-3', 'VATEX-FR-CGI261D-4', 'VATEX-FR-CGI261E-1', 'VATEX-FR-CGI261E-2', 'VATEX-FR-CGI275', 'VATEX-FR-CGI277A', 'VATEX-FR-CGI295', 'VATEX-FR-CNWVAT', 'VATEX-FR-F', 'VATEX-FR-FRANCHISE', 'VATEX-FR-I', 'VATEX-FR-J', 'VATEX-SA-29', 'VATEX-SA-29-7', 'VATEX-SA-30', 'VATEX-SA-32', 'VATEX-SA-33', 'VATEX-SA-34-1', 'VATEX-SA-34-2', 'VATEX-SA-34-3', 'VATEX-SA-34-4', 'VATEX-SA-34-5', 'VATEX-SA-35', 'VATEX-SA-36', 'VATEX-SA-EDU', 'VATEX-SA-HEA', 'VATEX-SA-OOS'], mode: modify
 
@@ -65,12 +65,12 @@ l10n_sa_edi  / res.partner              / l10n_sa_edi_additional_identification_
 l10n_sa_edi  / res.users                / l10n_sa_edi_additional_identification_scheme (selection): selection_keys is now 'False' ('function')
 l10n_sa_edi  / res.users                / l10n_sa_edi_additional_identification_scheme (selection): type is now 'char' ('selection')
 
-# TODO: pending review
+# DONE: post-migration: the 19.0 scheme and number are written in res.partner#additional_identifiers under 'SA_<scheme>', where the 20.0 compute reads them (unless the partner already has an SA identifier)
 
 ---XML records in module 'l10n_sa_edi'---
 DEL account.edi.format: l10n_sa_edi.edi_sa_zatca (noupdate)
 
-# TODO: pending review
+# DONE: post-migration: before the ORM removes the format, each of its 19.0 account.edi.document becomes an l10n_sa_edi.document linked to the invoice, with its signed XML, errors, chain index and state (sent -> accepted or warning, unconfirmed with a chain index -> unknown, refused -> rejected, else to_send) and one log whose is_test follows the API mode of the company; l10n_sa_is_test is recomputed
 
 NEW ir.access: l10n_sa_edi.l10n_sa_edi_document_group_invoice
 NEW ir.access: l10n_sa_edi.l10n_sa_edi_document_readonly
