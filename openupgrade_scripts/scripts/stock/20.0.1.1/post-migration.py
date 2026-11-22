@@ -212,13 +212,80 @@ def stock_lot_partner_ids(env):
     )
 
 
+def _column_used_by_views(cr, table, column):
+    cr.execute(
+        """
+        SELECT 1
+        FROM pg_depend
+        JOIN pg_attribute
+            ON pg_attribute.attrelid=pg_depend.refobjid
+            AND pg_attribute.attnum=pg_depend.refobjsubid
+        WHERE pg_depend.classid='pg_rewrite'::regclass
+        AND pg_depend.refobjid=%s::regclass
+        AND pg_attribute.attname=%s
+        LIMIT 1
+        """,
+        (table, column),
+    )
+    return bool(cr.rowcount)
+
+
 def stock_move_line_date(env):
     """
-    stock.move.line#date is a stored related to its move's date now
+    stock.move.line#date is a stored related to its move's date now. When a
+    sample shows that a large part of the lines have another date, the table is
+    rewritten once instead of updating most of its rows, unless a view uses the
+    column, which keeps its type from being altered
     """
     env.cr.execute("SELECT MIN(move_id), MAX(move_id) FROM stock_move_line")
     min_id, max_id = env.cr.fetchone()
     if min_id is None:
+        return
+    env.cr.execute(
+        """
+        SELECT
+            COUNT(*),
+            COUNT(*) FILTER (
+                WHERE stock_move_line.date IS DISTINCT FROM stock_move.date
+            )
+        FROM stock_move_line TABLESAMPLE SYSTEM (1)
+        JOIN stock_move ON stock_move.id=stock_move_line.move_id
+        """
+    )
+    sampled, differing = env.cr.fetchone()
+    if (
+        sampled >= 10000
+        and differing * 5 > sampled * 2
+        and not _column_used_by_views(env.cr, "stock_move_line", "date")
+    ):
+        openupgrade.logged_query(
+            env.cr,
+            """
+            CREATE FUNCTION pg_temp.openupgrade_stock_move_line_date(
+                move_id integer, line_date timestamp
+            )
+            RETURNS timestamp LANGUAGE sql STABLE AS $$
+                SELECT CASE WHEN stock_move.id IS NULL THEN line_date
+                    ELSE stock_move.date END
+                FROM (SELECT 1) one
+                LEFT JOIN stock_move ON stock_move.id=move_id
+            $$
+            """,
+        )
+        openupgrade.logged_query(
+            env.cr,
+            """
+            ALTER TABLE stock_move_line
+            ALTER COLUMN date TYPE timestamp
+            USING pg_temp.openupgrade_stock_move_line_date(move_id, date)
+            """,
+        )
+        openupgrade.logged_query(
+            env.cr,
+            """
+            DROP FUNCTION pg_temp.openupgrade_stock_move_line_date(integer, timestamp)
+            """,
+        )
         return
     step = 5000000
     for start in range(min_id, max_id + 1, step):
