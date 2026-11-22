@@ -30,6 +30,37 @@ def _res_partner_peppol_endpoint(env):
         )
 
 
+def _res_partner_routing(env):
+    """
+    res.partner#routing_scheme and routing_endpoint replace peppol_eas and
+    peppol_endpoint. They were computed when the module was loaded, before the
+    endpoints were moved, so keep the address the partner was set to receive
+    its documents on.
+    """
+    if not openupgrade.column_exists(env.cr, "res_partner", "peppol_endpoint"):
+        return
+    schemes = [
+        scheme
+        for scheme, _label in env["res.partner"]._fields["routing_scheme"].selection
+    ]
+    openupgrade.logged_query(
+        env.cr,
+        """
+        UPDATE res_partner
+        SET routing_scheme = peppol_eas, routing_endpoint = peppol_endpoint
+        WHERE peppol_eas = ANY(%s)
+            AND COALESCE(peppol_endpoint, '') <> ''
+            AND (
+                routing_scheme IS DISTINCT FROM peppol_eas
+                OR routing_endpoint IS DISTINCT FROM peppol_endpoint
+            )
+        """,
+        (schemes,),
+    )
+    env["res.partner"].invalidate_model(["routing_scheme", "routing_endpoint"])
+
+
 @openupgrade.migrate()
 def migrate(env, version):
     _res_partner_peppol_endpoint(env)
+    _res_partner_routing(env)
