@@ -79,7 +79,7 @@ DEL account.report.line: l10n_th.tax_report_total_pnd53_line
 DEL account.report.line: l10n_th.tax_report_total_remittance_pnd3_line
 DEL account.report.line: l10n_th.tax_report_total_remittance_pnd53_line
 
-# NOTHING TO DO: removed by the ORM
+# DONE: post-migration: the tax_tags expressions of PND3/PND53 are deleted by SQL, otherwise the cleanup deletes the PND3/PND53 tags that are module data now and that the template uses
 
 NEW ir.access: l10n_th.access_l10n_th_tax_invoice
 NEW ir.access: l10n_th.access_l10n_th_tax_invoice_readonly
