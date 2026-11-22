@@ -207,6 +207,9 @@ DEL account.report.line: l10n_au.l10n_au_master_bas_w2
 DEL account.report.line: l10n_au.l10n_au_master_bas_w3
 DEL account.report.line: l10n_au.l10n_au_master_bas_w4
 DEL account.report.line: l10n_au.l10n_au_master_bas_w5
+
+# DONE: post-migration: the expressions of l10n_au.tax_report and l10n_au.l10n_au_master_bas are deleted by SQL; their ORM removal would strip the tags with signed formulas (G1, G2, 1C, W2...) from the taxes, as it only looks for other expressions with the unsigned formula, while the BAS reports keep using them. Reports, lines and columns are removed by the ORM
+
 DEL ir.ui.view: l10n_au.view_partner_bank_form
 
 # NOTHING TO DO: removed by the ORM
