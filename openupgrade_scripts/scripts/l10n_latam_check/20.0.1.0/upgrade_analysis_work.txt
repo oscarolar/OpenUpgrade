@@ -2,13 +2,13 @@
 ---Fields in module 'l10n_latam_check'---
 l10n_latam_check / l10n_latam.check         / bank_account_id (many2one)    : NEW relation: res.partner.bank, hasdefault: compute
 
-# NOTHING TO DO: the ORM sets the default
+# DONE: post-migration: computed by the ORM, then set from bank_id for the checks that had one (see below)
 
 l10n_latam_check / l10n_latam.check         / bank_id (many2one)            : DEL relation: res.bank
 l10n_latam_check / l10n_latam.check         / company_id (many2one)         : not related anymore
 l10n_latam_check / l10n_latam.check         / company_id (many2one)         : now a function
 
-# TODO: pending review
+# DONE: post-migration: checks with a bank get as bank_account_id the account of the check partner at that bank (empty when the partner has no account there, rather than an account at another bank; bank_id is kept); company_id is recomputed for the checks with operations, it is now the company holding the check
 
 l10n_latam_check / l10n_latam.check         / website_message_ids (one2many): DEL relation: mail.message
 
