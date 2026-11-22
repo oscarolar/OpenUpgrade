@@ -1149,7 +1149,7 @@ DEL account.report.expression: l10n_jp.l10n_jp_tax_report_to_pay_temp_tx_output_
 DEL account.report.expression: l10n_jp.l10n_jp_tax_report_to_pay_temp_tx_output_8_tag
 DEL account.report.expression: l10n_jp.l10n_jp_tax_report_to_pay_temp_tx_tax_free_tag
 
-# NOTHING TO DO: removed by the ORM
+# DONE: post-migration: deleted by SQL; the taxes of the template take the new JCT tags on their repartition lines and journal items, the other taxes keep the old ones (l10n_tax_tags)
 
 NEW account.report.line: l10n_jp.l10n_jp_form_accumulation_acc_f3_1
 NEW account.report.line: l10n_jp.l10n_jp_form_accumulation_acc_f3_1_1
