@@ -31,6 +31,7 @@ class TestL10nMyEdiMigration(TransactionCase):
         self.pos_script = _load_script(
             "l10n_my_edi_pos", "20.0.1.0", "post-migration.py"
         )
+        self.end_script = _load_script("l10n_my_edi", "20.0.1.0", "end-migration.py")
 
     def _document(self, ref):
         move = self.env["account.move"].search([("ref", "=", ref)])
@@ -101,15 +102,36 @@ class TestL10nMyEdiMigration(TransactionCase):
             dict(self.env.cr.fetchall()), {"move_type": "NO", "journal_id": "NO"}
         )
 
+    def test_documents_without_invoices(self):
+        documents = (
+            self.env["myinvois.document"]
+            .with_context(active_test=False)
+            .search(
+                [
+                    ("company_id", "=", self.company.id),
+                    ("invoice_ids", "=", False),
+                    ("pos_config_id", "=", False),
+                ]
+            )
+        )
+        self.assertEqual(
+            documents.mapped("myinvois_external_uuid"), ["OU20MYORPHANVALID"]
+        )
+        self.assertEqual(documents.move_type, "out_invoice")
+        self.assertEqual(documents.journal_id, self._journal("sale"))
+        self.assertEqual(documents.myinvois_state, "valid")
+
     def test_rerun_does_not_duplicate(self):
         before = self._state()
         self.script._myinvois_document_invoice_values(self.env)
         self.pos_script._myinvois_document_pos_values(self.env)
+        self.assertEqual(self.end_script._myinvois_document_orphans(self.env), ([], []))
         self.assertEqual(self._state(), before)
 
     def test_database_without_data(self):
         self.env.cr.execute("DELETE FROM myinvois_document")
         self.script._myinvois_document_invoice_values(self.env)
         self.pos_script._myinvois_document_pos_values(self.env)
+        self.end_script._myinvois_document_orphans(self.env)
         self.env.invalidate_all()
         self.assertFalse(self.env["myinvois.document"].search([]))

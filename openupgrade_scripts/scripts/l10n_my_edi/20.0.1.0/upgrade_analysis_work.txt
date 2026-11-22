@@ -11,6 +11,7 @@ l10n_my_edi  / myinvois.document        / journal_id (many2one)         : NEW re
 l10n_my_edi  / myinvois.document        / move_type (selection)         : NEW required, selection_keys: ['in_invoice', 'in_refund', 'out_invoice', 'out_refund']
 
 # DONE: post-migration: move_type of the first invoice of the document (PoS documents: see l10n_my_edi_pos)
+# DONE: end-migration: documents without invoices nor PoS orders are deleted when never registered on MyInvois, kept as customer invoices of the sales journal otherwise
 
 l10n_my_edi  / myinvois.document        / website_message_ids (one2many): DEL relation: mail.message
 

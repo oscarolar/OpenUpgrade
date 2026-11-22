@@ -103,4 +103,22 @@ cenv["myinvois.document"].create(
         "pos_order_ids": [(6, 0, order.ids)],
     }
 )
+cenv["myinvois.document"].create(
+    [
+        {
+            "name": "OU20 MY ORPHAN DRAFT",
+            "company_id": company.id,
+            "currency_id": company.currency_id.id,
+            "myinvois_issuance_date": "2026-01-31",
+        },
+        {
+            "name": "OU20 MY ORPHAN VALID",
+            "company_id": company.id,
+            "currency_id": company.currency_id.id,
+            "myinvois_issuance_date": "2026-01-31",
+            "myinvois_state": "valid",
+            "myinvois_external_uuid": "OU20MYORPHANVALID",
+        },
+    ]
+)
 env.cr.commit()
