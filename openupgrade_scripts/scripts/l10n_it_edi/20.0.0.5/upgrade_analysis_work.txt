@@ -7,7 +7,7 @@ l10n_it_edi  / account.move             / l10n_it_convention_code (char): NEW
 l10n_it_edi  / account.move             / l10n_it_edi_header (html)     : DEL
 l10n_it_edi  / account.move             / l10n_it_edi_state (selection) : selection_keys removed: [requires_user_signature]
 
-# TODO: pending review
+# NOTHING TO DO: l10n_it_edi_header only held the hint shown on the invoice for the current SdI state, rebuilt on each state change and with no 20.0 field; 'requires_user_signature' is never set by the 19.0 code (it was marked to be removed)
 
 l10n_it_edi  / account.move             / l10n_it_invoice_cause (text)  : NEW
 l10n_it_edi  / account_edi_proxy_client.user / proxy_type (False)            : selection_keys added: [pdp] (most likely nothing to do)
@@ -17,7 +17,7 @@ l10n_it_edi  / l10n_it.document.type    / move_types (json)             : NEW
 
 l10n_it_edi  / l10n_it.document.type    / type (selection)              : DEL selection_keys: ['purchase', 'sale']
 
-# TODO: pending review
+# DONE: post-migration: the standard document types get move_types from their data file; types created by users get the customer or vendor move types of their 19.0 type
 
 l10n_it_edi  / res.partner              / invoice_edi_format (False)    : selection_keys added: [ubl_21_fr, ubl_gr], removed: [oioubl_201, pint_sg, ubl_tr]
 
