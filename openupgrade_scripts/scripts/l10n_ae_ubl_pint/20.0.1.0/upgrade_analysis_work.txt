@@ -2,7 +2,7 @@
 ---Fields in module 'l10n_ae_ubl_pint'---
 l10n_ae_ubl_pint / account.tax              / ubl_cii_tax_category_code (False): selection_keys removed: [DS, ES33, ESN33, NA, NG, OS, SR, SRCA-C, SRCA-S, SRLVG, SROVR-LVG, SROVR-RS, SRRC, ZR]
 
-# TODO: pending review
+# NOTHING TO DO: keys contributed by other modules through selection_add (the SG ones now come from l10n_sg), l10n_ae_ubl_pint still adds 'N'
 
 l10n_ae_ubl_pint / res.partner              / invoice_edi_format (False)    : selection_keys added: [oioubl_21, ubl_hr], removed: [pint_sg, ubl_tr]
 
