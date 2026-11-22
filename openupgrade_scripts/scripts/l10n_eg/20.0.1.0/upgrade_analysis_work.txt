@@ -123,7 +123,7 @@ DEL account.report.expression: l10n_eg.tax_report_withholding_tax_sale_tax_half_
 DEL account.report.expression: l10n_eg.tax_report_withholding_tax_sale_tax_one_tag
 DEL account.report.expression: l10n_eg.tax_report_withholding_tax_sale_tax_three_tag
 
-# NOTHING TO DO: removed by the ORM
+# DONE: post-migration: deleted by SQL; the VAT taxes of the template take the new tags on their repartition lines and journal items, the stamp, schedule and withholding taxes keep the old ones (l10n_tax_tags)
 
 NEW account.report.line: l10n_eg.tax_report_vat_return_purchas_fourteen
 NEW account.report.line: l10n_eg.tax_report_vat_return_purchase
