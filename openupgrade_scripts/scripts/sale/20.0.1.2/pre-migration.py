@@ -13,7 +13,6 @@ _renamed_fields = [
 ]
 
 _added_columns = [
-    ("sale.order", "document_tax_mode", "selection"),
     ("sale.order", "incoterm", "many2one"),
     ("sale.order", "incoterm_location", "char"),
     ("sale.order.line", "section_uom_id", "many2one"),
@@ -43,9 +42,7 @@ def account_analytic_line_reinvoice_move_id(env):
 
 def product_template_sale_delay(env):
     if openupgrade.column_exists(env.cr, "product_template", "sale_delay"):
-        openupgrade.rename_columns(
-            env.cr, {"product_template": [("sale_delay", None)]}
-        )
+        openupgrade.rename_columns(env.cr, {"product_template": [("sale_delay", None)]})
 
 
 def product_template_invoice_policy(env):
@@ -59,28 +56,79 @@ def product_template_invoice_policy(env):
     )
 
 
-def sale_order_document_tax_mode(env):
-    openupgrade.logged_query(
-        env.cr,
+def sale_order_rewrite(env):
+    """
+    Rewrite sale_order once: document_tax_mode is filled from the root company's
+    res.company#account_price_include, prepayment_percent is set to 0 on orders
+    that did not require payment, as v20 only looks at prepayment_percent, and
+    amount_unpaid (when pos_sale was not installed) starts at 0 and is computed
+    afterwards for the orders that still have something to pay
+    """
+    env.cr.execute(
         """
-        UPDATE sale_order
-        SET document_tax_mode=COALESCE(
-            root_company.account_price_include, 'tax_excluded'
-        )
-        FROM res_company
-        JOIN res_company root_company
+        SELECT
+            res_company.id,
+            COALESCE(root_company.account_price_include, 'tax_excluded')
+        FROM
+            res_company
+        JOIN
+            res_company root_company
             ON root_company.id=split_part(res_company.parent_path, '/', 1)::integer
-        WHERE res_company.id=sale_order.company_id
-        """,
-    )
-    openupgrade.logged_query(
-        env.cr,
         """
-        UPDATE sale_order
-        SET document_tax_mode='tax_excluded'
-        WHERE document_tax_mode IS NULL
-        """,
     )
+    tax_modes = env.cr.fetchall()
+    tax_mode = "'tax_excluded'"
+    if tax_modes:
+        tax_mode = env.cr.mogrify(
+            "CASE company_id {} ELSE 'tax_excluded' END".format(
+                " ".join(["WHEN %s THEN %s"] * len(tax_modes))
+            ),
+            [value for row in tax_modes for value in row],
+        ).decode()
+    new_columns = [
+        (column, column_type)
+        for column, column_type in (
+            ("document_tax_mode", "varchar"),
+            ("amount_unpaid", "numeric"),
+        )
+        if not openupgrade.column_exists(env.cr, "sale_order", column)
+    ]
+    if new_columns:
+        openupgrade.logged_query(
+            env.cr,
+            "ALTER TABLE sale_order {}".format(
+                ", ".join(
+                    f"ADD COLUMN {column} {column_type}"
+                    for column, column_type in new_columns
+                )
+            ),
+        )
+    expressions = {
+        "document_tax_mode": ("varchar", tax_mode),
+        "amount_unpaid": ("numeric", "0"),
+    }
+    alterations = [
+        f"ALTER COLUMN {column} TYPE {expressions[column][0]} "
+        f"USING {expressions[column][1]}"
+        for column, _column_type in new_columns
+    ]
+    if openupgrade.column_exists(env.cr, "sale_order", "require_payment"):
+        alterations.append(
+            """
+            ALTER COLUMN prepayment_percent TYPE double precision USING CASE
+                WHEN require_payment IS NOT TRUE
+                    AND COALESCE(prepayment_percent, 0) != 0
+                THEN 0
+                ELSE prepayment_percent
+            END
+            """
+        )
+    if not alterations:
+        return [column for column, _column_type in new_columns]
+    openupgrade.logged_query(
+        env.cr, "ALTER TABLE sale_order {}".format(", ".join(alterations))
+    )
+    return [column for column, _column_type in new_columns]
 
 
 def sale_order_delivery_status(env):
@@ -123,11 +171,6 @@ def sale_order_delivery_status(env):
 
 
 def sale_order_amount_unpaid(env):
-    if openupgrade.column_exists(env.cr, "sale_order", "amount_unpaid"):
-        return
-    openupgrade.add_columns(
-        env, [("sale.order", "amount_unpaid", "monetary", None, "sale_order")]
-    )
     openupgrade.logged_query(
         env.cr,
         """
@@ -176,18 +219,24 @@ def sale_order_amount_unpaid(env):
             SELECT order_id, SUM(amount) AS amount
             FROM offline_invoice_lines
             GROUP BY order_id
+        ),
+        unpaid AS (
+            SELECT
+                sale_order.id,
+                GREATEST(
+                    COALESCE(sale_order.amount_total, 0)
+                    - COALESCE(paid.amount, 0)
+                    - COALESCE(offline.amount, 0),
+                    0
+                ) AS amount
+            FROM sale_order
+            LEFT JOIN paid ON paid.sale_order_id=sale_order.id
+            LEFT JOIN offline ON offline.order_id=sale_order.id
         )
         UPDATE sale_order
-        SET amount_unpaid=GREATEST(
-            COALESCE(sale_order.amount_total, 0)
-            - COALESCE(paid.amount, 0)
-            - COALESCE(offline.amount, 0),
-            0
-        )
-        FROM sale_order sale_order2
-        LEFT JOIN paid ON paid.sale_order_id=sale_order2.id
-        LEFT JOIN offline ON offline.order_id=sale_order2.id
-        WHERE sale_order2.id=sale_order.id
+        SET amount_unpaid=unpaid.amount
+        FROM unpaid
+        WHERE unpaid.id=sale_order.id AND unpaid.amount != 0
         """,
     )
 
@@ -221,8 +270,9 @@ def migrate(env, version):
     product_template_invoice_policy(env)
     openupgrade.float_to_integer(env.cr, "sale_order_line", "customer_lead")
     openupgrade.add_columns(env, _added_columns)
-    sale_order_document_tax_mode(env)
+    new_columns = sale_order_rewrite(env)
     sale_order_delivery_status(env)
-    sale_order_amount_unpaid(env)
+    if "amount_unpaid" in new_columns:
+        sale_order_amount_unpaid(env)
     sale_order_line_section_fields(env)
     openupgrade.delete_records_safely_by_xml_id(env, _deleted_xmlids)

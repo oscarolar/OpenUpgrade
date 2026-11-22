@@ -76,7 +76,7 @@ sale         / sale.order               / note (html)                   : now a 
 # NOTHING TO DO: stored values are kept
 
 sale         / sale.order               / require_payment (boolean)     : DEL
-# DONE: post-migration: prepayment_percent set to 0 on orders that did not require payment, as v20 only looks at prepayment_percent
+# DONE: pre-migration: prepayment_percent set to 0 on orders that did not require payment, as v20 only looks at prepayment_percent, in the same rewrite of sale_order that fills document_tax_mode and amount_unpaid
 
 sale         / sale.order               / show_update_fpos (boolean)    : DEL stored: False
 sale         / sale.order               / show_update_pricelist (boolean): DEL stored: False

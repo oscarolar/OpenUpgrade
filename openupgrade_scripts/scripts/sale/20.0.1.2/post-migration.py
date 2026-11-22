@@ -21,18 +21,6 @@ def product_template_sale_delay(env):
     )
 
 
-def sale_order_prepayment_percent(env):
-    openupgrade.logged_query(
-        env.cr,
-        """
-        UPDATE sale_order
-        SET prepayment_percent=0
-        WHERE require_payment IS NOT TRUE
-        AND COALESCE(prepayment_percent, 0) != 0
-        """,
-    )
-
-
 def res_company_sale_invoice_policy(env):
     openupgrade.logged_query(
         env.cr,
@@ -86,6 +74,5 @@ def migrate(env, version):
         ["name", "description"],
     )
     product_template_sale_delay(env)
-    sale_order_prepayment_percent(env)
     res_company_sale_invoice_policy(env)
     res_company_sale_automatic_invoice(env)
