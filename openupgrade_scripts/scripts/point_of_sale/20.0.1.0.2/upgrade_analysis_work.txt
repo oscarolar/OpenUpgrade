@@ -278,7 +278,7 @@ point_of_sale / pos.printer              / printer_ip (char)             : NEW
 # DONE: pre-migration: renamed epson_printer_ip to printer_ip
 
 point_of_sale / pos.printer              / printer_type (selection)      : selection_keys removed: [iot]
-# TODO: printers of type iot keep their value, the selection value is not defined by point_of_sale anymore (check if an enterprise module adds it back)
+# NOTHING TO DO: the value is kept; IoT printers moved to the enterprise module pos_iot, which adds 'iot' back with selection_add (ondelete 'set default'), so with pos_iot they keep working; without it there is no IoT printing in 20.0 and they have to be reconfigured as ePoS printers
 
 point_of_sale / pos.printer              / proxy_ip (char)               : DEL
 # NOTHING TO DO: IoT box settings removed from point_of_sale
