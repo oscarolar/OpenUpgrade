@@ -22,6 +22,26 @@ def _res_partner_additional_identifiers(env):
     )
 
 
+def _res_partner_l10n_id_buyer_document_number(env):
+    """
+    res.partner#l10n_id_nik is gone: the NIK is the document number of the
+    buyers whose document type is NIK
+    """
+    if not openupgrade.column_exists(env.cr, "res_partner", "l10n_id_nik"):
+        return
+    openupgrade.logged_query(
+        env.cr,
+        """
+        UPDATE res_partner
+        SET l10n_id_buyer_document_number = l10n_id_nik
+        WHERE COALESCE(l10n_id_nik, '') <> ''
+            AND l10n_id_buyer_document_type = 'NIK'
+            AND COALESCE(l10n_id_buyer_document_number, '') = ''
+        """,
+    )
+
+
 @openupgrade.migrate()
 def migrate(env, version):
     _res_partner_additional_identifiers(env)
+    _res_partner_l10n_id_buyer_document_number(env)

@@ -7,7 +7,7 @@ l10n_id_efaktur_coretax / l10n_id_efaktur_coretax.document / website_message_ids
 l10n_id_efaktur_coretax / res.partner              / l10n_id_nik (char)            : DEL
 l10n_id_efaktur_coretax / res.partner              / l10n_id_pkp (boolean)         : DEL
 
-# TODO: pending review
+# DONE: post-migration: the NIK is copied to l10n_id_buyer_document_number of the partners whose document type is NIK and have no number yet; l10n_id_pkp has no successor, 20.0 no longer gates the CoreTax e-Faktur on it (the NIK of partners with another document type has no place in 20.0, the column is kept)
 
 l10n_id_efaktur_coretax / res.partner              / l10n_id_tku (char)            : DEL
 
