@@ -224,7 +224,7 @@ DEL account.report.line: l10n_pk.l10n_pk_wh_vat_line_S9
 DEL account.report.line: l10n_pk.l10n_pk_wh_vat_title_purchases_vat
 DEL account.report.line: l10n_pk.l10n_pk_wh_vat_title_sales_vat
 
-# NOTHING TO DO: removed by the ORM
+# DONE: post-migration: the tax_tags expressions of both reports are deleted by SQL so their tags stay on the taxes and journal items (the new template has no tags, the reports leave community)
 
 NEW ir.actions.server: l10n_pk.action_l10n_pk_edi_activate
 NEW ir.config_parameter: l10n_pk.l10n_pk_iap_endpoint (noupdate)
