@@ -105,93 +105,75 @@ def purchase_order_receipt_status(env):
     )
 
 
-def purchase_order_line_qty_to_invoice_raw(env):
+def purchase_order_line_new_amounts(env):
     """
-    Fill new stored computed field purchase.order.line#qty_to_invoice_raw
+    Fill the new stored fields purchase.order.line#qty_to_invoice_raw and
+    price_unit_product_uom with one rewrite of the table, then convert the price
+    of the lines whose unit of measure is not the one of their product
     """
-    if openupgrade.column_exists(env.cr, "purchase_order_line", "qty_to_invoice_raw"):
+    columns = [
+        column
+        for column in ("qty_to_invoice_raw", "price_unit_product_uom")
+        if not openupgrade.column_exists(env.cr, "purchase_order_line", column)
+    ]
+    if not columns:
         return
-    openupgrade.add_columns(
-        env, [("purchase.order.line", "qty_to_invoice_raw", "float")]
-    )
     openupgrade.logged_query(
         env.cr,
-        """
-        UPDATE
-            purchase_order_line
-        SET
-            qty_to_invoice_raw=COALESCE(product_qty, 0) - COALESCE(qty_invoiced, 0)
+        "ALTER TABLE purchase_order_line {}".format(
+            ", ".join(f"ADD COLUMN {column} numeric" for column in columns)
+        ),
+    )
+    expressions = {
+        "qty_to_invoice_raw": "COALESCE(product_qty, 0) - COALESCE(qty_invoiced, 0)",
+        "price_unit_product_uom": """
+            CASE
+                WHEN display_type IS NOT NULL OR is_downpayment THEN 0
+                ELSE price_unit::double precision
+            END
         """,
-    )
-
-
-def purchase_order_line_price_unit_product_uom(env):
-    """
-    Fill purchase.order.line#price_unit_product_uom, which is stored now
-    """
-    if openupgrade.column_exists(
-        env.cr, "purchase_order_line", "price_unit_product_uom"
-    ):
-        return
-    openupgrade.add_columns(
-        env,
-        [
-            (
-                "purchase.order.line",
-                "price_unit_product_uom",
-                "float",
-                None,
-                "purchase_order_line",
-                "double precision",
+    }
+    openupgrade.logged_query(
+        env.cr,
+        "ALTER TABLE purchase_order_line {}".format(
+            ", ".join(
+                f"ALTER COLUMN {column} TYPE numeric USING {expressions[column]}"
+                for column in columns
             )
-        ],
+        ),
     )
+    if "price_unit_product_uom" not in columns:
+        return
     openupgrade.logged_query(
         env.cr,
         """
         UPDATE
             purchase_order_line
         SET
-            price_unit_product_uom=line_values.price_unit_product_uom
-        FROM (
-            SELECT
-                purchase_order_line.id,
-                CASE
-                    WHEN
-                        purchase_order_line.display_type IS NOT NULL
-                        OR purchase_order_line.is_downpayment
-                    THEN 0
-                    WHEN
-                        line_uom.id IS NULL
-                        OR product_uom.id IS NULL
-                        OR line_uom.id=product_uom.id
-                        OR COALESCE(line_uom.factor, 0)=0
-                    THEN purchase_order_line.price_unit
-                    ELSE
-                        purchase_order_line.price_unit
-                        * product_uom.factor / line_uom.factor
-                END AS price_unit_product_uom
-            FROM
-                purchase_order_line
-            LEFT JOIN
-                uom_uom line_uom
-            ON
-                line_uom.id=purchase_order_line.uom_id
-            LEFT JOIN
-                product_product
-            ON
-                product_product.id=purchase_order_line.product_id
-            LEFT JOIN
-                product_template
-            ON
-                product_template.id=product_product.product_tmpl_id
-            LEFT JOIN
-                uom_uom product_uom
-            ON
-                product_uom.id=product_template.uom_id
-        ) line_values
+            price_unit_product_uom=(
+                purchase_order_line.price_unit * product_uom.factor / line_uom.factor
+            )::double precision
+        FROM
+            uom_uom line_uom,
+            product_product,
+            product_template,
+            uom_uom product_uom
         WHERE
-            line_values.id=purchase_order_line.id
+            line_uom.id=purchase_order_line.uom_id
+        AND
+            product_product.id=purchase_order_line.product_id
+        AND
+            product_template.id=product_product.product_tmpl_id
+        AND
+            product_uom.id=product_template.uom_id
+        AND
+            line_uom.id != product_uom.id
+        AND
+            COALESCE(line_uom.factor, 0) != 0
+        AND
+            purchase_order_line.display_type IS NULL
+        AND
+            purchase_order_line.is_downpayment IS NOT TRUE
         """,
     )
 
@@ -273,6 +255,5 @@ def migrate(env, version):
     openupgrade.add_columns(env, _added_columns)
     purchase_order_document_tax_mode(env)
     purchase_order_receipt_status(env)
-    purchase_order_line_qty_to_invoice_raw(env)
-    purchase_order_line_price_unit_product_uom(env)
+    purchase_order_line_new_amounts(env)
     purchase_alternative(env)
