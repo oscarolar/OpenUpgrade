@@ -14,6 +14,17 @@ env["res.partner.bank"].create(
             "bank_id": env.ref("l10n_mx.acc_bank_012_BBVA_BANCOMER").id,
             "l10n_mx_edi_clabe": "012180001234567895",
         },
+        {
+            "acc_number": "014180001111111117",
+            "partner_id": env.company.partner_id.id,
+            "bank_id": env.ref("l10n_mx.acc_bank_014_SANTANDER").id,
+        },
+        {
+            "acc_number": "OU0007654321",
+            "partner_id": env.company.partner_id.id,
+            "bank_id": env.ref("l10n_mx.acc_bank_014_SANTANDER").id,
+            "l10n_mx_edi_clabe": "014180001111111117",
+        },
     ]
 )
 

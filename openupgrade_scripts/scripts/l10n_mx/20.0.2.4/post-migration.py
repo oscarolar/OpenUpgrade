@@ -35,11 +35,43 @@ def _res_partner_bank_clearing_number(env):
 def _res_partner_bank_clabe(env):
     """
     res.partner.bank#l10n_mx_edi_clabe is gone: the CLABE is now the account
-    number itself. When the account had a different number, keep the CLABE in
-    the notes of the account so that it is not lost.
+    number itself, and the Mexican payroll pays to the account number. When the
+    account had a different number, the CLABE becomes the account number and
+    the previous number is kept in the notes of the account. When the partner
+    already has another account with that CLABE, the CLABE goes to the notes.
     """
     if not openupgrade.column_exists(env.cr, "res_partner_bank", "l10n_mx_edi_clabe"):
         return
+    openupgrade.logged_query(
+        env.cr,
+        r"""
+        UPDATE res_partner_bank rpb
+        SET note = concat_ws(
+                E'\n', NULLIF(rpb.note, ''), 'Account number: ' || rpb.account_number
+            ),
+            account_number = rpb.l10n_mx_edi_clabe,
+            sanitized_account_number = upper(
+                regexp_replace(rpb.l10n_mx_edi_clabe, '\W', '', 'g')
+            )
+        WHERE COALESCE(rpb.l10n_mx_edi_clabe, '') <> ''
+            AND upper(regexp_replace(rpb.l10n_mx_edi_clabe, '\W', '', 'g'))
+                <> COALESCE(rpb.sanitized_account_number, '')
+            AND NOT EXISTS (
+                SELECT 1 FROM res_partner_bank other
+                WHERE other.partner_id = rpb.partner_id
+                    AND other.id <> rpb.id
+                    AND other.sanitized_account_number = upper(
+                        regexp_replace(rpb.l10n_mx_edi_clabe, '\W', '', 'g')
+                    )
+            )
+            AND rpb.id = (
+                SELECT min(same.id) FROM res_partner_bank same
+                WHERE same.partner_id = rpb.partner_id
+                    AND upper(regexp_replace(same.l10n_mx_edi_clabe, '\W', '', 'g'))
+                        = upper(regexp_replace(rpb.l10n_mx_edi_clabe, '\W', '', 'g'))
+            )
+        """,
+    )
     openupgrade.logged_query(
         env.cr,
         r"""
@@ -48,7 +80,7 @@ def _res_partner_bank_clabe(env):
             E'\n', NULLIF(note, ''), 'CLABE: ' || l10n_mx_edi_clabe
         )
         WHERE COALESCE(l10n_mx_edi_clabe, '') <> ''
-            AND regexp_replace(l10n_mx_edi_clabe, '\W', '', 'g')
+            AND upper(regexp_replace(l10n_mx_edi_clabe, '\W', '', 'g'))
                 <> COALESCE(sanitized_account_number, '')
         """,
     )

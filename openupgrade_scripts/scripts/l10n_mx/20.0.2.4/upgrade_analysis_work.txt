@@ -14,7 +14,7 @@ l10n_mx      / res.partner.bank         / fiscal_country_codes (char)   : DEL st
 
 l10n_mx      / res.partner.bank         / l10n_mx_edi_clabe (char)      : DEL
 
-# DONE: post-migration: the CLABE is now the account number (account_type 'clabe'); when the account had another number the CLABE is appended to the notes of the account, and the column is kept
+# DONE: post-migration: the CLABE becomes the account number (account_type 'clabe') and a different previous number goes to the notes; when the partner already has an account with that CLABE, the CLABE goes to the notes instead. The column is kept
 
 ---XML records in module 'l10n_mx'---
 DEL ir.ui.view: l10n_mx.view_partner_bank_form_l10n_mx_edi_bank

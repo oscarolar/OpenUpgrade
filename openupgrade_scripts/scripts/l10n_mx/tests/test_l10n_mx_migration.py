@@ -10,18 +10,23 @@ class TestL10nMxMigration(TransactionCase):
         The ABM code of the bank becomes the clearing number of the account
         """
         ResPartnerBank = self.env["res.partner.bank"]
-        account = ResPartnerBank.search([("account_number", "=", "OU0001234567")])
+        account = ResPartnerBank.search([("account_number", "=", "002010077777777771")])
         self.assertEqual(account.clearing_number, "002")
         self.assertEqual(
             account.clearing_label_id, self.env.ref("base.clearing_label_mx")
         )
         self.assertEqual(account.bank_name, "BANAMEX")
-        self.assertIn("CLABE: 002010077777777771", account.note)
+        self.assertEqual(account.note, "Account number: OU0001234567")
+        self.assertFalse(
+            ResPartnerBank.search([("account_number", "=", "OU0001234567")])
+        )
         clabe_account = ResPartnerBank.search(
             [("account_number", "=", "012180001234567895")]
         )
         self.assertEqual(clabe_account.clearing_number, "012")
         self.assertFalse(clabe_account.note)
+        duplicate = ResPartnerBank.search([("account_number", "=", "OU0007654321")])
+        self.assertEqual(duplicate.note, "CLABE: 014180001111111117")
 
     def test_chart_account_groups(self):
         """
