@@ -18,4 +18,4 @@ DEL res.country.state: l10n_lb_account.state_lb_14_ar
 DEL res.country.state: l10n_lb_account.state_lb_15
 DEL res.country.state: l10n_lb_account.state_lb_16_ar
 
-# NOTHING TO DO: removed by the ORM
+# DONE: base post-migration merges these states into the base states of 20.0 (same region, new codes) before the ORM removes them

@@ -582,7 +582,8 @@ NEW res.country.state: base.state_qa_sh
 NEW res.country.state: base.state_qa_us
 NEW res.country.state: base.state_qa_wa
 NEW res.country.state: base.state_qa_za
-# NOTHING TO DO
+# NOTHING TO DO: new states, except the states of Oman (state_om_*), Bahrain (state_bh_*) and Lebanon (state_lb_*)
+# DONE: post-migration: the 19.0 states of l10n_om, l10n_bh and l10n_lb_account (English and Arabic names in Lebanon) are merged into the base states of the same region, with their partners, links and defaults
 
 NEW res.country.state: base.state_sa_001
 NEW res.country.state: base.state_sa_002

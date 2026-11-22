@@ -420,6 +420,40 @@ _unmerged_sa_states = [
     "state_sa_93",
 ]
 
+_merged_l10n_states = [
+    ("l10n_om.state_om_01", "base.state_om_mu"),
+    ("l10n_om.state_om_02", "base.state_om_bu"),
+    ("l10n_om.state_om_03", "base.state_om_bs"),
+    ("l10n_om.state_om_04", "base.state_om_bj"),
+    ("l10n_om.state_om_05", "base.state_om_ma"),
+    ("l10n_om.state_om_06", "base.state_om_za"),
+    ("l10n_om.state_om_07", "base.state_om_da"),
+    ("l10n_om.state_om_08", "base.state_om_ss"),
+    ("l10n_om.state_om_09", "base.state_om_sj"),
+    ("l10n_om.state_om_10", "base.state_om_wu"),
+    ("l10n_om.state_om_11", "base.state_om_zu"),
+    ("l10n_bh.state_bh_1", "base.state_bh_13"),
+    ("l10n_bh.state_bh_3", "base.state_bh_15"),
+    ("l10n_bh.state_bh_4", "base.state_bh_17"),
+    ("l10n_bh.state_bh_5", "base.state_bh_14"),
+    ("l10n_lb_account.state_lb_01", "base.state_lb_ak"),
+    ("l10n_lb_account.state_lb_02_ar", "base.state_lb_ak"),
+    ("l10n_lb_account.state_lb_03", "base.state_lb_bh"),
+    ("l10n_lb_account.state_lb_04_ar", "base.state_lb_bh"),
+    ("l10n_lb_account.state_lb_05", "base.state_lb_ba"),
+    ("l10n_lb_account.state_lb_06_ar", "base.state_lb_ba"),
+    ("l10n_lb_account.state_lb_07", "base.state_lb_bi"),
+    ("l10n_lb_account.state_lb_08_ar", "base.state_lb_bi"),
+    ("l10n_lb_account.state_lb_09", "base.state_lb_jl"),
+    ("l10n_lb_account.state_lb_10_ar", "base.state_lb_jl"),
+    ("l10n_lb_account.state_lb_11", "base.state_lb_as"),
+    ("l10n_lb_account.state_lb_12_ar", "base.state_lb_as"),
+    ("l10n_lb_account.state_lb_13", "base.state_lb_na"),
+    ("l10n_lb_account.state_lb_14_ar", "base.state_lb_na"),
+    ("l10n_lb_account.state_lb_15", "base.state_lb_ja"),
+    ("l10n_lb_account.state_lb_16_ar", "base.state_lb_ja"),
+]
+
 
 def res_country_state_sa(env):
     """
@@ -443,6 +477,17 @@ def res_country_state_sa(env):
         """,
         {"names": tuple(_unmerged_sa_states)},
     )
+
+
+def res_country_state_l10n(env):
+    """
+    The states of Oman, Bahrain and Lebanon move from l10n_om, l10n_bh and
+    l10n_lb_account to base with new codes: merge them into the base states
+    before the ORM deletes them (and their links to fiscal positions, delivery
+    methods or country groups)
+    """
+    res_country_state_merged_references(env.cr, _merged_l10n_states)
+    openupgrade.rename_xmlids(env.cr, _merged_l10n_states, allow_merge=True)
 
 
 @openupgrade.migrate()
@@ -471,3 +516,4 @@ def migrate(env, version):
     ir_config_parameter_default_max_email_size(env)
     l10n_eu_account_vies(env)
     res_country_state_sa(env)
+    res_country_state_l10n(env)

@@ -52,6 +52,24 @@ FiscalPosition.search([("name", "=", "OU20 Mecca cities")]) or FiscalPosition.cr
         ],
     }
 )
+l10n_states = [
+    ref(xmlid, raise_if_not_found=False)
+    for xmlid in (
+        "l10n_om.state_om_05",
+        "l10n_bh.state_bh_1",
+        "l10n_lb_account.state_lb_05",
+        "l10n_lb_account.state_lb_06_ar",
+    )
+]
+if all(l10n_states):
+    ou20_partner("OU20 state Muscat", "l10n_om.state_om_05")
+    ou20_partner("OU20 state Beirut arabic", "l10n_lb_account.state_lb_06_ar")
+    FiscalPosition.search([("name", "=", "OU20 Gulf states")]) or FiscalPosition.create(
+        {
+            "name": "OU20 Gulf states",
+            "state_ids": [(6, 0, [state.id for state in l10n_states])],
+        }
+    )
 env["ir.default"].set(
     "res.partner",
     "state_id",

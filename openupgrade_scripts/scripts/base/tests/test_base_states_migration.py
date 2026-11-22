@@ -59,6 +59,27 @@ class TestBaseStatesMigration(TransactionCase):
         )
         self.assertEqual(position.state_ids, self.env.ref("base.state_sa_002"))
 
+    def test_l10n_states_moved_to_base(self):
+        position = self.env["account.fiscal.position"].search(
+            [("name", "=", "OU20 Gulf states")]
+        )
+        if not position:
+            self.skipTest("l10n_om, l10n_bh or l10n_lb_account was not installed")
+        ref = self.env.ref
+        self.assertEqual(
+            position.state_ids,
+            ref("base.state_om_ma") | ref("base.state_bh_13") | ref("base.state_lb_ba"),
+        )
+        self.assertEqual(self._state_of("OU20 state Muscat"), ref("base.state_om_ma"))
+        self.assertEqual(
+            self._state_of("OU20 state Beirut arabic"), ref("base.state_lb_ba")
+        )
+        for code in ("om", "bh", "lb"):
+            states = self.env["res.country.state"].search(
+                [("country_id", "=", ref(f"base.{code}").id)]
+            )
+            self.assertFalse(states.filtered(lambda state: "-" not in state.code), code)
+
     def test_default_state(self):
         default = self.env["ir.default"].search(
             [
