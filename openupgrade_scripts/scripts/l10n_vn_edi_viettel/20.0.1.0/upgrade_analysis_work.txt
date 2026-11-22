@@ -5,7 +5,7 @@ obsolete model l10n_vn_edi_viettel.cancellation [transient]
 
 obsolete model l10n_vn_edi_viettel.sinvoice.template
 
-# TODO: pending review
+# NOTHING TO DO: its code is kept on the symbols (see invoice_template_code), the invoice type is not used by 20.0; the table is kept
 
 ---Fields in module 'l10n_vn_edi_viettel'---
 l10n_vn_edi_viettel / account.journal          / l10n_vn_edi_default_symbol_id (many2one): NEW relation: l10n_vn_edi_viettel.sinvoice.symbol
@@ -15,7 +15,7 @@ l10n_vn_edi_viettel / account.journal          / l10n_vn_edi_default_symbol_id (
 l10n_vn_edi_viettel / account.move             / l10n_vn_edi_invoice_state (selection): now a function
 l10n_vn_edi_viettel / account.move             / l10n_vn_edi_invoice_state (selection): selection_keys removed: [canceled]
 
-# TODO: pending review
+# TODO: invoices cancelled on SInvoice keep the 'canceled' value, 20.0 has no such state (it only adjusts or replaces sent invoices): mapping them to 'sent' blocks the reset to draft, clearing the value lets them be sent again; this needs a functional decision
 
 l10n_vn_edi_viettel / l10n_vn_edi_viettel.sinvoice.symbol / active (boolean)              : NEW hasdefault: default
 
@@ -23,7 +23,8 @@ l10n_vn_edi_viettel / l10n_vn_edi_viettel.sinvoice.symbol / active (boolean)    
 
 l10n_vn_edi_viettel / l10n_vn_edi_viettel.sinvoice.symbol / company_id (many2one)         : NEW relation: res.company, required
 
-# NOTHING TO DO
+# DONE: pre-migration: column created empty, so the ORM does not give every symbol the current company
+# DONE: post-migration: each symbol gets the first company whose invoices used it (or the first Vietnamese company) and is copied for the other companies that used it, their invoices point to the copy
 
 l10n_vn_edi_viettel / l10n_vn_edi_viettel.sinvoice.symbol / invoice_template_code (char)  : NEW required
 l10n_vn_edi_viettel / l10n_vn_edi_viettel.sinvoice.symbol / invoice_template_id (many2one): DEL relation: l10n_vn_edi_viettel.sinvoice.template, required
@@ -31,7 +32,7 @@ l10n_vn_edi_viettel / l10n_vn_edi_viettel.sinvoice.template / invoice_symbols_id
 l10n_vn_edi_viettel / l10n_vn_edi_viettel.sinvoice.template / name (char)                   : DEL required
 l10n_vn_edi_viettel / l10n_vn_edi_viettel.sinvoice.template / template_invoice_type (selection): DEL required, selection_keys: ['1', '2', '3', '4', '5', '6']
 
-# TODO: pending review
+# DONE: post-migration: invoice_template_code set from the name (code) of the template of the symbol
 
 l10n_vn_edi_viettel / res.company              / l10n_vn_edi_symbol_id (many2one): NEW relation: l10n_vn_edi_viettel.sinvoice.symbol
 l10n_vn_edi_viettel / res.partner              / invoice_edi_format (False)    : selection_keys added: [ubl_21_fr, ubl_gr], removed: [oioubl_201, pint_sg, ubl_tr]
@@ -40,7 +41,7 @@ l10n_vn_edi_viettel / res.partner              / invoice_edi_format (False)    :
 
 l10n_vn_edi_viettel / res.partner              / l10n_vn_edi_symbol (many2one) : DEL relation: l10n_vn_edi_viettel.sinvoice.symbol
 
-# TODO: pending review
+# DONE: post-migration: the company default of the property (ir.default) becomes res.company#l10n_vn_edi_symbol_id; the symbols set on single partners have no 20.0 equivalent (20.0 uses the journal or company symbol), the column is kept
 
 ---XML records in module 'l10n_vn_edi_viettel'---
 NEW ir.access: l10n_vn_edi_viettel.l10n_vn_edi_viettel_sinvoice_symbol_rule
