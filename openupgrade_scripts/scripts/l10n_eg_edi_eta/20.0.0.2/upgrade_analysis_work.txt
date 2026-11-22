@@ -7,7 +7,7 @@ new model l10n_eg_edi.eta.submission
 ---Fields in module 'l10n_eg_edi_eta'---
 l10n_eg_edi_eta / account.move             / l10n_eg_edi_submission_state (selection): NEW selection_keys: ['accepted', 'cancel', 'rejected', 'test', 'to_send'], isfunction: function, stored
 
-# NOTHING TO DO: computed by the ORM
+# DONE: post-migration: recomputed once the 19.0 submissions exist, the ORM computes it before
 
 l10n_eg_edi_eta / account.move             / l10n_eg_eta_submission_ids (one2many): NEW relation: l10n_eg_edi.eta.submission
 
@@ -15,7 +15,7 @@ l10n_eg_edi_eta / account.move             / l10n_eg_eta_submission_ids (one2man
 
 l10n_eg_edi_eta / account.move             / l10n_eg_submission_number (char): DEL
 
-# TODO: pending review
+# DONE: post-migration: every invoice sent in 19.0 (with an ETA UUID) gets an l10n_eg_edi.eta.submission with its UUID, submission number, long ID (read from the stored JSON) and state ('cancel' when the EDI document was cancelled, 'accepted' or 'test' after the production flag of the company); l10n_eg_edi_submission_state is recomputed from it
 
 l10n_eg_edi_eta / l10n_eg_edi.eta.submission / eta_document_longid (char)    : NEW
 l10n_eg_edi_eta / l10n_eg_edi.eta.submission / eta_document_uuid (char)      : NEW
@@ -29,7 +29,8 @@ l10n_eg_edi_eta / l10n_eg_edi.eta.submission / state (selection)             : N
 
 l10n_eg_edi_eta / product.product          / l10n_eg_eta_code (char)       : now company_dependent
 
-# TODO: pending review
+# DONE: pre-migration: column renamed to its legacy name
+# DONE: post-migration: the code is written in the company dependent jsonb format for every company
 
 l10n_eg_edi_eta / res.company              / l10n_eg_edi_api_mode (selection): NEW selection_keys: ['demo', 'preproduction', 'production']
 
@@ -38,7 +39,7 @@ l10n_eg_edi_eta / res.company              / l10n_eg_edi_api_mode (selection): N
 l10n_eg_edi_eta / res.company              / l10n_eg_invoicing_threshold (float): DEL
 l10n_eg_edi_eta / res.company              / l10n_eg_production_env (boolean): DEL
 
-# TODO: pending review
+# DONE: post-migration: l10n_eg_edi_api_mode set to 'production' or 'preproduction' from l10n_eg_production_env for the Egyptian companies; the threshold, now the system parameter l10n_eg_edi_eta.invoicing_threshold, gets the lowest threshold of the Egyptian companies (19.0 default 0, so the 20.0 default of 150000 does not relax the buyer checks)
 
 ---XML records in module 'l10n_eg_edi_eta'---
 DEL account.edi.format: l10n_eg_edi_eta.edi_eg_eta
