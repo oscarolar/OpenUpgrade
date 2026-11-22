@@ -289,7 +289,7 @@ account      / account.tax.group        / advance_tax_payment_account_id (many2o
 account      / account.tax.group        / tax_payable_account_id (many2one): DEL relation: account.account
 account      / account.tax.group        / tax_receivable_account_id (many2one): DEL relation: account.account
 
-# TODO: no replacement found in the community code of 20.0 (they were used by the tax closing entry of enterprise); the columns are kept
+# NOTHING TO DO: community 20.0 has no replacement; enterprise 20.0 keeps the tax closing accounts on account.return.type per root company, which is outside OpenUpgrade. The columns are kept
 
 account      / account.tax.repartition.line / tag_ids_domain (binary)       : type is now 'json' ('binary')
 account      / ir.module.module         / account_templates (binary)    : type is now 'json' ('binary')
