@@ -2,6 +2,7 @@
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 
 from openupgradelib import openupgrade
+from psycopg2.extras import execute_values
 
 from odoo.tools import split_every
 
@@ -27,7 +28,16 @@ def purchase_order_line_non_deductible_tax(env):
             account_tax_repartition_line.tax_id IN (
                 line_tax.account_tax_id, account_tax_filiation_rel.child_tax
             )
+        JOIN
+            account_tax
+        ON
+            account_tax.id=account_tax_repartition_line.tax_id
         WHERE
+            NOT (
+                account_tax.amount_type IN ('percent', 'division', 'fixed')
+                AND COALESCE(account_tax.amount, 0)=0
+            )
+        AND
             account_tax_repartition_line.document_type='invoice'
         AND
             account_tax_repartition_line.repartition_type='tax'
@@ -41,6 +51,7 @@ def purchase_order_line_non_deductible_tax(env):
     AccountTax = env["account.tax"]
     PurchaseOrderLine = env["purchase.order.line"]
     for lines in split_every(1000, line_ids, PurchaseOrderLine.browse):
+        values = []
         for line in lines:
             company = line.company_id or env.company
             base_line = line._prepare_base_line_for_taxes_computation()
@@ -51,13 +62,19 @@ def purchase_order_line_non_deductible_tax(env):
                 for tax_data in base_line["tax_details"]["taxes_data"]
             )
             if non_deductible_tax:
-                env.cr.execute(
-                    """
-                    UPDATE purchase_order_line SET non_deductible_tax=%s WHERE id=%s
-                    """,
-                    (non_deductible_tax, line.id),
-                )
-        lines.invalidate_recordset()
+                values.append((line.id, non_deductible_tax))
+        if values:
+            execute_values(
+                env.cr._obj,
+                """
+                UPDATE purchase_order_line
+                SET non_deductible_tax=line_values.non_deductible_tax
+                FROM (VALUES %s) AS line_values (id, non_deductible_tax)
+                WHERE purchase_order_line.id=line_values.id
+                """,
+                values,
+            )
+        env.invalidate_all()
 
 
 @openupgrade.migrate()
