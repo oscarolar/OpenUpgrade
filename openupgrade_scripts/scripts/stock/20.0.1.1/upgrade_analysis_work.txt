@@ -95,7 +95,7 @@ stock        / stock.move.line          / uom_id (many2one)             : NEW re
 # DONE: pre-migration: renamed product_uom_id to uom_id
 
 stock        / stock.picking            / show_return (boolean)         : NEW hasdefault: default
-# NOTHING TO DO: new feature, the default is fine
+# DONE: pre-migration: column precreated with its default, to avoid an UPDATE of every transfer
 
 stock        / stock.picking            / website_message_ids (one2many): DEL relation: mail.message
 # NOTHING TO DO

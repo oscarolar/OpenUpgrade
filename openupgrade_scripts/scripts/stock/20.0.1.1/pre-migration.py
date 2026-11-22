@@ -162,6 +162,18 @@ def stock_move_quantity_product_uom(env):
     )
 
 
+def stock_picking_show_return(env):
+    """
+    Create stock.picking#show_return with its default beforehand, so that the ORM
+    does not fill it with an UPDATE of every transfer
+    """
+    if openupgrade.column_exists(env.cr, "stock_picking", "show_return"):
+        return
+    openupgrade.add_columns(
+        env, [("stock.picking", "show_return", "boolean", True, "stock_picking")]
+    )
+
+
 @openupgrade.migrate()
 def migrate(env, version):
     openupgrade.rename_fields(env, _renamed_fields)
@@ -172,3 +184,4 @@ def migrate(env, version):
     stock_picking_type_auto_show_allocation_report(env)
     stock_picking_batch_installed(env)
     stock_move_quantity_product_uom(env)
+    stock_picking_show_return(env)
