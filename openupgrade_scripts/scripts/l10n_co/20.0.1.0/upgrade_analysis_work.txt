@@ -2,7 +2,7 @@
 ---Fields in module 'l10n_co'---
 l10n_co      / l10n_latam.identification.type / l10n_co_document_code (char)  : DEL
 
-# TODO: l10n_latam.identification.type is removed (see account): the partners that used the types of this module keep their number in vat and the type in the kept column l10n_latam_identification_type_id; moving them to additional_identifiers is pending
+# DONE: pre-migration: the numbers of the other document types of this module move from vat to the additional identifier that replaces them; the NIT and the foreign NIT (external_id) stay in vat
 
 l10n_co      / res.partner              / l10n_co_dian_id_code (char)   : NEW isfunction: function, stored
 l10n_co      / res.partner              / l10n_co_dian_id_value (char)  : NEW isfunction: function, stored
@@ -21,4 +21,4 @@ DEL l10n_latam.identification.type: l10n_co.niup_id
 DEL l10n_latam.identification.type: l10n_co.residence_document
 DEL l10n_latam.identification.type: l10n_co.rut
 
-# TODO: l10n_latam.identification.type is removed (see account): the partners that used the types of this module keep their number in vat and the type in the kept column l10n_latam_identification_type_id; moving them to additional_identifiers is pending
+# DONE: pre-migration: the numbers of the other document types of this module move from vat to the additional identifier that replaces them; the NIT and the foreign NIT (external_id) stay in vat
