@@ -9,7 +9,7 @@ new model l10n_fr_pdp.partner.lookup [transient]
 l10n_fr_pdp  / account.move             / l10n_fr_pdp_status (selection): selection_keys 
 l10n_fr_pdp  / account.move             / peppol_move_state (False)     : selection_keys removed: [skipped]
 
-# TODO: pending review
+# DONE: pre-migration of account_peppol: 'skipped' mapped to 'error'
 
 l10n_fr_pdp  / account_edi_proxy_client.user / proxy_type (False)            : selection_keys removed: [l10n_it_edi, l10n_my_edi]
 
