@@ -7,7 +7,7 @@ l10n_account_withholding_tax / account.move             / withholding_total_amou
 
 l10n_account_withholding_tax / account.payment          / should_withhold_tax (boolean) : DEL
 
-# TODO: pending review
+# DONE: post-migration: payments that withheld taxes get withhold = 'withhold_pay' (withhold and pay the net amount, the only 19.0 flow)
 
 l10n_account_withholding_tax / account.payment          / withhold (selection)          : NEW selection_keys: ['payment', 'withhold', 'withhold_pay'], hasdefault: default
 
@@ -15,11 +15,11 @@ l10n_account_withholding_tax / account.payment          / withhold (selection)  
 
 l10n_account_withholding_tax / account.tax              / is_withholding_tax (boolean)  : NEW
 
-# NOTHING TO DO
+# DONE: pre-migration: renamed from is_withholding_tax_on_payment
 
 l10n_account_withholding_tax / account.tax              / is_withholding_tax_on_payment (boolean): DEL
 
-# TODO: pending review
+# DONE: pre-migration: renamed to is_withholding_tax, same meaning (withholding taxes already had a negative amount in 19.0)
 
 ---XML records in module 'l10n_account_withholding_tax'---
 NEW ir.ui.view: l10n_account_withholding_tax.account_move_view_form_inherit_l10n_account_withholding_tax
