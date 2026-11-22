@@ -7,7 +7,7 @@ new model l10n_es_edi_verifactu.issuer
 l10n_es_edi_verifactu / account.move             / l10n_es_edi_verifactu_clave_regimen (selection): DEL selection_keys: function
 l10n_es_edi_verifactu / account.move             / l10n_es_edi_verifactu_refund_reason (selection): DEL selection_keys: ['R1', 'R2', 'R3', 'R4', 'R5']
 
-# TODO: pending review
+# DONE: post-migration: the refund reason (R1-R5) is written in l10n_es_invoice_type of the refunds; the clave régimen is written in l10n_es_regime_code with the renamed keys (02 -> 02_sale, 11 -> 11_vf, 17_iva -> 17, 20_iva -> 20, 17_igic -> 17_igic_sale)
 
 l10n_es_edi_verifactu / account.move             / l10n_es_edi_verifactu_state (selection): selection_keys added: [invalid] (most likely nothing to do)
 
@@ -21,7 +21,7 @@ l10n_es_edi_verifactu / certificate.certificate  / scope (False)                
 l10n_es_edi_verifactu / l10n_es_edi_verifactu.document / obligado_partner_id (many2one): NEW relation: res.partner, required
 l10n_es_edi_verifactu / l10n_es_edi_verifactu.document / state (selection)             : selection_keys added: [invalid] (most likely nothing to do)
 
-# NOTHING TO DO
+# DONE: pre-migration: obligado_partner_id set to the partner of the company of the document, the only issuer of 19.0
 
 l10n_es_edi_verifactu / l10n_es_edi_verifactu.issuer / chain_sequence_id (many2one)  : NEW relation: ir.sequence
 l10n_es_edi_verifactu / l10n_es_edi_verifactu.issuer / company_id (many2one)         : NEW relation: res.company, required
@@ -34,7 +34,7 @@ l10n_es_edi_verifactu / res.company              / l10n_es_edi_verifactu_chain_s
 l10n_es_edi_verifactu / res.company              / l10n_es_edi_verifactu_next_batch_time (datetime): DEL
 l10n_es_edi_verifactu / res.company              / l10n_es_edi_verifactu_special_vat_regime (selection): DEL selection_keys: ['reagyp', 'recargo', 'simplified']
 
-# TODO: pending review
+# DONE: post-migration: one l10n_es_edi_verifactu.issuer per company (obligado = company partner) gets the chain sequence and next batch time, so the chain continues; the special regime goes to l10n_es_special_vat_regime of l10n_es ('recargo' -> 'equivalence_surcharge')
 
 ---XML records in module 'l10n_es_edi_verifactu'---
 NEW ir.access: l10n_es_edi_verifactu.access_l10n_es_edi_verifactu_issuer_readonly
