@@ -70,7 +70,7 @@ l10n_sa_edi  / res.users                / l10n_sa_edi_additional_identification_
 ---XML records in module 'l10n_sa_edi'---
 DEL account.edi.format: l10n_sa_edi.edi_sa_zatca (noupdate)
 
-# DONE: post-migration: before the ORM removes the format, each of its 19.0 account.edi.document becomes an l10n_sa_edi.document linked to the invoice, with its signed XML, errors, chain index and state (sent -> accepted or warning, unconfirmed with a chain index -> unknown, refused -> rejected, else to_send) and one log whose is_test follows the API mode of the company; l10n_sa_is_test is recomputed
+# DONE: post-migration: before the ORM removes the format, each of its 19.0 account.edi.document becomes an l10n_sa_edi.document linked to the invoice, with its signed XML, errors, chain index and state (sent -> accepted or warning, refused -> rejected, else to_send; a 19.0 timeout keeps its chain index but has no signed XML, which the unknown state of 20.0 resends as is, so it stays to_send) and one log whose is_test follows the API mode of the company; l10n_sa_is_test is recomputed
 
 NEW ir.access: l10n_sa_edi.l10n_sa_edi_document_group_invoice
 NEW ir.access: l10n_sa_edi.l10n_sa_edi_document_readonly

@@ -33,8 +33,6 @@ def _l10n_sa_edi_document(env):
                 THEN 'warning'
                 WHEN aed.state IN ('sent', 'to_cancel', 'cancelled')
                 THEN 'accepted'
-                WHEN COALESCE(aed.error, '') <> '' AND {chain_index} IS NOT NULL
-                THEN 'unknown'
                 WHEN COALESCE(aed.error, '') <> ''
                     AND aed.blocking_level = 'error'
                 THEN 'rejected'
@@ -149,8 +147,28 @@ def _res_partner_additional_identifiers(env):
     )
 
 
+def _account_edi_document_zatca(env):
+    """
+    The 19.0 account.edi.document of the ZATCA format are copied above: remove
+    them, so the ORM can delete the format at the end of the upgrade instead
+    of failing on their foreign key
+    """
+    if not openupgrade.table_exists(env.cr, "account_edi_document"):
+        return
+    openupgrade.logged_query(
+        env.cr,
+        """
+        DELETE FROM account_edi_document aed
+        USING account_edi_format aef
+        WHERE aef.id = aed.edi_format_id
+            AND aef.code = 'sa_zatca'
+        """,
+    )
+
+
 @openupgrade.migrate()
 def migrate(env, version):
     _account_tax_ubl_cii_tax_exemption_reason_code(env)
     _res_partner_additional_identifiers(env)
     _l10n_sa_edi_document(env)
+    _account_edi_document_zatca(env)
