@@ -6,7 +6,7 @@ l10n_es_edi_tbai / account.move             / l10n_es_tbai_original_invoice_date
 
 l10n_es_edi_tbai / account.move             / l10n_es_tbai_refund_reason (selection): DEL selection_keys: ['R1', 'R2', 'R3', 'R4', 'R5']
 
-# TODO: pending review
+# DONE: post-migration: the refund reason (R1-R5) is written in l10n_es_invoice_type of l10n_es for the refunds
 
 l10n_es_edi_tbai / certificate.certificate  / scope (False)                 : selection_keys added: [ca] (most likely nothing to do)
 
