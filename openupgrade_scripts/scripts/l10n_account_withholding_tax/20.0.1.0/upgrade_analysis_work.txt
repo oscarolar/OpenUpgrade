@@ -3,7 +3,8 @@
 l10n_account_withholding_tax / account.move             / withholding_deducted_amount_currency (float): NEW isfunction: function, stored
 l10n_account_withholding_tax / account.move             / withholding_total_amount_currency (float): NEW isfunction: function, stored
 
-# NOTHING TO DO: computed by the ORM
+# DONE: pre-migration: columns created with 0, the value of moves without withholding taxes, to avoid the ORM computing them on every journal entry
+# DONE: post-migration: computed by the ORM for the invoices with withholding taxes or reconciled with entries that withheld taxes
 
 l10n_account_withholding_tax / account.payment          / should_withhold_tax (boolean) : DEL
 
