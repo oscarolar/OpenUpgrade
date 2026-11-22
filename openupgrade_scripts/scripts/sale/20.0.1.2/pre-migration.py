@@ -56,13 +56,32 @@ def product_template_invoice_policy(env):
     )
 
 
+def _column_used_by_views(cr, table, column):
+    cr.execute(
+        """
+        SELECT 1
+        FROM pg_depend
+        JOIN pg_attribute
+            ON pg_attribute.attrelid=pg_depend.refobjid
+            AND pg_attribute.attnum=pg_depend.refobjsubid
+        WHERE pg_depend.classid='pg_rewrite'::regclass
+        AND pg_depend.refobjid=%s::regclass
+        AND pg_attribute.attname=%s
+        LIMIT 1
+        """,
+        (table, column),
+    )
+    return bool(cr.rowcount)
+
+
 def sale_order_rewrite(env):
     """
     Rewrite sale_order once: document_tax_mode is filled from the root company's
     res.company#account_price_include, prepayment_percent is set to 0 on orders
     that did not require payment, as v20 only looks at prepayment_percent, and
     amount_unpaid (when pos_sale was not installed) starts at 0 and is computed
-    afterwards for the orders that still have something to pay
+    afterwards for the orders that still have something to pay. A view that uses
+    prepayment_percent keeps its type from being altered: it is then updated
     """
     env.cr.execute(
         """
@@ -112,7 +131,13 @@ def sale_order_rewrite(env):
         f"USING {expressions[column][1]}"
         for column, _column_type in new_columns
     ]
-    if openupgrade.column_exists(env.cr, "sale_order", "require_payment"):
+    prepayment_by_update = _column_used_by_views(
+        env.cr, "sale_order", "prepayment_percent"
+    )
+    if (
+        openupgrade.column_exists(env.cr, "sale_order", "require_payment")
+        and not prepayment_by_update
+    ):
         alterations.append(
             """
             ALTER COLUMN prepayment_percent TYPE double precision USING CASE
@@ -123,11 +148,22 @@ def sale_order_rewrite(env):
             END
             """
         )
-    if not alterations:
-        return [column for column, _column_type in new_columns]
-    openupgrade.logged_query(
-        env.cr, "ALTER TABLE sale_order {}".format(", ".join(alterations))
-    )
+    if alterations:
+        openupgrade.logged_query(
+            env.cr, "ALTER TABLE sale_order {}".format(", ".join(alterations))
+        )
+    if prepayment_by_update and openupgrade.column_exists(
+        env.cr, "sale_order", "require_payment"
+    ):
+        openupgrade.logged_query(
+            env.cr,
+            """
+            UPDATE sale_order
+            SET prepayment_percent=0
+            WHERE require_payment IS NOT TRUE
+            AND COALESCE(prepayment_percent, 0) != 0
+            """,
+        )
     return [column for column, _column_type in new_columns]
 
 
