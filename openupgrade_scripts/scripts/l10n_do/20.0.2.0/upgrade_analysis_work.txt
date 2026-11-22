@@ -24,7 +24,7 @@ DEL account.report.line: l10n_do.account_tax_report_2B14_base
 DEL account.report.line: l10n_do.account_tax_report_3_18_tax
 DEL account.report.line: l10n_do.account_tax_report_3_19_tax
 
-# NOTHING TO DO: removed by the ORM
+# DONE: post-migration: deleted by SQL so the 8%/9% tags stay on the taxes that use them; template taxes take the new tags (l10n_tax_tags)
 
 NEW ir.ui.view: l10n_do.account_move_view_form
 NEW ir.ui.view: l10n_do.account_tax_view_form
