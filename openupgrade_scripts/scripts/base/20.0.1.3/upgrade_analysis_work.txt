@@ -705,7 +705,7 @@ DEL res.country.state: base.state_sa_91
 DEL res.country.state: base.state_sa_92
 DEL res.country.state: base.state_sa_93
 # DONE: post-migration: 83 cities merged into their province with merge_records (Riyadh 001, Makkah 002, Madinah 003, Eastern 004, Qassim 005, Ha'il 006, Tabuk 007, Northern Borders 008, Jazan 009, Najran 010, Baha 011, Jouf 012, Asir 014)
-# TODO: state_sa_15 (Al Khuraibah), state_sa_19 (Al Qurainah), state_sa_31 (Fiji), state_sa_49 (King Fhad), state_sa_50 (King Khalid), state_sa_55 (Manailih), state_sa_61 (Qalsn), state_sa_83 (Tusdeer Free Zone), state_sa_88 (Waisumah) and state_sa_93 (Zulayfayn) are not merged: their province is ambiguous (port or airport names shared by several provinces, or places that cannot be told apart); the ORM deletes them when unused, partners that use them keep them
+# TODO: state_sa_15 (Al Khuraibah), state_sa_19 (Al Qurainah), state_sa_31 (Fiji), state_sa_49 (King Fhad), state_sa_50 (King Khalid), state_sa_55 (Manailih), state_sa_61 (Qalsn), state_sa_83 (Tusdeer Free Zone), state_sa_88 (Waisumah) and state_sa_93 (Zulayfayn) are not merged: their province is ambiguous (port or airport names shared by several provinces, or places that cannot be told apart); the ORM deletes them when unused; the ones partners use become noupdate, so they stay without an ERROR from the failed delete
 # somebody with knowledge about this country should confirm their province
 
 NEW res.groups: base.group_everyone

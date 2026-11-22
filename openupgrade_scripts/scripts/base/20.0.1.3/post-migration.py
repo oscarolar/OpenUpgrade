@@ -2,6 +2,7 @@
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 
 from openupgradelib import openupgrade
+from psycopg2 import sql
 
 from odoo.addons.base.models.ir_model import selection_xmlid
 
@@ -321,12 +322,127 @@ _merged_sa_states = [
 ]
 
 
+def res_country_state_merged_references(cr, xmlids_spec):
+    """
+    Merging states repoints the foreign keys, but not the defaults (ir.default)
+    that store the id of a merged state, and it fails on every many2many row
+    that already links the target state (a fiscal position or a delivery method
+    with several cities of the same province): move those first
+    """
+    cr.execute(
+        """
+        SELECT kcu.table_name, kcu.column_name
+        FROM information_schema.table_constraints tc
+        JOIN information_schema.key_column_usage kcu
+            ON kcu.constraint_name = tc.constraint_name
+            AND kcu.table_schema = tc.table_schema
+        JOIN information_schema.constraint_column_usage ccu
+            ON ccu.constraint_name = tc.constraint_name
+            AND ccu.table_schema = tc.table_schema
+        WHERE tc.constraint_type = 'FOREIGN KEY'
+            AND ccu.table_name = 'res_country_state'
+            AND ccu.column_name = 'id'
+        """
+    )
+    relations = []
+    for table, column in cr.fetchall():
+        cr.execute(
+            "SELECT column_name FROM information_schema.columns WHERE table_name = %s",
+            (table,),
+        )
+        columns = [row[0] for row in cr.fetchall()]
+        if len(columns) == 2 and "id" not in columns:
+            relations.append((table, column, next(c for c in columns if c != column)))
+    for old, new in xmlids_spec:
+        cr.execute(
+            """
+            SELECT old.res_id, new.res_id
+            FROM ir_model_data old, ir_model_data new
+            WHERE old.module = %s AND old.name = %s
+                AND new.module = %s AND new.name = %s
+                AND old.model = 'res.country.state'
+                AND new.model = 'res.country.state'
+            """,
+            tuple(old.split(".") + new.split(".")),
+        )
+        row = cr.fetchone()
+        if not row:
+            continue
+        params = {"old": row[0], "new": row[1]}
+        openupgrade.logged_query(
+            cr,
+            """
+            UPDATE ir_default
+            SET json_value = %(new)s::text
+            FROM ir_model_fields imf
+            WHERE imf.id = ir_default.field_id
+                AND imf.relation = 'res.country.state'
+                AND imf.ttype = 'many2one'
+                AND ir_default.json_value = %(old)s::text
+            """,
+            params,
+        )
+        for table, column, other in relations:
+            openupgrade.logged_query(
+                cr,
+                sql.SQL(
+                    """
+                    INSERT INTO {table} ({other}, {column})
+                    SELECT {other}, %(new)s FROM {table} WHERE {column} = %(old)s
+                    ON CONFLICT DO NOTHING
+                    """
+                ).format(
+                    table=sql.Identifier(table),
+                    column=sql.Identifier(column),
+                    other=sql.Identifier(other),
+                ),
+                params,
+            )
+            openupgrade.logged_query(
+                cr,
+                sql.SQL("DELETE FROM {table} WHERE {column} = %(old)s").format(
+                    table=sql.Identifier(table), column=sql.Identifier(column)
+                ),
+                params,
+            )
+
+
+_unmerged_sa_states = [
+    "state_sa_15",
+    "state_sa_19",
+    "state_sa_31",
+    "state_sa_49",
+    "state_sa_50",
+    "state_sa_55",
+    "state_sa_61",
+    "state_sa_83",
+    "state_sa_88",
+    "state_sa_93",
+]
+
+
 def res_country_state_sa(env):
     """
     The Saudi cities of 19.0 are replaced by the 13 provinces: merge each city
-    into its province, so partners and addresses keep a valid state
+    into its province, so partners and addresses keep a valid state. The
+    cities without a known province stay while partners use them: the ORM
+    would fail to delete them (an ERROR per city), so they become noupdate
     """
+    res_country_state_merged_references(env.cr, _merged_sa_states)
     openupgrade.rename_xmlids(env.cr, _merged_sa_states, allow_merge=True)
+    openupgrade.logged_query(
+        env.cr,
+        """
+        UPDATE ir_model_data imd
+        SET noupdate = TRUE
+        WHERE imd.module = 'base'
+            AND imd.name IN %(names)s
+            AND EXISTS (
+                SELECT 1 FROM res_partner rp WHERE rp.state_id = imd.res_id
+            )
+        """,
+        {"names": tuple(_unmerged_sa_states)},
+    )
 
 
 @openupgrade.migrate()
