@@ -4,6 +4,35 @@
 from openupgradelib import openupgrade
 
 
+_provider_sequences = [
+    ("payment_provider_demo", 40, 10),
+    ("payment_provider_sepa_direct_debit", 20, 1000),
+    ("payment_provider_transfer", 30, 20),
+]
+
+
+def _payment_provider_sequence(env):
+    """
+    New default display order of some providers: apply it only to the
+    providers that keep the default of 19.0, not to the ones reordered by the
+    user.
+    """
+    for name, old_sequence, new_sequence in _provider_sequences:
+        openupgrade.logged_query(
+            env.cr,
+            """
+            UPDATE payment_provider pp
+            SET sequence = %s
+            FROM ir_model_data imd
+            WHERE imd.module = 'payment'
+                AND imd.name = %s
+                AND imd.res_id = pp.id
+                AND pp.sequence = %s
+            """,
+            (new_sequence, name, old_sequence),
+        )
+
+
 def _payment_method_without_provider(env):
     """
     A payment method needs a provider now: remove the ones that had none and
@@ -95,6 +124,6 @@ def _payment_provider_generic_redirect_form(env):
 
 @openupgrade.migrate()
 def migrate(env, version):
-    openupgrade.load_data(env, "payment", "20.0.2.0/noupdate_changes.xml")
+    _payment_provider_sequence(env)
     _payment_method_without_provider(env)
     _payment_provider_generic_redirect_form(env)
