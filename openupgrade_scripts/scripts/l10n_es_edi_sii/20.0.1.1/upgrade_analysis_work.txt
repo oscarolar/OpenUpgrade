@@ -7,7 +7,7 @@ new model l10n_es_edi_sii.document
 l10n_es_edi_sii / account.move             / l10n_es_edi_csv (char)        : not stored anymore
 l10n_es_edi_sii / account.move             / l10n_es_edi_csv (char)        : now related
 
-# TODO: pending review
+# DONE: post-migration: every 19.0 account.edi.document of the es_sii format becomes an l10n_es_edi_sii.document (sent -> accepted or accepted_with_errors when it kept a warning, to_cancel and cancelled kept, the rest to_send) with the CSV of the invoice, its JSON attachment and its error, so the related field and the SII state keep their value and nothing is sent again; the column is kept
 
 l10n_es_edi_sii / account.move             / l10n_es_edi_sii_document_ids (one2many): NEW relation: l10n_es_edi_sii.document
 l10n_es_edi_sii / certificate.certificate  / scope (False)                 : selection_keys added: [ca] (most likely nothing to do)
@@ -25,7 +25,7 @@ l10n_es_edi_sii / l10n_es_edi_sii.document / state (selection)             : NEW
 ---XML records in module 'l10n_es_edi_sii'---
 DEL account.edi.format: l10n_es_edi_sii.edi_es_sii
 
-# NOTHING TO DO: removed by the ORM
+# NOTHING TO DO: removed by the ORM, once the post-migration has copied its EDI documents
 
 NEW ir.access: l10n_es_edi_sii.access_l10n_es_edi_sii_document_readonly
 NEW ir.access: l10n_es_edi_sii.sii_document_comp_rule
