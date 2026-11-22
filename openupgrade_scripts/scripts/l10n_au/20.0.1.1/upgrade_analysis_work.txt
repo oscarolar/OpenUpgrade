@@ -2,7 +2,7 @@
 ---Fields in module 'l10n_au'---
 l10n_au      / res.partner.bank         / aba_bsb (char)                : DEL
 
-# TODO: pending review
+# DONE: post-migration: copied to res.partner.bank#clearing_number, where base validates the BSB for Australia
 
 l10n_au      / res.partner.bank         / account_type (False)          : NEW selection_keys: ['aba', 'bank', 'clabe', 'iban'], mode: modify
 
@@ -15,7 +15,7 @@ DEL account.report: l10n_au.l10n_au_master_bas
 
 DEL account.report: l10n_au.tax_report [renamed to l10n_cn module]
 
-# TODO: xmlid moved between modules, rename pending
+# NOTHING TO DO: not a move, l10n_cn.tax_report is an unrelated new Chinese report that happens to share the name; the Australian report is replaced by the BAS reports and removed by the ORM
 
 DEL account.report.column: l10n_au.l10n_au_master_bas_balance
 DEL account.report.column: l10n_au.tax_report_balance
