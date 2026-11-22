@@ -13,9 +13,13 @@ _renamed_fields = [
 ]
 
 
-@openupgrade.migrate()
-def migrate(env, version):
+def _account_tax_is_withholding_tax(env):
     if openupgrade.column_exists(
         env.cr, "account_tax", "is_withholding_tax_on_payment"
     ) and not openupgrade.column_exists(env.cr, "account_tax", "is_withholding_tax"):
         openupgrade.rename_fields(env, _renamed_fields)
+
+
+@openupgrade.migrate()
+def migrate(env, version):
+    _account_tax_is_withholding_tax(env)
