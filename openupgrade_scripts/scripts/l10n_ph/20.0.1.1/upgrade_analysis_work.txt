@@ -13,7 +13,7 @@ l10n_ph      / res.company              / l10n_ph_rdo (char)            : not re
 l10n_ph      / res.partner              / branch_code (char)            : DEL
 l10n_ph      / res.partner              / first_name (char)             : DEL
 
-# TODO: pending review
+# DONE: post-migration: the company RDO is copied from its partner (see below); branch_code is replaced by l10n_ph_branch_code, computed by the ORM from the VAT with the same formula; first_name has no stored successor, 20.0 splits the partner name on the fly (l10n_ph_first_name)
 
 l10n_ph      / res.partner              / l10n_ph_branch_code (char)    : NEW isfunction: function, stored
 
@@ -27,7 +27,7 @@ l10n_ph      / res.partner              / l10n_ph_rdo (char)            : DEL
 l10n_ph      / res.partner              / last_name (char)              : DEL
 l10n_ph      / res.partner              / middle_name (char)            : DEL
 
-# TODO: pending review
+# NOTHING TO DO: the RDO of other partners has no 20.0 field (only the company keeps it, see above); middle_name and last_name are computed on the fly from the partner name in 20.0; the columns are kept
 
 ---XML records in module 'l10n_ph'---
 NEW account.report: l10n_ph.percentage_tax
