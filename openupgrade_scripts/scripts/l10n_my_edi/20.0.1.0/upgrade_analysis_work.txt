@@ -6,11 +6,11 @@ l10n_my_edi  / myinvois.document        / is_debit_note (boolean)       : NEW
 l10n_my_edi  / myinvois.document        / is_superseded (boolean)       : NEW
 l10n_my_edi  / myinvois.document        / journal_id (many2one)         : NEW relation: account.journal, required
 
-# DONE: post-migration: journal_id from the first invoice of the document (or the journal of the PoS configuration for PoS documents); is_consolidated_invoice for documents with several invoices or with PoS orders; is_debit_note for documents of debit notes; is_superseded starts empty
+# DONE: post-migration: journal_id from the first invoice of the document (PoS documents: see l10n_my_edi_pos); is_consolidated_invoice for documents with several invoices or with PoS orders; is_debit_note for documents of debit notes; is_superseded starts empty
 
 l10n_my_edi  / myinvois.document        / move_type (selection)         : NEW required, selection_keys: ['in_invoice', 'in_refund', 'out_invoice', 'out_refund']
 
-# DONE: post-migration: move_type of the first invoice of the document ('out_invoice' for PoS documents, as 20.0 creates them)
+# DONE: post-migration: move_type of the first invoice of the document (PoS documents: see l10n_my_edi_pos)
 
 l10n_my_edi  / myinvois.document        / website_message_ids (one2many): DEL relation: mail.message
 

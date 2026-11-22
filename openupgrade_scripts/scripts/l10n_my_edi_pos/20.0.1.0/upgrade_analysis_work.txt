@@ -4,6 +4,8 @@ l10n_my_edi_pos / pos.order                / l10n_my_edi_state (selection) : NEW
 
 # NOTHING TO DO: computed by the ORM
 
+# DONE: post-migration: myinvois.document move_type, journal_id and is_consolidated_invoice (new in l10n_my_edi) of the documents with PoS orders are consolidated 'out_invoice' documents of the journal of their PoS configuration, as the 20.0 wizard creates them; done here, after point_of_sale has made pos.config#journal_id the invoice journal
+
 ---XML records in module 'l10n_my_edi_pos'---
 NEW ir.ui.view: l10n_my_edi_pos.myinvois_document_form_view
 NEW ir.ui.view: l10n_my_edi_pos.myinvois_document_pos_search_view
