@@ -2,7 +2,7 @@
 ---Fields in module 'l10n_pe'---
 l10n_pe      / l10n_latam.identification.type / l10n_pe_vat_code (char)       : DEL
 
-# TODO: l10n_latam.identification.type is removed (see account): the partners that used the types of this module keep their number in vat and the type in the kept column l10n_latam_identification_type_id; moving them to additional_identifiers is pending
+# DONE: pre-migration: the numbers of the other document types of this module move from vat to the additional identifier that replaces them; the RUC stays in vat
 
 l10n_pe      / res.bank                 / l10n_pe_edi_code (char)       : DEL
 
@@ -40,7 +40,7 @@ DEL l10n_latam.identification.type: l10n_pe.it_SP
 DEL l10n_latam.identification.type: l10n_pe.it_TAM
 DEL l10n_latam.identification.type: l10n_pe.it_TIN
 
-# TODO: l10n_latam.identification.type is removed (see account): the partners that used the types of this module keep their number in vat and the type in the kept column l10n_latam_identification_type_id; moving them to additional_identifiers is pending
+# DONE: pre-migration: the numbers of the other document types of this module move from vat to the additional identifier that replaces them; the RUC stays in vat
 
 DEL res.bank: l10n_pe.peruvian_baiopep1_bank
 DEL res.bank: l10n_pe.peruvian_bconpepl_bank
